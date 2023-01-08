@@ -2,7 +2,6 @@
 @inject IJSRuntime JsRuntime
 @inject SystemWatch SystemWatch
 
-
 @if (IsSnoozeVisible)
 {
     <div class="overlay d-flex align-items-center">
@@ -12,20 +11,29 @@
             <MudButton id="buttonId" Class="d-block w-75 h-75" Variant="Variant.Filled" Color="Color.Tertiary" 
             OnClick="SnoozeSound">Snooze</MudButton>
     </div>
-    @*btn-overlay*@
 }
-@*
-<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SnoozeToggle">Toggle</MudButton>
-*@
+
 <MudGrid>
-    <MudItem xs="12" sm="6" md="4">
-        <MudField Label="Ora" Variant="Variant.Text"><MudIcon Icon="@Icons.Material.Filled.AccessAlarm" Color="@Color.Warning" /></MudField>
+    <MudItem xs="12" sm="3" md="3">
+        <MudTextField Label="Ora" @bind-Value="AlarmHour"
+                      Adornment="Adornment.Start" 
+                      AdornmentIcon="@Icons.Material.Filled.AccessAlarm">
+        </MudTextField>
     </MudItem>
-    <MudItem xs="12" sm="6" md="4">
-        <MudField Label="Minuti" Variant="Variant.Filled"></MudField>
+    <MudItem xs="12" sm="3" md="3">
+        <MudTextField Label="Ora" @bind-Value="AlarmMinute"
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.AccessAlarm">
+        </MudTextField>
     </MudItem>
-    <MudItem xs="12" sm="6" md="4">
+    <MudItem xs="12" sm="3" md="3">
         <MudCheckBox @bind-Checked="@AlarmActive" Label="Attiva"></MudCheckBox>
+    </MudItem>
+    <MudItem xs="12" sm="3" md="3">
+        @if(Status == AlarmStatus.SNOOZED)
+        {
+            <MudButton Class="w-75" Variant="Variant.Filled" Color="Color.Primary" OnClick="StopAlarm">Stop</MudButton>
+        }
     </MudItem>
 </MudGrid>
 

@@ -1,7 +1,7 @@
 ﻿@using BlazorAlarmClock.Client.Components
 @inherits LayoutComponentBase
 
-<MudThemeProvider />
+<MudThemeProvider @bind-IsDarkMode="@isDarkMode" Theme="theme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -11,35 +11,42 @@
 </main>
 *@
 
-<div id="mainPage" class="page">
-    <div class="ps-3 navbar navbar-dark" style="z-index:9; position:absolute; float:left">
-        <div class="container-fluid">
-            <a class="navbar-brand" href=""></a>
-            <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+<MudLayout>
+    <div id="mainPage" class="page">
+        <div class="ps-3 navbar navbar-dark" style="z-index:9; position:absolute; float:left">
+            <div class="container-fluid">
+                <a class="navbar-brand" href=""></a>
+                <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
         </div>
-    </div>
-    <div class="@visibility" >
-              <NavMenu CollapsedMenu=vis />
-         @*<button class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>*@
+        <div class="@visibility">
+            <NavMenu CollapsedMenu=vis />
+        </div>
 
-    </div>
 
-    <main>
-@*        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>*@
-
-        <article class="content px-4">
+        <MudMainContent>
             @Body
-        </article>
-    </main>
-</div>
+        </MudMainContent>
 
-@code{
+
+        @*    <main>
+        <article class="content px-4">
+        @Body
+        </article>
+        </main>*@
+    </div>
+</MudLayout>
+
+
+
+
+@code {
+
+    private MudTheme theme = new();
+    private bool isDarkMode=true;
+
     private string? visibility => vis ? "sidebar-hide" : "sidebar";
     bool vis = true;
     private void ToggleNavMenu()
