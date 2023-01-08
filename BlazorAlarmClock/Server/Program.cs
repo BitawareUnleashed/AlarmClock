@@ -1,9 +1,14 @@
+using BlazorAlarmClock.Server.Controllers;
+using BlazorAlarmClock.Server.Models;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddSingleton<Alarms>();
 
 var app = builder.Build();
 
@@ -18,11 +23,14 @@ else
     app.UseHsts();
 }
 
+
 app.UseHttpsRedirection();
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.AddAlarmsApiEndpoints();
 
 app.MapRazorPages();
 app.MapControllers();

@@ -1,4 +1,5 @@
 using BlazorAlarmClock.Client;
+using BlazorAlarmClock.Client.Services;
 using DateTimeComponent.Models;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -21,5 +22,7 @@ builder.Services.AddScoped<SystemWatch>(o =>
     SystemWatch sw = new SystemWatch(100);
     return sw;
 });
+
+builder.Services.AddScoped<AlarmServices>();
 
 await builder.Build().RunAsync();

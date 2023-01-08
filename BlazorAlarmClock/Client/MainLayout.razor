@@ -1,5 +1,8 @@
 ﻿@using BlazorAlarmClock.Client.Components
+@using BlazorAlarmClock.Client.Services;
 @inherits LayoutComponentBase
+
+@inject AlarmServices alarmService
 
 <MudThemeProvider @bind-IsDarkMode="@isDarkMode" Theme="theme" />
 <MudDialogProvider />
@@ -52,5 +55,11 @@
     private void ToggleNavMenu()
     {
         vis = !vis;
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        alarmService.GetAlarmList();
+        return base.OnInitializedAsync();
     }
 }
