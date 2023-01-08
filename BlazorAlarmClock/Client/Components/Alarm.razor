@@ -14,17 +14,9 @@
 }
 
 <MudGrid>
+    <MudItem xs="12" sm="3" md="3">    </MudItem>
     <MudItem xs="12" sm="3" md="3">
-        <MudTextField Label="Ora" @bind-Value="AlarmHour"
-                      Adornment="Adornment.Start" 
-                      AdornmentIcon="@Icons.Material.Filled.AccessAlarm">
-        </MudTextField>
-    </MudItem>
-    <MudItem xs="12" sm="3" md="3">
-        <MudTextField Label="Ora" @bind-Value="AlarmMinute"
-                      Adornment="Adornment.Start"
-                      AdornmentIcon="@Icons.Material.Filled.AccessAlarm">
-        </MudTextField>
+        <MudTimePicker Label="24 hours" @bind-Time="time" />
     </MudItem>
     <MudItem xs="12" sm="3" md="3">
         <MudCheckBox @bind-Checked="@AlarmActive" Label="Attiva"></MudCheckBox>

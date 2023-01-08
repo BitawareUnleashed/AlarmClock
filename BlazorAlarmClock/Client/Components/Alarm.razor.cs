@@ -17,6 +17,7 @@ public partial class Alarm
 
     }
 
+    TimeSpan? time = new TimeSpan(00, 45, 00);
 
 
     [Parameter][EditorRequired] public string FileName { get; set; } = "audio/file1.mp3";
