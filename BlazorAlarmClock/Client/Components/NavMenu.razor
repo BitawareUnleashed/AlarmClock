@@ -1,0 +1,29 @@
+﻿@*<div class="ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href=""></a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>*@
+@**@
+
+<div class="@NavMenuCssClass">
+    <div class="mt-12">
+        <MudNavMenu>
+            <MudNavLink Href="/" Icon="@Icons.Material.Filled.AccessAlarm">SetAlarm</MudNavLink>
+            <MudNavLink Href="/managemusic" Icon="@Icons.Material.Filled.MusicVideo">Manage music</MudNavLink>
+        </MudNavMenu>
+    </div>
+    @*<nav class="flex-column mt-12">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-volume-high" aria-hidden="true"></span> SetAlarm
+            </NavLink>
+            <NavLink class="nav-link" href="MusicManager" Match="NavLinkMatch.All">
+                <span class="oi oi-wrench" aria-hidden="true"></span> Manage music
+            </NavLink>
+        </div>
+    </nav>*@
+</div>
+

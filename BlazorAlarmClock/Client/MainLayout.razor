@@ -1,0 +1,49 @@
+﻿@using BlazorAlarmClock.Client.Components
+@inherits LayoutComponentBase
+
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+@*
+<main class="main">
+    @Body
+</main>
+*@
+
+<div id="mainPage" class="page">
+    <div class="ps-3 navbar navbar-dark" style="z-index:9; position:absolute; float:left">
+        <div class="container-fluid">
+            <a class="navbar-brand" href=""></a>
+            <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </div>
+    <div class="@visibility" >
+              <NavMenu CollapsedMenu=vis />
+         @*<button class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>*@
+
+    </div>
+
+    <main>
+@*        <div class="top-row px-4">
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+        </div>*@
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+@code{
+    private string? visibility => vis ? "sidebar-hide" : "sidebar";
+    bool vis = true;
+    private void ToggleNavMenu()
+    {
+        vis = !vis;
+    }
+}

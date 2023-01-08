@@ -1,0 +1,35 @@
+﻿@page "/"
+@using BlazorAlarmClock.Client.Components
+@using DateTimeComponent
+@using DateTimeComponent.Models
+
+@inject IJSRuntime JsRuntime
+
+@if (!alarmActivated)
+{
+    <div class="overlay d-flex align-items-center">
+        <MudButton id="buttonId" Class="mx-auto w-75 btn-overlay" Variant="Variant.Filled" Color="Color.Tertiary" OnClick="Full">Attiva la sveglia</MudButton>
+    </div>
+}
+@*
+@if (InSnooze)
+{
+    <div class="overlay d-flex align-items-center">
+        <MudButton id="buttonId" Class="mx-auto w-75 btn-overlay" Variant="Variant.Filled" Color="Color.Tertiary" OnClick="Snooze">Snooze</MudButton>
+    </div>
+}*@
+
+
+<div class="element-container">
+    <SystemWatchComponent ClockDisplay="WatchDisplayEnum.WithBlinking" Is24H=true EnableJsTime="false" />
+</div>
+
+
+
+<Alarm FileName="audio/file1.mp3"
+       AlarmActive=true
+       AlarmHour="17"
+       AlarmMinute="09"
+       />
+
+

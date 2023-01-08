@@ -1,0 +1,34 @@
+﻿@using DateTimeComponent.Models;
+@inject IJSRuntime JsRuntime
+@inject SystemWatch SystemWatch
+
+
+@if (IsSnoozeVisible)
+{
+    <div class="overlay d-flex align-items-center">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" 
+                Class="btn btn-primary btn-block btn-lg h-50 w-25"
+                OnClick="StopAlarm">Stop</MudButton>
+            <MudButton id="buttonId" Class="d-block w-75 h-75" Variant="Variant.Filled" Color="Color.Tertiary" 
+            OnClick="SnoozeSound">Snooze</MudButton>
+    </div>
+    @*btn-overlay*@
+}
+@*
+<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SnoozeToggle">Toggle</MudButton>
+*@
+<MudGrid>
+    <MudItem xs="12" sm="6" md="4">
+        <MudField Label="Ora" Variant="Variant.Text"><MudIcon Icon="@Icons.Material.Filled.AccessAlarm" Color="@Color.Warning" /></MudField>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <MudField Label="Minuti" Variant="Variant.Filled"></MudField>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <MudCheckBox @bind-Checked="@AlarmActive" Label="Attiva"></MudCheckBox>
+    </MudItem>
+</MudGrid>
+
+<audio id="myAudio" style="visibility: hidden">
+    <source src="@FileName" type="audio/mpeg">
+</audio>

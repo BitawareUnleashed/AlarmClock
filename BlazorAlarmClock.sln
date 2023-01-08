@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorAlarmClock.Server", "BlazorAlarmClock\Server\BlazorAlarmClock.Server.csproj", "{0818BE6D-0187-4921-A24C-4A48E23D8B2D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorAlarmClock.Client", "BlazorAlarmClock\Client\BlazorAlarmClock.Client.csproj", "{27013EBB-6F9E-4BA8-B37C-B549BDEDC553}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorAlarmClock.Shared", "BlazorAlarmClock\Shared\BlazorAlarmClock.Shared.csproj", "{A4D7774D-31A3-43CF-A013-D1989F855025}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DateTimeComponent", "DateTimeComponet\DateTimeComponent.csproj", "{BDEE103C-63FF-432F-8786-D92005FF13C4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0818BE6D-0187-4921-A24C-4A48E23D8B2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0818BE6D-0187-4921-A24C-4A48E23D8B2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0818BE6D-0187-4921-A24C-4A48E23D8B2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0818BE6D-0187-4921-A24C-4A48E23D8B2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27013EBB-6F9E-4BA8-B37C-B549BDEDC553}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27013EBB-6F9E-4BA8-B37C-B549BDEDC553}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27013EBB-6F9E-4BA8-B37C-B549BDEDC553}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27013EBB-6F9E-4BA8-B37C-B549BDEDC553}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4D7774D-31A3-43CF-A013-D1989F855025}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4D7774D-31A3-43CF-A013-D1989F855025}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4D7774D-31A3-43CF-A013-D1989F855025}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4D7774D-31A3-43CF-A013-D1989F855025}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDEE103C-63FF-432F-8786-D92005FF13C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDEE103C-63FF-432F-8786-D92005FF13C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDEE103C-63FF-432F-8786-D92005FF13C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDEE103C-63FF-432F-8786-D92005FF13C4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ACCA9073-F3AE-4DF3-BA8B-9947C7CFD1ED}
+	EndGlobalSection
+EndGlobal

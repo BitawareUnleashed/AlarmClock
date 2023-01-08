@@ -1,0 +1,42 @@
+﻿@using DateTimeComponent.Models
+@using Microsoft.JSInterop
+@inject IJSRuntime JsRuntime
+@inject SystemWatch watch
+@implements IAsyncDisposable
+
+<div class="date-group">
+    @switch (ClockDisplay)
+    {
+        case WatchDisplayEnum.None:
+            <p class="default-watch">@systemWatch</p>
+            break;
+        case WatchDisplayEnum.WithSeconds:
+            <p class="watch-with-date">@systemWatch</p>
+            break;
+        case WatchDisplayEnum.WithBlinking:
+            <p class="default-watch">@watchLeftPart<e class="@blinkStyleSeparator">@separator</e>@watchRightPart</p>
+            break;
+        case WatchDisplayEnum.WithSecondsAndBlinking:
+            <p class="default-watch">@watchLeftPart<e class="@blinkStyleSeparator">@separator</e>@watchRightPart</p>
+            break;
+        case WatchDisplayEnum.Undefined:
+        default:
+            <p class="watch-with-date">@systemWatch</p>
+            break;
+    }
+
+    @switch (DateDisplay)
+    {
+        case DateDisplayEnum.None:
+            
+            break;
+        case DateDisplayEnum.WithLongDate:
+        case DateDisplayEnum.WithShortDate:
+            <p class="date-field">@systemDate</p>
+            break;
+        case DateDisplayEnum.Undefined:
+        default:
+            <h1>@systemWatch</h1>
+            break;
+    }
+</div>
