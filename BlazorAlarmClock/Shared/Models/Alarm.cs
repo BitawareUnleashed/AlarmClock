@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection.Metadata;
+using BlazorAlarmClock.Server.Models;
 
 namespace BlazorAlarmClock.Shared.Models;
 
-public class Alarm
+public class Alarm:IEntity<int>
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

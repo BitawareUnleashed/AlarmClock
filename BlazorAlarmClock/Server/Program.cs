@@ -1,4 +1,5 @@
 using BlazorAlarmClock.Server.Controllers;
+using BlazorAlarmClock.Server.Extensions;
 using BlazorAlarmClock.Server.Models;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -8,9 +9,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-builder.Services.AddSingleton<Alarms>();
+
+
+builder.Services.AddDbContext<AlarmDbContext>(opt =>
+    opt.UseSqlite(@$"Data Source = Alarms.sqlite"));
+
+
+builder.Services.AddScoped<DbContext, AlarmDbContext>();
+builder.Services.AddScoped<Alarms>();
+
+builder.Services.AddScoped(typeof(IRepository<,>), typeof(AlarmDataRepository<,>));
 
 var app = builder.Build();
+
+await app.InizializeDatabases();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BlazorAlarmClock.Server.Migrations
 {
-    [DbContext(typeof(AlarmContext))]
+    [DbContext(typeof(AlarmDbContext))]
     partial class AlarmContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

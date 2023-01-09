@@ -1,29 +1,29 @@
-﻿@*<div class="ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href=""></a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>*@
-@**@
-
-<div class="@NavMenuCssClass">
+﻿<div class="@NavMenuCssClass">
     <div class="mt-12">
         <MudNavMenu>
-            <MudNavLink Href="/" Icon="@Icons.Material.Filled.AccessAlarm">SetAlarm</MudNavLink>
+            
+            <MudNavLink Href="/" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+            <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.AccessAlarm" OnClick="TogglePopover" Style="text-transform: capitalize;">Set New Alarm</MudButton>
+            @*<MudNavLink Href="/" Icon="@Icons.Material.Filled.AccessAlarm">Set New Alarm</MudNavLink>*@
             <MudNavLink Href="/managemusic" Icon="@Icons.Material.Filled.MusicVideo">Manage music</MudNavLink>
         </MudNavMenu>
     </div>
-    @*<nav class="flex-column mt-12">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-volume-high" aria-hidden="true"></span> SetAlarm
-            </NavLink>
-            <NavLink class="nav-link" href="MusicManager" Match="NavLinkMatch.All">
-                <span class="oi oi-wrench" aria-hidden="true"></span> Manage music
-            </NavLink>
-        </div>
-    </nav>*@
 </div>
 
+
+
+<MudPopover Open="@isOpen" Fixed="true" Class="px-4 pt-4">
+    <div class="d-flex flex-column">
+        <MudText>Content of the popover can be anything.</MudText>
+        <MudButton OnClick="@TogglePopover" Class="ml-auto mr-n3 mb-1" Color="Color.Error">Close</MudButton>
+    </div>
+</MudPopover>
+
+@code
+{
+    bool isOpen;
+    private void TogglePopover()
+    {
+        isOpen = !isOpen;
+    }
+}

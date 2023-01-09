@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BlazorAlarmClock.Server.Migrations
 {
-    [DbContext(typeof(AlarmContext))]
+    [DbContext(typeof(AlarmDbContext))]
     [Migration("20230108215415_MyFirstMigration")]
     partial class MyFirstMigration
     {

@@ -51,7 +51,11 @@ public partial class Alarm
             case AlarmStatus.PLAYING:
                 break;
             case AlarmStatus.SNOOZED:
-                if (e.Hour == AlarmHour && e.Minute == (AlarmMinute + (2 * snoozing)))
+                if (time is null)
+                {
+                    break;
+                }
+                if (e.Hour == time.Value.Hours && e.Minute == (time.Value.Minutes + (2 * snoozing)))
                 {
                     PlaySound();
                     IsSnoozeVisible = true;
@@ -60,7 +64,11 @@ public partial class Alarm
                 }
                 break;
             case AlarmStatus.STOPPED:
-                if (e.Hour == AlarmHour && e.Minute == AlarmMinute)
+                if (time is null)
+                {
+                    break;
+                }
+                if (e.Hour == time.Value.Hours && e.Minute == time.Value.Minutes)
                 {
                     if (AlarmDays is null)
                     {
@@ -79,7 +87,11 @@ public partial class Alarm
                 }
                 break;
             case AlarmStatus.STOPPED_TODAY:
-                if(today != e.Day || (e.Hour == AlarmHour && e.Minute != AlarmMinute))
+                if (time is null)
+                {
+                    break;
+                }
+                if (today != e.Day || (e.Hour == time.Value.Hours && e.Minute != time.Value.Minutes))
                 {
                     today = e.Day;
                     Status= AlarmStatus.STOPPED;
