@@ -1,4 +1,5 @@
 ﻿using Microsoft.JSInterop;
+using MudBlazor;
 
 namespace BlazorAlarmClock.Client.Pages;
 
@@ -41,5 +42,10 @@ public partial class Index
         }
         
         StateHasChanged();
+    }
+
+    public void AddAlarmTest()
+    {
+        alarmService.AddNewAlarm();
     }
 }

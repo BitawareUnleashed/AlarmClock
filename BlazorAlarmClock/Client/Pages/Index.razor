@@ -1,9 +1,11 @@
 ﻿@page "/"
 @using BlazorAlarmClock.Client.Components
+@using BlazorAlarmClock.Client.Services
 @using DateTimeComponent
 @using DateTimeComponent.Models
 
 @inject IJSRuntime JsRuntime
+@inject AlarmServices alarmService
 
 @if (!alarmActivated)
 {
@@ -24,6 +26,7 @@
     <SystemWatchComponent ClockDisplay="WatchDisplayEnum.WithBlinking" Is24H=true EnableJsTime="false" />
 </div>
 
+<MudButton Variant="Variant.Filled" OnClick="AddAlarmTest">TEST</MudButton>
 
 
 <Alarm FileName="audio/file1.mp3"
