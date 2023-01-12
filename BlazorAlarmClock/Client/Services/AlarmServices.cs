@@ -10,6 +10,10 @@ public class AlarmServices
     private const string AddNewAlarmEndpoint = "/api/v1/AddNewAlarm";
     private readonly HttpClient http;
 
+    
+    public List<AlarmDto> AlarmList { get; set; } = new();
+
+
     public AlarmServices(HttpClient http)
     {
         this.http = http;
@@ -22,7 +26,9 @@ public class AlarmServices
         if (!ret.IsSuccessStatusCode)
         {
             // TODO: Show a message on the screen
+            return;
         }
+        AlarmList = await ret.Content.ReadFromJsonAsync<List<AlarmDto>>() ?? new List<AlarmDto>();
     }
 
     public async void AddNewAlarm()

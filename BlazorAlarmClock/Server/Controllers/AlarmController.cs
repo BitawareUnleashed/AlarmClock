@@ -17,13 +17,43 @@ public static class AlarmController
         return app;
     }
 
-    private static IResult GetAlarmListApi(HttpContext context, IRepository<Alarm, int> repo)
+    private static IResult GetAlarmListApi(HttpContext context, AlarmDataRepository repo)
     {
+        
         var a = repo.GetAll();
-        return Results.Ok(a);
+        var dto = new List<AlarmDto>();
+        foreach (var item in a.ToList())
+        {
+            var almDays = new List<AlarmDayDto>();
+            if(item.AlarmDays is not null)
+            {
+                foreach (var day in item.AlarmDays)
+                {
+                    almDays.Add(new AlarmDayDto()
+                    {
+                        AlarmDayId=day.AlarmDayId,
+                        AlarmId=day.AlarmId,
+                        DayAsInt=day.DayAsInt
+                    });
+                }
+            }
+
+            dto.Add(new AlarmDto()
+            {
+                Hour=item.Hour,
+                Id=item.Id,
+                IsActive=item.IsActive,
+                Minute=item.Minute,
+                RingtoneName=item.RingtoneName,
+                AlarmDays= almDays
+            });
+        }
+
+
+        return Results.Ok(dto);
     }
 
-    private static IResult PostNewAlarmApi([FromBody]Alarm alarm, HttpContext context, IRepository<Alarm, int> repo)
+    private static IResult PostNewAlarmApi([FromBody]Alarm alarm, HttpContext context, AlarmDataRepository repo)
     {
         repo.CreateAsync(alarm);
         return Results.Ok();

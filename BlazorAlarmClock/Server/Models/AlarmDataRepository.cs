@@ -1,28 +1,28 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BlazorAlarmClock.Shared.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlazorAlarmClock.Server.Models;
 
-public class AlarmDataRepository<TEntity, TKey>
-    : IRepository<TEntity, TKey>
-    where TEntity : class, IEntity<TKey>, new()
+public class AlarmDataRepository : IRepository<Alarm, int>
 {
     private readonly DbContext dbContext;
-    private readonly DbSet<TEntity> set;
+    private readonly DbSet<Alarm> set;
 
     public AlarmDataRepository(DbContext dbContext)
     {
         this.dbContext = dbContext;
-        set = this.dbContext.Set<TEntity>();
+        set = this.dbContext.Set<Alarm>();
     }
 
     /// <inheritdoc/>
-    public IQueryable<TEntity> GetAll()
+    public IQueryable<Alarm> GetAll()
     {
-        return set.AsNoTracking();
+        return set.Include(e=>e.AlarmDays).AsNoTracking();
+        //return set.AsNoTracking();
     }
 
     /// <inheritdoc/>
-    public async Task<TEntity?> GetByIdAsync(TKey id)
+    public async Task<Alarm?> GetByIdAsync(int id)
     {
         var entity = await set.FindAsync(id);
         if (entity == null)
@@ -35,7 +35,7 @@ public class AlarmDataRepository<TEntity, TKey>
     }
 
     /// <inheritdoc/>
-    public async Task CreateAsync(TEntity entity)
+    public async Task CreateAsync(Alarm entity)
     {
         set.Add(entity);
         await dbContext.SaveChangesAsync();
@@ -43,7 +43,7 @@ public class AlarmDataRepository<TEntity, TKey>
     }
 
     /// <inheritdoc/>
-    public async Task UpdateAsync(TEntity entity)
+    public async Task UpdateAsync(Alarm entity)
     {
         set.Update(entity);
         await dbContext.SaveChangesAsync();
@@ -51,14 +51,15 @@ public class AlarmDataRepository<TEntity, TKey>
     }
 
     /// <inheritdoc/>
-    public Task DeleteAsync(TKey id)
+    public Task DeleteAsync(int id)
     {
-        var entity = new TEntity()
+        var entity = new Alarm()
         {
             Id = id,
         };
         set.Remove(entity);
         return dbContext.SaveChangesAsync();
     }
+
 }
 

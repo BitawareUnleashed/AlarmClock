@@ -13,13 +13,6 @@
         <MudButton id="buttonId" Class="mx-auto w-75 btn-overlay" Variant="Variant.Filled" Color="Color.Tertiary" OnClick="Full">Attiva la sveglia</MudButton>
     </div>
 }
-@*
-@if (InSnooze)
-{
-    <div class="overlay d-flex align-items-center">
-        <MudButton id="buttonId" Class="mx-auto w-75 btn-overlay" Variant="Variant.Filled" Color="Color.Tertiary" OnClick="Snooze">Snooze</MudButton>
-    </div>
-}*@
 
 
 <div class="element-container">
@@ -28,8 +21,10 @@
 
 <MudButton Variant="Variant.Filled" OnClick="AddAlarmTest">TEST</MudButton>
 
-
-<Alarm FileName="audio/file1.mp3"
-       AlarmActive=true/>
-
-
+@if (alarmService.AlarmList is not null)
+{
+    @foreach (var alarm in alarmService.AlarmList)
+    {
+        <AlarmComponent CurrentAlarm="@alarm" />
+    }
+}

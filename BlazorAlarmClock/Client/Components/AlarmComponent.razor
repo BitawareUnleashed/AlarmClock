@@ -1,0 +1,51 @@
+﻿@using BlazorAlarmClock.Client.Services;
+@using BlazorAlarmClock.Shared.Models;
+@using DateTimeComponent.Models;
+@inject IJSRuntime JsRuntime
+@inject SystemWatch SystemWatch
+@inject AlarmServices alarmService
+
+@if (IsSnoozeVisible)
+{
+    <div class="overlay d-flex align-items-center">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary"
+               Class="btn btn-primary btn-block btn-lg h-50 w-25"
+               OnClick="StopAlarm">Stop</MudButton>
+        <MudButton id="buttonId" Class="d-block w-75 h-75" Variant="Variant.Filled" Color="Color.Tertiary"
+               OnClick="SnoozeSound">Snooze</MudButton>
+    </div>
+}
+
+<MudGrid Class="w-75" Style="display: flex; justify-content: center;">
+    <MudItem xs="1"/>
+    <MudItem xs="1">
+        <MudTimePicker Label="Set alarm" @bind-Time="time" />
+    </MudItem>
+    <MudItem xs="1">
+        <MudCheckBox @bind-Checked="@AlarmActive" Label="Attivo"></MudCheckBox>
+    </MudItem>
+    <MudDivider Vertical="true" />
+    <MudItem xs="8">
+        <div class="checkbox-group">
+            <MudCheckBox @bind-Checked="@AlarmSunday" Label="Sunday"></MudCheckBox>
+            <MudCheckBox @bind-Checked="@AlarmMonday" Label="Monday"></MudCheckBox>
+            <MudCheckBox @bind-Checked="@AlarmTuesday" Label="Tuesday"></MudCheckBox>
+            <MudCheckBox @bind-Checked="@AlarmWednesday" Label="Wednesday"></MudCheckBox>
+            <MudCheckBox @bind-Checked="@AlarmThursday" Label="Thursday"></MudCheckBox>
+            <MudCheckBox @bind-Checked="@AlarmFriday" Label="Friday"></MudCheckBox>
+            <MudCheckBox @bind-Checked="@AlarmSaturday" Label="Saturday"></MudCheckBox>
+        </div>
+    </MudItem>
+    <MudItem xs="1">
+        @if (Status == AlarmStatus.SNOOZED)
+        {
+            <MudButton Class="w-75 h-100" Variant="Variant.Filled" Color="Color.Primary" OnClick="StopAlarm">Stop</MudButton>
+        }
+    </MudItem>
+</MudGrid>
+
+
+<audio id="myAudio" style="visibility: hidden">
+    <source src="@FileName" type="audio/mpeg">
+</audio>
+

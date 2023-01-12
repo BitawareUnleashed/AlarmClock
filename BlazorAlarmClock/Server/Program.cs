@@ -1,6 +1,7 @@
 using BlazorAlarmClock.Server.Controllers;
 using BlazorAlarmClock.Server.Extensions;
 using BlazorAlarmClock.Server.Models;
+using BlazorAlarmClock.Shared.Models;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +19,7 @@ builder.Services.AddDbContext<AlarmDbContext>(opt =>
 builder.Services.AddScoped<DbContext, AlarmDbContext>();
 builder.Services.AddScoped<Alarms>();
 
-builder.Services.AddScoped(typeof(IRepository<,>), typeof(AlarmDataRepository<,>));
+builder.Services.AddScoped<AlarmDataRepository>();
 
 var app = builder.Build();
 

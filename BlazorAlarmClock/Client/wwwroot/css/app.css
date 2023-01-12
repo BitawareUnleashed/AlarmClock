@@ -92,6 +92,15 @@ h1:focus {
 }
 
 
+.checkbox-group {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.custom-class > MudCheckBox {
+    margin-right: 10px;
+}
+
 
 
 
