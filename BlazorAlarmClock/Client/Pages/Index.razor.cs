@@ -13,6 +13,15 @@ public partial class Index
 
     public bool IsSetSnooze { get; set; }
 
+
+    protected override void OnInitialized()
+    {
+        alarmService.OnAlarmDeleted += AlarmService_OnAlarmDeleted;
+        base.OnInitialized();
+    }
+
+    private void AlarmService_OnAlarmDeleted(object? sender, bool e) => StateHasChanged();
+
     private void Snooze()
     {
         InSnooze = false;
@@ -44,8 +53,8 @@ public partial class Index
         StateHasChanged();
     }
 
-    public void AddAlarmTest()
-    {
-        alarmService.AddNewAlarm();
-    }
+    //public void AddAlarmTest()
+    //{
+    //    alarmService.AddNewAlarm();
+    //}
 }

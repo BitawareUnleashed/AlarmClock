@@ -16,34 +16,47 @@
     </div>
 }
 
-<MudGrid Class="w-75" Style="display: flex; justify-content: center;">
-    <MudItem xs="1"/>
-    <MudItem xs="1">
-        <MudTimePicker Label="Set alarm" @bind-Time="time" />
-    </MudItem>
-    <MudItem xs="1">
-        <MudCheckBox @bind-Checked="@AlarmActive" Label="Attivo"></MudCheckBox>
-    </MudItem>
-    <MudDivider Vertical="true" />
-    <MudItem xs="8">
-        <div class="checkbox-group">
-            <MudCheckBox @bind-Checked="@AlarmSunday" Label="Sunday"></MudCheckBox>
-            <MudCheckBox @bind-Checked="@AlarmMonday" Label="Monday"></MudCheckBox>
-            <MudCheckBox @bind-Checked="@AlarmTuesday" Label="Tuesday"></MudCheckBox>
-            <MudCheckBox @bind-Checked="@AlarmWednesday" Label="Wednesday"></MudCheckBox>
-            <MudCheckBox @bind-Checked="@AlarmThursday" Label="Thursday"></MudCheckBox>
-            <MudCheckBox @bind-Checked="@AlarmFriday" Label="Friday"></MudCheckBox>
-            <MudCheckBox @bind-Checked="@AlarmSaturday" Label="Saturday"></MudCheckBox>
-        </div>
-    </MudItem>
-    <MudItem xs="1">
-        @if (Status == AlarmStatus.SNOOZED)
-        {
-            <MudButton Class="w-75 h-100" Variant="Variant.Filled" Color="Color.Primary" OnClick="StopAlarm">Stop</MudButton>
-        }
-    </MudItem>
-</MudGrid>
-
+@if (CurrentAlarm is not null)
+{
+    <MudGrid Class="w-100" Style="display: flex; justify-content: center;">
+        <MudItem xs="1" />
+        <MudItem xs="1">
+            <MudTimePicker @ref="picker" Label="Set alarm" @bind-Time="time">
+                <PickerActions>
+                    <MudButton Class="mr-auto align-self-start" OnClick="@(() => picker.Clear())">Clear</MudButton>
+                    <MudButton OnClick="@(()=>AlarmTimeAccept(false))">Cancel</MudButton>
+                    <MudButton Color="Color.Primary" OnClick="@(()=>AlarmTimeAccept(true))">Ok</MudButton>
+                </PickerActions>
+            </MudTimePicker>
+        </MudItem>
+        <MudItem xs="1">
+            <MudToggleIconButton @bind-Toggled="@CurrentAlarm.IsActive"
+                             Icon="@Icons.Material.Filled.AlarmOff" Color="@Color.Error" Title="Off"
+                             ToggledIcon="@Icons.Material.Filled.AlarmOn" ToggledColor="@Color.Success" ToggledTitle="On" />
+        </MudItem>
+        <MudDivider Vertical="true" />
+        <MudItem xs="5">
+            <div class="checkbox-group">
+                <MudCheckBox @bind-Checked="@AlarmSunday" Label="Sunday" @onclick="OnSundayClick"></MudCheckBox>
+                <MudCheckBox @bind-Checked="@AlarmMonday" Label="Monday" @onclick="OnMondayClick"></MudCheckBox>
+                <MudCheckBox @bind-Checked="@AlarmTuesday" Label="Tuesday" @onclick="OnTuesdayClick"></MudCheckBox>
+                <MudCheckBox @bind-Checked="@AlarmWednesday" Label="Wednesday" @onclick="OnWednesdayClick"></MudCheckBox>
+                <MudCheckBox @bind-Checked="@AlarmThursday" Label="Thursday" @onclick="OnThursdayClick"></MudCheckBox>
+                <MudCheckBox @bind-Checked="@AlarmFriday" Label="Friday" @onclick="OnFridayClick"></MudCheckBox>
+                <MudCheckBox @bind-Checked="@AlarmSaturday" Label="Saturday" @onclick="OnSaturdayClick"></MudCheckBox>
+            </div>
+        </MudItem>
+        <MudItem xs="1">
+            @if (Status == AlarmStatus.SNOOZED)
+            {
+                <MudButton Class="w-75 h-100" Variant="Variant.Filled" Color="Color.Primary" OnClick="StopAlarm">Stop</MudButton>
+            }
+        </MudItem>
+        <MudItem xs="1">
+            <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Large" OnClick="DeleteAlarm" />
+        </MudItem>
+    </MudGrid>
+}
 
 <audio id="myAudio" style="visibility: hidden">
     <source src="@FileName" type="audio/mpeg">

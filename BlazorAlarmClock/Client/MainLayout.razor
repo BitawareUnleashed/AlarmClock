@@ -41,25 +41,3 @@
         </main>*@
     </div>
 </MudLayout>
-
-
-
-
-@code {
-
-    private MudTheme theme = new();
-    private bool isDarkMode=true;
-
-    private string? visibility => vis ? "sidebar-hide" : "sidebar";
-    bool vis = true;
-    private void ToggleNavMenu()
-    {
-        vis = !vis;
-    }
-
-    protected override Task OnInitializedAsync()
-    {
-        alarmService.GetAlarmList();
-        return base.OnInitializedAsync();
-    }
-}
