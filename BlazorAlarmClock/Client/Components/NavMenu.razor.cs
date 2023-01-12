@@ -4,6 +4,10 @@ namespace BlazorAlarmClock.Client.Components;
 
 public partial class NavMenu
 {
+    [Parameter] public bool IsPopoverOpen { get; set; }
+
+    [Parameter] public EventCallback IsPopoverOpenChanged { get; set; }
+
     [Parameter]
     public bool CollapsedMenu
     {
@@ -19,5 +23,10 @@ public partial class NavMenu
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    public void TogglePopover()
+    {
+        IsPopoverOpenChanged.InvokeAsync(this);
     }
 }
