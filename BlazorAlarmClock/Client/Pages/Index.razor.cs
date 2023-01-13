@@ -16,11 +16,17 @@ public partial class Index
 
     protected override void OnInitialized()
     {
+        alarmService.OnAlarmUpdated += AlarmService_OnAlarmUpdated;
         alarmService.OnAlarmDeleted += AlarmService_OnAlarmDeleted;
         base.OnInitialized();
     }
 
     private void AlarmService_OnAlarmDeleted(object? sender, bool e) => StateHasChanged();
+
+    private void AlarmService_OnAlarmUpdated(object? sender, bool e)
+    {
+        StateHasChanged();
+    }
 
     private void Snooze()
     {

@@ -18,16 +18,16 @@
 <div class="element-container">
     <SystemWatchComponent ClockDisplay="WatchDisplayEnum.WithBlinking" Is24H=true EnableJsTime="false" />
 </div>
-@*
-<MudButton Variant="Variant.Filled" OnClick="AddAlarmTest">TEST</MudButton>
-*@
+
 <div style="overflow-y:auto">
-@if (alarmService.AlarmList is not null)
-{
-    @foreach (var alarm in alarmService.AlarmList)
+    @if (alarmService.AlarmList is not null)
     {
-        <AlarmComponent CurrentAlarm="@alarm" />
+        @foreach (var alarm in alarmService.AlarmList)
+        {
+            <div class="ml-12" > 
+                <AlarmComponent CurrentAlarm="@alarm" />
+            </div>
+        }
     }
-}
 
 </div>

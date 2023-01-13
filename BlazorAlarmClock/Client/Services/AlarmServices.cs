@@ -13,8 +13,9 @@ public class AlarmServices
     private readonly HttpClient http;
 
     public event EventHandler<bool> OnAlarmDeleted;
+    public event EventHandler<bool> OnAlarmUpdated;
 
-    
+
     public List<AlarmDto> AlarmList { get; set; } = new();
 
 
@@ -66,6 +67,8 @@ public class AlarmServices
             Console.WriteLine($"There was an error! {errorMessage}");
             return;
         }
+        var a = await GetAlarmList();
+        OnAlarmUpdated?.Invoke(this, true);
     }
 
     public async void UpdateItem(AlarmDto day)
@@ -78,5 +81,7 @@ public class AlarmServices
             Console.WriteLine($"There was an error! {errorMessage}");
             return;
         }
+        var a = await GetAlarmList();
+        OnAlarmUpdated?.Invoke(this, true);
     }
 }

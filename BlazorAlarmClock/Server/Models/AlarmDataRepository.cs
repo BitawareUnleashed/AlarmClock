@@ -17,7 +17,7 @@ public class AlarmDataRepository : IRepository<Alarm, int>
     /// <inheritdoc/>
     public IQueryable<Alarm> GetAll()
     {
-        return set.Include(e=>e.AlarmDays).AsNoTracking();
+        return set.Include(e => e.AlarmDays).AsNoTracking();
         //return set.AsNoTracking();
     }
 
@@ -45,7 +45,10 @@ public class AlarmDataRepository : IRepository<Alarm, int>
     /// <inheritdoc/>
     public async Task UpdateAsync(Alarm entity)
     {
-        set.Update(entity);
+        _ = DeleteAsync(entity.Id);
+        await dbContext.SaveChangesAsync();
+
+        _ = CreateAsync(entity);
         await dbContext.SaveChangesAsync();
         dbContext.Entry(entity).State = EntityState.Detached;
     }

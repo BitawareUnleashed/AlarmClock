@@ -19,9 +19,8 @@
 @if (CurrentAlarm is not null)
 {
     <MudGrid Class="w-100" Style="display: flex; justify-content: center;">
-        <MudItem xs="1" />
-        <MudItem xs="1">
-            <MudTimePicker @ref="picker" Label="Set alarm" @bind-Time="time">
+        <MudItem xs="1" Style="min-width: 150px">
+            <MudTimePicker @ref="picker" Label="Set alarm" @bind-Time="time" PickerVariant="PickerVariant.Dialog">
                 <PickerActions>
                     <MudButton Class="mr-auto align-self-start" OnClick="@(() => picker.Clear())">Clear</MudButton>
                     <MudButton OnClick="@(()=>AlarmTimeAccept(false))">Cancel</MudButton>
@@ -29,13 +28,14 @@
                 </PickerActions>
             </MudTimePicker>
         </MudItem>
+
         <MudItem xs="1">
             <MudToggleIconButton @bind-Toggled="@CurrentAlarm.IsActive"
                              Icon="@Icons.Material.Filled.AlarmOff" Color="@Color.Error" Title="Off"
                              ToggledIcon="@Icons.Material.Filled.AlarmOn" ToggledColor="@Color.Success" ToggledTitle="On" />
         </MudItem>
-        <MudDivider Vertical="true" />
-        <MudItem xs="5">
+
+        <MudItem xs="8">
             <div class="checkbox-group">
                 <MudCheckBox @bind-Checked="@AlarmSunday" Label="Sunday" @onclick="OnSundayClick"></MudCheckBox>
                 <MudCheckBox @bind-Checked="@AlarmMonday" Label="Monday" @onclick="OnMondayClick"></MudCheckBox>
@@ -46,12 +46,12 @@
                 <MudCheckBox @bind-Checked="@AlarmSaturday" Label="Saturday" @onclick="OnSaturdayClick"></MudCheckBox>
             </div>
         </MudItem>
-        <MudItem xs="1">
-            @if (Status == AlarmStatus.SNOOZED)
-            {
+        @if (Status == AlarmStatus.SNOOZED)
+        {
+            <MudItem xs="1">
                 <MudButton Class="w-75 h-100" Variant="Variant.Filled" Color="Color.Primary" OnClick="StopAlarm">Stop</MudButton>
-            }
-        </MudItem>
+            </MudItem>
+        }
         <MudItem xs="1">
             <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Large" OnClick="DeleteAlarm" />
         </MudItem>

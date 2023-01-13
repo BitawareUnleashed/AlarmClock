@@ -1,5 +1,8 @@
 ﻿@using BlazorAlarmClock.Client.Components
 @using BlazorAlarmClock.Client.Services;
+@using Microsoft.AspNetCore.Components.Forms;
+
+
 @inherits LayoutComponentBase
 
 @inject AlarmServices alarmService
@@ -31,22 +34,24 @@
         <MudMainContent>
 
             <MudPopover Open="@isOpen" Fixed="true" AnchorOrigin="Origin.CenterCenter" TransformOrigin="Origin.CenterCenter"
-                        Class="col-sm-8 mt-10 h-25 w-50 border-solid border-4 mud-border-ternary">
-                <div class="d-flex flex-column">
-                    <MudText>Content of the popover can be anything.</MudText>
-                    <MudButton OnClick="@TogglePopover" Class="ml-auto mr-n3 mb-1" Color="Color.Error">Close</MudButton>
+                        Class="col-sm-8 mt-10 h-20 w-55 border-solid border-2 mud-border-ternary">
+                <div class="d-flex flex-column ml-12">
+                    <MudForm Model="@newAlarm">
+                        <div class="p-2" style="background-color:grey; margin-left: -48px">
+                            <MudText style="display: flex; justify-content: center; font-size: x-large">Crea un nuovo allarme.</MudText>
+                        </div>
+                        <div class="mt-12">
+                            <AlarmComponent CurrentAlarm="@newAlarm" IsNewAlarm="true" />
+                        </div>
+                        <div class="mr-12 mt-12" style="display: flex; justify-content: center;">
+                            <MudButton Variant="Variant.Filled" Style="width:150px" OnClick="@AddAlarmClosePopover" Class="mb-1 mr-6" Color="Color.Primary">Ok</MudButton>
+                            <MudButton Variant="Variant.Filled" Style="width:150px" OnClick="@CancelPopover" Class="mb-1" Color="Color.Error">Cancel</MudButton>
+                        </div>
+                    </MudForm>
                 </div>
             </MudPopover>
-
             @Body
         </MudMainContent>
     </div>
 </MudLayout>
 
-@code{
-
-    private void ToggleNavPopover()
-    {
-        isOpen = !isOpen;   
-    }
-}

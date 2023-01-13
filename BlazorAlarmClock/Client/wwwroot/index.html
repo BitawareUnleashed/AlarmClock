@@ -81,6 +81,21 @@
         function simulateClick() {
             document.querySelector("#buttonId").click();
         }
+
+
+
+        function saveFile(path, data) {
+            var blob = new Blob([data], { type: 'application/octet-stream' });
+            var a = document.createElement('a');
+            a.href = window.URL.createObjectURL(blob);
+            a.download = path;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(a.href);
+        }
+
     </script>
 </body>
 

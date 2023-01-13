@@ -10,6 +10,8 @@ public partial class AlarmComponent
 {
     [Parameter] public AlarmDto? CurrentAlarm { get; set; }
 
+    [Parameter] public bool? IsNewAlarm { get; set; }
+
     public bool AlarmSunday { get; set; }
     public bool AlarmMonday { get; set; }
     public bool AlarmTuesday { get; set; }
@@ -76,8 +78,10 @@ public partial class AlarmComponent
                 CurrentAlarm.AlarmDays.Remove(isInDay);
             }
         }
-
-        alarmService.UpdateItem(CurrentAlarm);
+        if(IsNewAlarm is null)
+        {
+            alarmService.UpdateItem(CurrentAlarm);
+        }
     }
 
 
@@ -142,7 +146,10 @@ public partial class AlarmComponent
         {
             CurrentAlarm.Hour = time.Value.Hours;
             CurrentAlarm.Minute = time.Value.Minutes;
-            alarmService.UpdateItem(CurrentAlarm);
+            if (IsNewAlarm is null)
+            {
+                alarmService.UpdateItem(CurrentAlarm);
+            }
         }
     }
 

@@ -11,6 +11,7 @@ public static class AlarmController
     private const string AddNewAlarmEndpoint = "/api/v1/AddNewAlarm";
     private const string DeleteAlarmEndpoint = "/api/v1/DeleteAlarm";
     private const string UpdateAlarmEndpoint = "/api/v1/UpdateAlarm";
+    private const string url = "api/upload/{filePath}/{fileName}";
 
     public static IEndpointRouteBuilder AddAlarmsApiEndpoints(this IEndpointRouteBuilder app)
     {
@@ -18,6 +19,7 @@ public static class AlarmController
         _ = app.MapPost(AddNewAlarmEndpoint, PostNewAlarmApi);
         _ = app.MapPost(DeleteAlarmEndpoint, PostDeleteAlarmApi);
         _ = app.MapPost(UpdateAlarmEndpoint, PostUpdateAlarmApi);
+        _ = app.MapPost(url, SaveRingtone);
         return app;
     }
 
@@ -106,4 +108,23 @@ public static class AlarmController
         };
         return newAlarm;
     }
+
+    private static async Task<IResult> SaveRingtone(string path,string fileName, [FromBody] byte[] file)
+    {
+        try
+        {
+            path=path.Replace("-", "/");
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), path, fileName);
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await fileStream.WriteAsync(file);
+            }
+            return Results.Ok();
+        }
+        catch (Exception ex)
+        {
+            return Results.StatusCode(500);
+        }
+    }
 }
+
