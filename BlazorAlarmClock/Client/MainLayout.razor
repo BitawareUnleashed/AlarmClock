@@ -59,6 +59,10 @@
                                     </MudFileUpload>
                                     <MudMenu Class="mt-1 ml-5" Variant="Variant.Filled" Label="@ringtoneName" Dense="true" 
                                             Color="Color.Tertiary">
+                                        @if (alarmService.RingtonesList.Count==1)
+                                        {
+                                            <MudMenuItem>No ringtones</MudMenuItem>
+                                        }
                                         @foreach (var ringtone in alarmService.RingtonesList)
                                         {
                                             if(ringtone.Contains("file1"))
