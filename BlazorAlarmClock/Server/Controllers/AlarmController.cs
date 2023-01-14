@@ -11,7 +11,7 @@ public static class AlarmController
     private const string AddNewAlarmEndpoint = "/api/v1/AddNewAlarm";
     private const string DeleteAlarmEndpoint = "/api/v1/DeleteAlarm";
     private const string UpdateAlarmEndpoint = "/api/v1/UpdateAlarm";
-    private const string UploadFileRingtoneEndpoint = "/api/v1/UploadRingtone/{fileName}";
+    private const string UploadFileRingtoneEndpoint = "/api/v1/UploadRingtone";
     private const string GetRingtoneListEndpoint = "/api/v1/GetRingtonesList";
     private const string DeleteAlarmRingtoneEndpoint = "/api/v1/DeleteAlarmRingtone";
 
@@ -134,7 +134,7 @@ public static class AlarmController
         return newAlarm;
     }
 
-    private static async Task<IResult> SaveRingtone(string fileName, [FromBody] FileData file)
+    private static async Task<IResult> SaveRingtone([FromBody] FileData file)
     {
         try
         {
@@ -144,11 +144,11 @@ public static class AlarmController
 #else
             dir = Directory.GetCurrentDirectory();
 #endif
-            var filePath = Path.Combine(dir, file.Path, fileName);
+            var filePath = Path.Combine(dir, file.Path, file.FileName);
 
             using (var fileStream = System.IO.File.Create(filePath))
             {
-                await fileStream.WriteAsync(file.ImageBytes);
+                await fileStream.WriteAsync(file.DataBytes);
             }
             return Results.Ok();
         }

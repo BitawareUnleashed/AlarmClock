@@ -18,9 +18,11 @@ public class AlarmServices
 
     private readonly HttpClient http;
 
-    public event EventHandler<bool> OnAlarmDeleted;
-    public event EventHandler<bool> OnAlarmUpdated;
-    public event EventHandler<bool> OnRingtoneListUpdated;
+    public event EventHandler<bool>? OnAlarmDeleted;
+    public event EventHandler<bool>? OnAlarmUpdated;
+    public event EventHandler<bool>? OnRingtoneListUpdated;
+    public event EventHandler<string>? OnRingtoneUploaded;
+    public event EventHandler<string>? OnErrorRaised;
 
 
     public List<AlarmDto> AlarmList { get; set; } = new();
@@ -41,6 +43,7 @@ public class AlarmServices
             // set error message for display, log to console and return
             var errorMessage = response.ReasonPhrase;
             Console.WriteLine($"There was an error in GetAlarmList! {errorMessage}");
+            OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
             return false;
         }
         AlarmList = await response.Content.ReadFromJsonAsync<List<AlarmDto>>() ?? new List<AlarmDto>();
@@ -56,6 +59,7 @@ public class AlarmServices
             // set error message for display, log to console and return
             var errorMessage = response.ReasonPhrase;
             Console.WriteLine($"There was an error in DeleteAlarm! {errorMessage}");
+            OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
             return;
         }
         var a = await GetAlarmList();
@@ -73,6 +77,7 @@ public class AlarmServices
             // set error message for display, log to console and return
             var errorMessage = response.ReasonPhrase;
             Console.WriteLine($"There was an error! {errorMessage}");
+            OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
             return;
         }
         var a = await GetAlarmList();
@@ -87,6 +92,7 @@ public class AlarmServices
             // set error message for display, log to console and return
             var errorMessage = response.ReasonPhrase;
             Console.WriteLine($"There was an error! {errorMessage}");
+            OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
             return;
         }
         var a = await GetAlarmList();
@@ -95,31 +101,41 @@ public class AlarmServices
 
     public async void UploadFiles(IBrowserFile file)
     {
-        //files.Add(file);
-        //TODO upload the files to the server
-
-        if (file != null)
+        try
         {
-            var ms = new MemoryStream();
-            await file.OpenReadStream().CopyToAsync(ms);
-            var fileBytes = ms.ToArray();
-
-            var fileData = new FileData()
+            if (file != null)
             {
-                FileName = file.Name,
-                ImageBytes = fileBytes,
-                Path = "wwwroot\\audio"
-            };
+                var ms = new MemoryStream();
+                await file.OpenReadStream(maxAllowedSize: long.MaxValue).CopyToAsync(ms);
+                var fileBytes = ms.ToArray();
+                
+                var fileData = new FileData()
+                {
+                    FileName = file.Name,
+                    DataBytes = fileBytes,
+                    Path = "wwwroot\\audio",
+                    FileId = Guid.NewGuid(),
+                    IsLast = false
+                };
 
-            var response = await http.PostAsJsonAsync($"{UploadFileRingtoneEndpoint}/{file.Name}", fileData);
+                var response = await http.PostAsJsonAsync($"{UploadFileRingtoneEndpoint}", fileData);
 
-            if (!response.IsSuccessStatusCode)
-            {
-                // Handle error
+                if (!response.IsSuccessStatusCode)
+                {
+                    OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
+                }
+                else
+                {
+                    await GetRingroneList();
+                }
             }
-
-            await GetRingroneList();
         }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+        OnRingtoneUploaded?.Invoke(this, file.Name);
     }
 
     public async Task<bool> GetRingroneList()
@@ -132,6 +148,7 @@ public class AlarmServices
             // set error message for display, log to console and return
             var errorMessage = response.ReasonPhrase;
             Console.WriteLine($"There was an error in GetAlarmList! {errorMessage}");
+            OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
             return ret;
         }
 
@@ -146,7 +163,7 @@ public class AlarmServices
 
         if (!response.IsSuccessStatusCode)
         {
-            // Handle error
+            OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
         }
         await GetRingroneList();
         OnRingtoneListUpdated?.Invoke(this, true);

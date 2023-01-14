@@ -8,9 +8,9 @@ namespace BlazorAlarmClock.Shared.Models;
 
 public class FileData
 {
-    public byte[] ImageBytes { get; set; }
+    public byte[] DataBytes { get; set; }
     public string FileName { get; set; }
-    public string FileType { get; set; }
-    public long FileSize { get; set; }
     public string Path { get; set; }
+    public bool IsLast { get; set; }
+    public Guid FileId { get; set; }
 }

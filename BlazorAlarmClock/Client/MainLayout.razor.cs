@@ -10,7 +10,7 @@ public partial class MainLayout
     private MudTheme theme = new();
     private bool isDarkMode = true;
 
-    private AlarmDto newAlarm= new();
+    private AlarmDto newAlarm = new();
 
     private string ringtoneName = "Select a ringtone";
 
@@ -38,9 +38,39 @@ public partial class MainLayout
 
     protected override Task OnInitializedAsync()
     {
+        alarmService.OnRingtoneUploaded += AlarmService_OnRingtoneUploaded;
+        alarmService.OnErrorRaised += AlarmService_OnErrorRaised;
         _ = alarmService.GetAlarmList();
         _ = alarmService.GetRingroneList();
         return base.OnInitializedAsync();
+    }
+
+    private void AlarmService_OnRingtoneUploaded(object? sender, string e)
+    {
+        Snackbar.Add
+        (
+            @$"<div>
+                <h3>Ringtone</h3>
+                <ul>
+                    <li>Ringtone file '{e}' uploaded</li>
+                </ul>
+            </div>",
+            Severity.Success
+        );
+    }
+
+    private void AlarmService_OnErrorRaised(object? sender, string e)
+    {
+        Snackbar.Add
+        (
+            @$"<div>
+                <h3>Error</h3>
+                <ul>
+                    <li>{e}</li>
+                </ul>
+            </div>",
+            Severity.Error
+        );
     }
 
     private void ToggleNavPopover()
@@ -57,6 +87,6 @@ public partial class MainLayout
 
     private void RingtoneSelected(string ringtoneName)
     {
-        this.ringtoneName=ringtoneName.Trim();
+        this.ringtoneName = ringtoneName.Trim();
     }
 }

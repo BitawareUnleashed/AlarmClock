@@ -3,10 +3,11 @@
 @using BlazorAlarmClock.Client.Services;
 @inject AlarmServices alarmService
 
-<h3>ManageMusic</h3>
+    <div class="p-3" style="display: flex; justify-content: center; background-color:gray; margin-top:-65px">
+        <h3>ManageMusic</h3>
+    </div>
 
-
-<MudGrid>
+<MudGrid Class="mr-12 mt-6 mb-6 ml-12" Style="display: flex; justify-content: center;">
     @if (alarmService.RingtonesList is not null)
     {
         @foreach (var file in alarmService.RingtonesList)
@@ -15,13 +16,13 @@
             {
                 continue;
             }
-            <MudItem>
+            <MudItem Class="mr-12 mt-6 mb-6">
                 <FileRingtoneManager FileName="@file" />
             </MudItem>
         }
         @if (alarmService.RingtonesList.Count == 0)
         {
-            <MudItem>
+            <MudItem Class="mr-12 mt-6 mb-6">
                 <MudText>No files found</MudText>
             </MudItem>
         }
