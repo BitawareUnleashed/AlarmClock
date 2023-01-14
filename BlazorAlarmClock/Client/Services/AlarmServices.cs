@@ -14,11 +14,13 @@ public class AlarmServices
     private const string UpdateAlarmEndpoint = "/api/v1/UpdateAlarm";
     private readonly string UploadFileRingtoneEndpoint = "/api/v1/UploadRingtone";
     private readonly string GetRingtoneListEndpoint = "/api/v1/GetRingtonesList";
+    private readonly string DeleteAlarmRingtoneEndpoint = "/api/v1/DeleteAlarmRingtone";
 
     private readonly HttpClient http;
 
     public event EventHandler<bool> OnAlarmDeleted;
     public event EventHandler<bool> OnAlarmUpdated;
+    public event EventHandler<bool> OnRingtoneListUpdated;
 
 
     public List<AlarmDto> AlarmList { get; set; } = new();
@@ -136,5 +138,17 @@ public class AlarmServices
         RingtonesList = await response.Content.ReadFromJsonAsync<List<string>>() ?? new List<string>();
 
         return response.IsSuccessStatusCode;
+    }
+
+    public async Task DeleteRingtone(string fileName)
+    {
+        var response = await http.PostAsJsonAsync($"{DeleteAlarmRingtoneEndpoint}", fileName);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            // Handle error
+        }
+        await GetRingroneList();
+        OnRingtoneListUpdated?.Invoke(this, true);
     }
 }

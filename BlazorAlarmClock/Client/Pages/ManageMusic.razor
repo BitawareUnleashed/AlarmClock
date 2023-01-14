@@ -1,2 +1,29 @@
 ﻿@page "/managemusic"
+@using BlazorAlarmClock.Client.Components
+@using BlazorAlarmClock.Client.Services;
+@inject AlarmServices alarmService
+
 <h3>ManageMusic</h3>
+
+
+<MudGrid>
+    @if (alarmService.RingtonesList is not null)
+    {
+        @foreach (var file in alarmService.RingtonesList)
+        {
+            if (file.Contains("file1.mp3"))
+            {
+                continue;
+            }
+            <MudItem>
+                <FileRingtoneManager FileName="@file" />
+            </MudItem>
+        }
+        @if (alarmService.RingtonesList.Count == 0)
+        {
+            <MudItem>
+                <MudText>No files found</MudText>
+            </MudItem>
+        }
+    }
+</MudGrid>

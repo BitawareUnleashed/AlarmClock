@@ -13,6 +13,7 @@ public static class AlarmController
     private const string UpdateAlarmEndpoint = "/api/v1/UpdateAlarm";
     private const string UploadFileRingtoneEndpoint = "/api/v1/UploadRingtone/{fileName}";
     private const string GetRingtoneListEndpoint = "/api/v1/GetRingtonesList";
+    private const string DeleteAlarmRingtoneEndpoint = "/api/v1/DeleteAlarmRingtone";
 
     public static IEndpointRouteBuilder AddAlarmsApiEndpoints(this IEndpointRouteBuilder app)
     {
@@ -23,6 +24,8 @@ public static class AlarmController
         _ = app.MapPost(DeleteAlarmEndpoint, PostDeleteAlarmApi);
         _ = app.MapPost(UpdateAlarmEndpoint, PostUpdateAlarmApi);
         _ = app.MapPost(UploadFileRingtoneEndpoint, SaveRingtone);
+
+        _ = app.MapPost(DeleteAlarmRingtoneEndpoint, PostDeleteRingtoneApi);
         return app;
     }
 
@@ -83,6 +86,25 @@ public static class AlarmController
         await repo.UpdateAsync(newAlarm);
         return Results.Ok();
     }
+
+    
+    private static async Task<IResult> PostDeleteRingtoneApi([FromBody] string alarmRingtoneName, HttpContext context, AlarmDataRepository repo)
+    {
+        string dir = string.Empty;
+        var path = "wwwroot\\audio";
+
+#if (DEBUG)
+        dir = Directory.GetCurrentDirectory() + "\\bin\\Debug\\net7.0\\";
+#else
+        dir = Directory.GetCurrentDirectory();
+#endif
+        var filePath = Path.Combine(dir, path, alarmRingtoneName);
+
+        File.Delete(filePath);
+
+        return Results.Ok();
+    }
+
 
     private static Alarm ConvertToAlarm(AlarmDto alarm)
     {

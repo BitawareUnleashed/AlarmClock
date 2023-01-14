@@ -1,0 +1,11 @@
+﻿@using BlazorAlarmClock.Client.Services;
+@inject AlarmServices alarmService
+
+<MudGrid>
+    <MudItem>
+        <MudText>@FileName</MudText>
+    </MudItem>
+    <MudItem xs="1">
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Large" OnClick="DeleteRingtone" />
+    </MudItem>
+</MudGrid>
