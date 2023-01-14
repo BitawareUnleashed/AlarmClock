@@ -11,15 +11,18 @@ public static class AlarmController
     private const string AddNewAlarmEndpoint = "/api/v1/AddNewAlarm";
     private const string DeleteAlarmEndpoint = "/api/v1/DeleteAlarm";
     private const string UpdateAlarmEndpoint = "/api/v1/UpdateAlarm";
-    private const string url = "api/upload/{filePath}/{fileName}";
+    private const string UploadFileRingtoneEndpoint = "/api/v1/UploadRingtone/{fileName}";
+    private const string GetRingtoneListEndpoint = "/api/v1/GetRingtonesList";
 
     public static IEndpointRouteBuilder AddAlarmsApiEndpoints(this IEndpointRouteBuilder app)
     {
         _ = app.MapGet(AlarmListEndpoint, GetAlarmListApi);
+        _ = app.MapGet(GetRingtoneListEndpoint, GetRingtoneListApi);
+
         _ = app.MapPost(AddNewAlarmEndpoint, PostNewAlarmApi);
         _ = app.MapPost(DeleteAlarmEndpoint, PostDeleteAlarmApi);
         _ = app.MapPost(UpdateAlarmEndpoint, PostUpdateAlarmApi);
-        _ = app.MapPost(url, SaveRingtone);
+        _ = app.MapPost(UploadFileRingtoneEndpoint, SaveRingtone);
         return app;
     }
 
@@ -109,15 +112,21 @@ public static class AlarmController
         return newAlarm;
     }
 
-    private static async Task<IResult> SaveRingtone(string path,string fileName, [FromBody] byte[] file)
+    private static async Task<IResult> SaveRingtone(string fileName, [FromBody] FileData file)
     {
         try
         {
-            path=path.Replace("-", "/");
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), path, fileName);
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            string dir = string.Empty;
+#if(DEBUG)
+            dir = Directory.GetCurrentDirectory() + "\\bin\\Debug\\net7.0\\";
+#else
+            dir = Directory.GetCurrentDirectory();
+#endif
+            var filePath = Path.Combine(dir, file.Path, fileName);
+
+            using (var fileStream = System.IO.File.Create(filePath))
             {
-                await fileStream.WriteAsync(file);
+                await fileStream.WriteAsync(file.ImageBytes);
             }
             return Results.Ok();
         }
@@ -125,6 +134,28 @@ public static class AlarmController
         {
             return Results.StatusCode(500);
         }
+    }
+
+    private static async Task<IResult> GetRingtoneListApi()
+    {
+        string dir = string.Empty;
+        var path = "wwwroot\\audio";
+
+#if (DEBUG)
+        dir = Directory.GetCurrentDirectory() + "\\bin\\Debug\\net7.0\\";
+#else
+        dir = Directory.GetCurrentDirectory();
+#endif
+        var filePath = Path.Combine(dir, path);
+
+        var list = Directory.GetFiles(filePath);
+        var returnList = new List<string>();
+        foreach (var file in list)
+        {
+            returnList.Add(file.Substring(file.LastIndexOf("\\") + 1));
+        }
+
+        return Results.Ok(returnList.ToList());
     }
 }
 
