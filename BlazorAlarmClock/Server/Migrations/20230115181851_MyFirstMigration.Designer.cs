@@ -2,6 +2,7 @@
 using BlazorAlarmClock.Server.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorAlarmClock.Server.Migrations
 {
     [DbContext(typeof(AlarmDbContext))]
-    partial class AlarmContextModelSnapshot : ModelSnapshot
+    [Migration("20230115181851_MyFirstMigration")]
+    partial class MyFirstMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.1");
@@ -33,6 +36,9 @@ namespace BlazorAlarmClock.Server.Migrations
 
                     b.Property<string>("RingtoneName")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("SnoozeTime")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 

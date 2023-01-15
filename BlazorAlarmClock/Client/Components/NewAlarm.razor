@@ -1,0 +1,59 @@
+﻿@using BlazorAlarmClock.Client.Localizer;
+@using BlazorAlarmClock.Client.Services;
+@using Microsoft.AspNetCore.Components.Forms;
+@inject AlarmServices alarmService
+@inject HttpClient Http
+@inject ISnackbar Snackbar
+@inject ITextLocalizer Localizer
+
+<div class="d-flex flex-column ml-12">
+    <MudForm Model="@newAlarm">
+        <div class="p-2" style="background-color:grey; margin-left: -48px">
+            <MudText style="display: flex; justify-content: center; font-size: x-large">Create a new alarm.</MudText>
+        </div>
+        <div class="mt-12">
+            <MudItem Class=" col-sm-12 justify-content-center">
+                <AlarmComponent CurrentAlarm="@newAlarm" IsNewAlarm="true" />
+            </MudItem>
+            <MudItem Class="col-sm-12  d-flex align-items-center justify-content-center">
+                <div class="d-flex align-items-center justify-content-center">
+                    <MudFileUpload T="IBrowserFile" Accept=".mp3" FilesChanged="UploadFiles" MaximumFileCount="1">
+                        <ButtonTemplate>
+                            <MudButton Style="margin-top:-2px"
+                                       HtmlTag="label"
+                                       Variant="Variant.Filled"
+                                       Color="Color.Tertiary"
+                                       StartIcon="@Icons.Material.Filled.CloudUpload"
+                                       for="@context">
+                                Ringtone .mp3
+                            </MudButton>
+                        </ButtonTemplate>
+                    </MudFileUpload>
+                    <MudMenu Class="mt-1 ml-5" Variant="Variant.Filled" Label="@Localizer.Localize(RingtoneFileName ?? ringtoneFileNameEmpty)" Dense="true" Color="Color.Tertiary">
+                        @if (alarmService.RingtonesList.Count == 1)
+                        {
+                            <MudMenuItem>No ringtones</MudMenuItem>
+                        }
+                        @foreach (var ringtone in alarmService.RingtonesList)
+                        {
+                            if (ringtone.Contains("file1"))
+                            {
+                                continue;
+                            }
+                            <MudMenuItem OnClick="@(()=>RingtoneSelected(ringtone))">@ringtone</MudMenuItem>
+                        }
+                    </MudMenu>
+                </div>
+                <div class="ml-5" style="width:120px">
+                    <MudNumericField T="int" @bind-Value=newAlarm.SnoozeTime Label="Snooze time" Min="1" Max="30" 
+                                Adornment="Adornment.End" AdornmentText="@Localizer.Localize(minutesMeasureUnits)" />
+                </div>
+            </MudItem>
+        </div>
+        <MudDivider class="mt-6 " Style="color:white; margin-left:-50px" />
+        <div class="mr-12 mt-6 mb-6" style="display: flex; justify-content: center;">
+            <MudButton Variant="Variant.Filled" Style="width:150px" OnClick="@AddAlarmClosePopover" Class="mb-1 mr-6" Color="Color.Primary">Ok</MudButton>
+            <MudButton Variant="Variant.Filled" Style="width:150px" OnClick="@CancelPopover" Class="mb-1" Color="Color.Error">Cancel</MudButton>
+        </div>
+    </MudForm>
+</div>

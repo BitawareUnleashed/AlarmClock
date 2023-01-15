@@ -1,4 +1,5 @@
-﻿using BlazorAlarmClock.Client.Services;
+﻿using BlazorAlarmClock.Client.Components;
+using BlazorAlarmClock.Client.Services;
 using BlazorAlarmClock.Shared.Models;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
@@ -9,32 +10,7 @@ public partial class MainLayout
 {
     private MudTheme theme = new();
     private bool isDarkMode = true;
-
-    private AlarmDto newAlarm = new();
-
-    private string ringtoneName = "Select a ringtone";
-
     bool isOpen;
-    private void CancelPopover()
-    {
-        newAlarm = newAlarm = new();
-        isOpen = false;
-    }
-
-    private void AddAlarmClosePopover()
-    {
-        if (!ringtoneName.Contains("Select a ringtone"))
-        {
-            newAlarm.RingtoneName = ringtoneName;
-        }
-        else
-        {
-            newAlarm.RingtoneName = null;
-        }
-        alarmService.AddNewAlarm(newAlarm);
-        isOpen = false;
-        StateHasChanged();
-    }
 
     private string? visibility => vis ? "sidebar-hide" : "sidebar";
     bool vis = true;
@@ -43,57 +19,15 @@ public partial class MainLayout
         vis = !vis;
     }
 
-    protected override Task OnInitializedAsync()
-    {
-        alarmService.OnRingtoneUploaded += AlarmService_OnRingtoneUploaded;
-        alarmService.OnErrorRaised += AlarmService_OnErrorRaised;
-        _ = alarmService.GetAlarmList();
-        _ = alarmService.GetRingroneList();
-        return base.OnInitializedAsync();
-    }
-
-    private void AlarmService_OnRingtoneUploaded(object? sender, string e)
-    {
-        Snackbar.Add
-        (
-            @$"<div>
-                <h3>Ringtone</h3>
-                <ul>
-                    <li>Ringtone file '{e}' uploaded</li>
-                </ul>
-            </div>",
-            Severity.Success
-        );
-    }
-
-    private void AlarmService_OnErrorRaised(object? sender, string e)
-    {
-        Snackbar.Add
-        (
-            @$"<div>
-                <h3>Error</h3>
-                <ul>
-                    <li>{e}</li>
-                </ul>
-            </div>",
-            Severity.Error
-        );
-    }
-
     private void ToggleNavPopover()
     {
-        ringtoneName = "Select a ringtone";
-        newAlarm = new();
+        //ringtoneName = "Select a ringtone";
+        //newAlarm = new();
         isOpen = !isOpen;
     }
 
-    private async void UploadFiles(IBrowserFile file)
+    private void PopoverChanged(bool popoverOpened)
     {
-        alarmService.UploadFiles(file);
-    }
-
-    private void RingtoneSelected(string ringtoneName)
-    {
-        this.ringtoneName = ringtoneName.Trim();
+        isOpen = popoverOpened;
     }
 }

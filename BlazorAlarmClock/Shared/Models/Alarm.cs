@@ -14,7 +14,7 @@ public class Alarm:IEntity<int>
     public int Minute { get; set; }
     public bool IsActive { get; set; }
     public string? RingtoneName { get; set; }
-    //public List<int>? AlarmDays { get; set; }
+    public int SnoozeTime { get; set; }
     public virtual ICollection<AlarmDay> AlarmDays { get; set; }
 }
 

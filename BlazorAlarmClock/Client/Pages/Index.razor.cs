@@ -1,4 +1,5 @@
-﻿using Microsoft.JSInterop;
+﻿using BlazorAlarmClock.Client.Services;
+using Microsoft.JSInterop;
 using MudBlazor;
 
 namespace BlazorAlarmClock.Client.Pages;
@@ -16,6 +17,7 @@ public partial class Index
 
     protected override void OnInitialized()
     {
+        _ = alarmService.GetAlarmList();
         alarmService.OnAlarmUpdated += AlarmService_OnAlarmUpdated;
         alarmService.OnAlarmDeleted += AlarmService_OnAlarmDeleted;
         base.OnInitialized();
@@ -35,13 +37,6 @@ public partial class Index
         StateHasChanged();
     }
 
-    protected async void FullScreenMode()
-    {
-        await Task.Delay(5000);
-        await JsRuntime.InvokeVoidAsync("enableFullScreen");
-    }
-
-
     private async void Full()
     {
         await JsRuntime.InvokeVoidAsync("enableFullScreen");
@@ -59,8 +54,4 @@ public partial class Index
         StateHasChanged();
     }
 
-    //public void AddAlarmTest()
-    //{
-    //    alarmService.AddNewAlarm();
-    //}
 }
