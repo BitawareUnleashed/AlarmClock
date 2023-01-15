@@ -34,7 +34,6 @@ public class AlarmServices
         this.http = http;
     }
 
-
     public async Task<bool> GetAlarmList()
     {
         var response = await http.GetAsync(@$"{AlarmListEndpoint}");
@@ -99,6 +98,17 @@ public class AlarmServices
         OnAlarmUpdated?.Invoke(this, true);
     }
 
+    public async Task<AlarmDto>? GetAlarmFromId(int id)
+    {
+        AlarmDto? ret = null;
+        if (await GetAlarmList())
+        {
+            ret = AlarmList.Where(x => x.Id == id).FirstOrDefault();
+        }
+        return ret;
+    }
+
+
     public async void UploadFiles(IBrowserFile file)
     {
         try
@@ -108,7 +118,7 @@ public class AlarmServices
                 var ms = new MemoryStream();
                 await file.OpenReadStream(maxAllowedSize: long.MaxValue).CopyToAsync(ms);
                 var fileBytes = ms.ToArray();
-                
+
                 var fileData = new FileData()
                 {
                     FileName = file.Name,
@@ -166,4 +176,6 @@ public class AlarmServices
         await GetRingroneList();
         OnRingtoneListUpdated?.Invoke(this, true);
     }
+
+
 }

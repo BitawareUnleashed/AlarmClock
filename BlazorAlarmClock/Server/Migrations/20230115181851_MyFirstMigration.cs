@@ -19,7 +19,8 @@ namespace BlazorAlarmClock.Server.Migrations
                     Hour = table.Column<int>(type: "INTEGER", nullable: false),
                     Minute = table.Column<int>(type: "INTEGER", nullable: false),
                     IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
-                    RingtoneName = table.Column<string>(type: "TEXT", nullable: true)
+                    RingtoneName = table.Column<string>(type: "TEXT", nullable: true),
+                    SnoozeTime = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

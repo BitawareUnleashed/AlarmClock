@@ -1,9 +1,11 @@
-﻿@using BlazorAlarmClock.Client.Services;
+﻿@using BlazorAlarmClock.Client.Localizer;
+@using BlazorAlarmClock.Client.Services;
 @using BlazorAlarmClock.Shared.Models;
 @using DateTimeComponent.Models;
 @inject IJSRuntime JsRuntime
 @inject SystemWatch SystemWatch
 @inject AlarmServices alarmService
+@inject ITextLocalizer Localizer
 
 @if (IsSnoozeVisible)
 {
@@ -37,29 +39,39 @@
                              ToggledIcon="@Icons.Material.Filled.AlarmOn" ToggledColor="@Color.Success" ToggledTitle="On" />
         </MudItem>
 
-        <MudItem xs="7">
-            <div class="checkbox-group">
-                <MudGrid>
-                    <MudItem>
-                        <MudCheckBox @bind-Checked="@AlarmMonday" Label="Mon" @onclick="OnMondayClick"></MudCheckBox>
-                        <MudCheckBox @bind-Checked="@AlarmTuesday" Label="Tue" @onclick="OnTuesdayClick"></MudCheckBox>
-                    </MudItem>
-                    <MudItem>
-                        <MudCheckBox @bind-Checked="@AlarmWednesday" Label="Wed" @onclick="OnWednesdayClick"></MudCheckBox>
-                        <MudCheckBox @bind-Checked="@AlarmThursday" Label="Thu" @onclick="OnThursdayClick"></MudCheckBox>
-                    </MudItem>
-                    <MudItem>
-                        <MudCheckBox @bind-Checked="@AlarmFriday" Label="Fri" @onclick="OnFridayClick"></MudCheckBox>
-                        <MudCheckBox @bind-Checked="@AlarmSaturday" Label="Sat" @onclick="OnSaturdayClick"></MudCheckBox>
-                    </MudItem>
-                    <MudItem>
-                        <MudCheckBox @bind-Checked="@AlarmSunday" Label="Sun" @onclick="OnSundayClick"></MudCheckBox>
-                    </MudItem>
-                </MudGrid>
-            </div>
-        </MudItem>
-        @if (Status == AlarmStatus.SNOOZED)
+        @if (Status != AlarmStatus.SNOOZED)
         {
+            <MudItem xs="7">
+                <div class="checkbox-group">
+                    <MudGrid>
+                        <MudItem>
+                            <MudCheckBox @bind-Checked="@AlarmMonday" Label="Mon" @onclick="OnMondayClick"></MudCheckBox>
+                            <MudCheckBox @bind-Checked="@AlarmTuesday" Label="Tue" @onclick="OnTuesdayClick"></MudCheckBox>
+                        </MudItem>
+                        <MudItem>
+                            <MudCheckBox @bind-Checked="@AlarmWednesday" Label="Wed" @onclick="OnWednesdayClick"></MudCheckBox>
+                            <MudCheckBox @bind-Checked="@AlarmThursday" Label="Thu" @onclick="OnThursdayClick"></MudCheckBox>
+                        </MudItem>
+                        <MudItem>
+                            <MudCheckBox @bind-Checked="@AlarmFriday" Label="Fri" @onclick="OnFridayClick"></MudCheckBox>
+                            <MudCheckBox @bind-Checked="@AlarmSaturday" Label="Sat" @onclick="OnSaturdayClick"></MudCheckBox>
+                        </MudItem>
+                        <MudItem>
+                            <MudCheckBox @bind-Checked="@AlarmSunday" Label="Sun" @onclick="OnSundayClick"></MudCheckBox>
+                        </MudItem>
+                    </MudGrid>
+                </div>
+            </MudItem>
+            <div class="ml-5" style="width:120px">
+                <MudNumericField T="int" Label="Snooze time" Min="1" Max="30" ValueChanged="SnoozeChanged" Value=CurrentAlarm.SnoozeTime
+                         Adornment="Adornment.End" AdornmentText="@Localizer.Localize(minutesMeasureUnits)" />
+            </div>
+        }
+        else
+        {
+            <MudItem xs="4">
+                Snooze time @CurrentAlarm.SnoozeTime
+            </MudItem>
             <MudItem xs="1">
                 <MudButton Class="w-75 h-100" Variant="Variant.Filled" Color="Color.Primary" OnClick="StopAlarm">Stop</MudButton>
             </MudItem>

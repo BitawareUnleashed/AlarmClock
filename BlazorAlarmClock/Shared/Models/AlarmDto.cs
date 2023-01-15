@@ -50,5 +50,13 @@ public class AlarmDto
     /// The alarm days.
     /// </value>
     public List<AlarmDayDto>? AlarmDays { get; set; }
+
+    /// <summary>
+    /// Gets or sets the snooze time.
+    /// </summary>
+    /// <value>
+    /// The snooze time.
+    /// </value>
+    public int SnoozeTime { get; set; }
 }
 

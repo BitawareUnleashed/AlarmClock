@@ -57,7 +57,8 @@ public static class AlarmController
                 IsActive = item.IsActive,
                 Minute = item.Minute,
                 RingtoneName = item.RingtoneName,
-                AlarmDays = almDays
+                AlarmDays = almDays,
+                SnoozeTime=item.SnoozeTime
             });
         }
 
@@ -129,7 +130,8 @@ public static class AlarmController
             Id = alarm.Id,
             IsActive = alarm.IsActive,
             Minute = alarm.Minute,
-            RingtoneName = alarm.RingtoneName
+            RingtoneName = alarm.RingtoneName,
+            SnoozeTime=alarm.SnoozeTime
         };
         return newAlarm;
     }

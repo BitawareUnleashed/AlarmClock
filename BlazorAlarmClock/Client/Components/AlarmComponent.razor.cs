@@ -2,12 +2,15 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace BlazorAlarmClock.Client.Components;
 
 public partial class AlarmComponent
 {
+    private const string minutesMeasureUnits = "Minutes";
+
     [Parameter] public AlarmDto? CurrentAlarm { get; set; }
 
     [Parameter] public bool? IsNewAlarm { get; set; }
@@ -32,7 +35,6 @@ public partial class AlarmComponent
     public string FileName { get; set; } = "audio/file1.mp3";
     public int AlarmHour { get; set; }
     public int AlarmMinute { get; set; }
-    public List<int>? AlarmDays { get; set; } = new();
     public bool IsSnoozeVisible { get; set; }
 
     public AlarmStatus Status { get; set; } = AlarmStatus.NONE;
@@ -47,7 +49,7 @@ public partial class AlarmComponent
 
     TimeSpan? time = new TimeSpan(00, 45, 00);
 
-    private void ModifyDayList(int day, bool active)
+    private async void ModifyDayList(int day, bool active)
     {
         if (CurrentAlarm is null)
         {
@@ -59,6 +61,7 @@ public partial class AlarmComponent
         }
 
         var isInDay = CurrentAlarm.AlarmDays.Where(x => x.DayAsInt == day).ToList().FirstOrDefault();
+
 
         if (isInDay is null)
         {
@@ -78,12 +81,17 @@ public partial class AlarmComponent
                 CurrentAlarm.AlarmDays.Remove(isInDay);
             }
         }
-        if(IsNewAlarm is null)
+        if (IsNewAlarm is null)
         {
             alarmService.UpdateItem(CurrentAlarm);
         }
-    }
 
+        var returnedAlarm = await alarmService.GetAlarmFromId(CurrentAlarm.Id);
+        if (returnedAlarm is not null)
+        {
+            CurrentAlarm = returnedAlarm;
+        }
+    }
 
     protected override Task OnInitializedAsync()
     {
@@ -99,7 +107,7 @@ public partial class AlarmComponent
         {
             foreach (var day in CurrentAlarm.AlarmDays)
             {
-                AlarmDays?.Add(day.DayAsInt);
+                //AlarmDays?.Add(day.DayAsInt);
                 switch (day.DayAsInt)
                 {
                     case 0:
@@ -130,13 +138,24 @@ public partial class AlarmComponent
 
             AlarmHour = CurrentAlarm.Hour;
             AlarmMinute = CurrentAlarm.Minute;
-            FileName =string.IsNullOrEmpty(CurrentAlarm.RingtoneName) ? "audio/file1.mp3" : CurrentAlarm.RingtoneName;
+            FileName = string.IsNullOrEmpty(CurrentAlarm.RingtoneName) ? "audio/file1.mp3" : CurrentAlarm.RingtoneName;
             time = new TimeSpan(CurrentAlarm.Hour, CurrentAlarm.Minute, 0);
         }
+
+        alarmService.OnAlarmUpdated += AlarmService_OnAlarmUpdated;
 
         SystemWatch.SecondChangedEvent += SystemWatch_SecondChangedEvent;
         Status = AlarmStatus.STOPPED;
         return base.OnInitializedAsync();
+    }
+
+    private async void AlarmService_OnAlarmUpdated(object? sender, bool e)
+    {
+        var returnedAlarm = await alarmService.GetAlarmFromId(CurrentAlarm.Id);
+        if (returnedAlarm is not null)
+        {
+            CurrentAlarm = returnedAlarm;
+        }
     }
 
     private void AlarmTimeAccept(bool cancel = true)
@@ -155,6 +174,7 @@ public partial class AlarmComponent
 
     private void SystemWatch_SecondChangedEvent(object? sender, DateTime e)
     {
+        if (CurrentAlarm is null) return;
         if (!CurrentAlarm.IsActive) return;
 
         switch (Status)
@@ -168,7 +188,7 @@ public partial class AlarmComponent
                 {
                     break;
                 }
-                if (e.Hour == time.Value.Hours && e.Minute == (time.Value.Minutes + (2 * snoozing)))
+                if (e.Hour == time.Value.Hours && e.Minute == (time.Value.Minutes + (CurrentAlarm.SnoozeTime * snoozing)))
                 {
                     PlaySound();
                     IsSnoozeVisible = true;
@@ -183,14 +203,14 @@ public partial class AlarmComponent
                 }
                 if (e.Hour == time.Value.Hours && e.Minute == time.Value.Minutes)
                 {
-                    if (AlarmDays is null)
+                    if (CurrentAlarm.AlarmDays is null || CurrentAlarm.AlarmDays.Count() == 0)
                     {
                         IsSnoozeVisible = true;
                         PlaySound();
                     }
                     else
                     {
-                        if (AlarmDays.Contains((int)e.DayOfWeek))
+                        if (CurrentAlarm.AlarmDays.Where(x => x.DayAsInt == (int)e.DayOfWeek).FirstOrDefault() is not null)
                         {
                             IsSnoozeVisible = true;
                             PlaySound();
@@ -226,7 +246,6 @@ public partial class AlarmComponent
         await JsRuntime.InvokeVoidAsync("PlaySound");
     }
 
-
     private async void StopSound()
     {
         snoozing = 0;
@@ -254,5 +273,18 @@ public partial class AlarmComponent
     {
         if (CurrentAlarm is null) return;
         alarmService.DeleteAlarm(CurrentAlarm.Id);
+    }
+
+    private async void SnoozeChanged(int val)
+    {
+        CurrentAlarm.SnoozeTime = val;
+
+
+        if (IsNewAlarm is null)
+        {
+            alarmService.UpdateItem(CurrentAlarm);
+        }
+
+
     }
 }
