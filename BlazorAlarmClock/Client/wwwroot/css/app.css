@@ -147,11 +147,11 @@ h1:focus {
 
 .element-container {
     text-align: center;
-    font-size:50vh;
+    font-size: 40vh;
     display: table;
     margin-top: 0;
-    height:50%;
-    color:darkslategray;
+    height: 50%;
+    color: darkslategray;
 }
 
 

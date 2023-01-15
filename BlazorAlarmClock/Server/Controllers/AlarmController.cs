@@ -91,7 +91,7 @@ public static class AlarmController
     private static async Task<IResult> PostDeleteRingtoneApi([FromBody] string alarmRingtoneName, HttpContext context, AlarmDataRepository repo)
     {
         string dir = string.Empty;
-        var path = "wwwroot\\audio";
+        var path = "wwwroot/audio";
 
 #if (DEBUG)
         dir = Directory.GetCurrentDirectory() + "\\bin\\Debug\\net7.0\\";
@@ -161,7 +161,7 @@ public static class AlarmController
     private static async Task<IResult> GetRingtoneListApi()
     {
         string dir = string.Empty;
-        var path = "wwwroot\\audio";
+        var path = "wwwroot/audio";
 
 #if (DEBUG)
         dir = Directory.GetCurrentDirectory() + "\\bin\\Debug\\net7.0\\";

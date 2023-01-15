@@ -39,13 +39,13 @@
 
         <MudItem xs="8">
             <div class="checkbox-group">
-                <MudCheckBox @bind-Checked="@AlarmSunday" Label="Sunday" @onclick="OnSundayClick"></MudCheckBox>
-                <MudCheckBox @bind-Checked="@AlarmMonday" Label="Monday" @onclick="OnMondayClick"></MudCheckBox>
-                <MudCheckBox @bind-Checked="@AlarmTuesday" Label="Tuesday" @onclick="OnTuesdayClick"></MudCheckBox>
-                <MudCheckBox @bind-Checked="@AlarmWednesday" Label="Wednesday" @onclick="OnWednesdayClick"></MudCheckBox>
-                <MudCheckBox @bind-Checked="@AlarmThursday" Label="Thursday" @onclick="OnThursdayClick"></MudCheckBox>
-                <MudCheckBox @bind-Checked="@AlarmFriday" Label="Friday" @onclick="OnFridayClick"></MudCheckBox>
-                <MudCheckBox @bind-Checked="@AlarmSaturday" Label="Saturday" @onclick="OnSaturdayClick"></MudCheckBox>
+                <MudCheckBox @bind-Checked="@AlarmSunday" Label="Sun" @onclick="OnSundayClick"></MudCheckBox>
+                <MudCheckBox @bind-Checked="@AlarmMonday" Label="Mon" @onclick="OnMondayClick"></MudCheckBox>
+                <MudCheckBox @bind-Checked="@AlarmTuesday" Label="Tue" @onclick="OnTuesdayClick"></MudCheckBox>
+                <MudCheckBox @bind-Checked="@AlarmWednesday" Label="Wed" @onclick="OnWednesdayClick"></MudCheckBox>
+                <MudCheckBox @bind-Checked="@AlarmThursday" Label="Thu" @onclick="OnThursdayClick"></MudCheckBox>
+                <MudCheckBox @bind-Checked="@AlarmFriday" Label="Fri" @onclick="OnFridayClick"></MudCheckBox>
+                <MudCheckBox @bind-Checked="@AlarmSaturday" Label="Sat" @onclick="OnSaturdayClick"></MudCheckBox>
             </div>
         </MudItem>
         @if (Status == AlarmStatus.SNOOZED)

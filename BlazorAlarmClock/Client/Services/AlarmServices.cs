@@ -113,7 +113,7 @@ public class AlarmServices
                 {
                     FileName = file.Name,
                     DataBytes = fileBytes,
-                    Path = "wwwroot\\audio",
+                    Path = "wwwroot/audio",
                     FileId = Guid.NewGuid(),
                     IsLast = false
                 };

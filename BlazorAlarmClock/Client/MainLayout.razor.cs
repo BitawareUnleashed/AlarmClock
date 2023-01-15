@@ -23,7 +23,14 @@ public partial class MainLayout
 
     private void AddAlarmClosePopover()
     {
-        newAlarm.RingtoneName = ringtoneName;
+        if (!ringtoneName.Contains("Select a ringtone"))
+        {
+            newAlarm.RingtoneName = ringtoneName;
+        }
+        else
+        {
+            newAlarm.RingtoneName = null;
+        }
         alarmService.AddNewAlarm(newAlarm);
         isOpen = false;
         StateHasChanged();
