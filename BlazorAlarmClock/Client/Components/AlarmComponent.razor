@@ -39,13 +39,24 @@
 
         <MudItem xs="8">
             <div class="checkbox-group">
-                <MudCheckBox @bind-Checked="@AlarmSunday" Label="Sun" @onclick="OnSundayClick"></MudCheckBox>
-                <MudCheckBox @bind-Checked="@AlarmMonday" Label="Mon" @onclick="OnMondayClick"></MudCheckBox>
-                <MudCheckBox @bind-Checked="@AlarmTuesday" Label="Tue" @onclick="OnTuesdayClick"></MudCheckBox>
-                <MudCheckBox @bind-Checked="@AlarmWednesday" Label="Wed" @onclick="OnWednesdayClick"></MudCheckBox>
-                <MudCheckBox @bind-Checked="@AlarmThursday" Label="Thu" @onclick="OnThursdayClick"></MudCheckBox>
-                <MudCheckBox @bind-Checked="@AlarmFriday" Label="Fri" @onclick="OnFridayClick"></MudCheckBox>
-                <MudCheckBox @bind-Checked="@AlarmSaturday" Label="Sat" @onclick="OnSaturdayClick"></MudCheckBox>
+                <MudGrid>
+
+                    <MudItem>
+                        <MudCheckBox @bind-Checked="@AlarmMonday" Label="Mon" @onclick="OnMondayClick"></MudCheckBox>
+                        <MudCheckBox @bind-Checked="@AlarmTuesday" Label="Tue" @onclick="OnTuesdayClick"></MudCheckBox>
+                    </MudItem>
+                    <MudItem>
+                        <MudCheckBox @bind-Checked="@AlarmWednesday" Label="Wed" @onclick="OnWednesdayClick"></MudCheckBox>
+                        <MudCheckBox @bind-Checked="@AlarmThursday" Label="Thu" @onclick="OnThursdayClick"></MudCheckBox>
+                    </MudItem>
+                    <MudItem>
+                        <MudCheckBox @bind-Checked="@AlarmFriday" Label="Fri" @onclick="OnFridayClick"></MudCheckBox>
+                        <MudCheckBox @bind-Checked="@AlarmSaturday" Label="Sat" @onclick="OnSaturdayClick"></MudCheckBox>
+                    </MudItem>
+                    <MudItem>
+                        <MudCheckBox @bind-Checked="@AlarmSunday" Label="Sun" @onclick="OnSundayClick"></MudCheckBox>
+                    </MudItem>
+                </MudGrid>
             </div>
         </MudItem>
         @if (Status == AlarmStatus.SNOOZED)

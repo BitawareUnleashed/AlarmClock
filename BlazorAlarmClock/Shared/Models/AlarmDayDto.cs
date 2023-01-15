@@ -6,27 +6,27 @@ using System.Threading.Tasks;
 
 namespace BlazorAlarmClock.Shared.Models;
 
-public class FileData
+public class AlarmDayDto
 {
     /// <summary>
-    /// Gets or sets the data bytes.
+    /// Gets or sets the alarm day identifier.
     /// </summary>
     /// <value>
-    /// The data bytes.
+    /// The alarm day identifier.
     /// </value>
-    public byte[] DataBytes { get; set; }
+    public int AlarmDayId { get; set; }
     /// <summary>
-    /// Gets or sets the name of the file.
+    /// Gets or sets the alarm identifier.
     /// </summary>
     /// <value>
-    /// The name of the file.
+    /// The alarm identifier.
     /// </value>
-    public string FileName { get; set; }
+    public int AlarmId { get; set; }
     /// <summary>
-    /// Gets or sets the path.
+    /// Gets or sets the day as int.
     /// </summary>
     /// <value>
-    /// The path.
+    /// The day as int.
     /// </value>
-    public string Path { get; set; }
+    public int DayAsInt { get; set; }
 }

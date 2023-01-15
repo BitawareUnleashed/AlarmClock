@@ -113,9 +113,7 @@ public class AlarmServices
                 {
                     FileName = file.Name,
                     DataBytes = fileBytes,
-                    Path = "wwwroot/audio",
-                    FileId = Guid.NewGuid(),
-                    IsLast = false
+                    Path = "wwwroot/audio"
                 };
 
                 var response = await http.PostAsJsonAsync($"{UploadFileRingtoneEndpoint}", fileData);
