@@ -1,11 +1,9 @@
-﻿@using BlazorAlarmClock.Client.Localizer;
-@using BlazorAlarmClock.Client.Services;
+﻿@using BlazorAlarmClock.Client.Services;
 @using BlazorAlarmClock.Shared.Models;
 @using DateTimeComponent.Models;
 @inject IJSRuntime JsRuntime
 @inject SystemWatch SystemWatch
 @inject AlarmServices alarmService
-@inject ITextLocalizer Localizer
 
 @if (IsSnoozeVisible)
 {
@@ -62,10 +60,13 @@
                     </MudGrid>
                 </div>
             </MudItem>
+
+
             <div class="ml-5" style="width:120px">
                 <MudNumericField T="int" Label="Snooze time" Min="1" Max="30" ValueChanged="SnoozeChanged" Value=CurrentAlarm.SnoozeTime
-                         Adornment="Adornment.End" AdornmentText="@Localizer.Localize(minutesMeasureUnits)" />
+                         Adornment="Adornment.End" AdornmentText="@minutesMeasureUnits" />
             </div>
+
         }
         else
         {

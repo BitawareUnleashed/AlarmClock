@@ -1,5 +1,4 @@
 using BlazorAlarmClock.Client;
-using BlazorAlarmClock.Client.Localizer;
 using BlazorAlarmClock.Client.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
@@ -8,7 +7,6 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
 using MudBlazor.Services;
-using BlazorAlarmClock.Client.Resources;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -39,8 +37,6 @@ builder.Services.AddScoped<SystemWatch>(o =>
 });
 
 builder.Services.AddScoped<AlarmServices>();
-
-builder.Services.AddSingleton<ITextLocalizer>(x => new TextLocalizer(x.GetRequiredService<IStringLocalizerFactory>(),typeof(Language)));
 
 builder.Services.AddLocalization();
 

@@ -1,10 +1,8 @@
-﻿@using BlazorAlarmClock.Client.Localizer;
-@using BlazorAlarmClock.Client.Services;
+﻿@using BlazorAlarmClock.Client.Services;
 @using Microsoft.AspNetCore.Components.Forms;
 @inject AlarmServices alarmService
 @inject HttpClient Http
 @inject ISnackbar Snackbar
-@inject ITextLocalizer Localizer
 
 <div class="d-flex flex-column ml-12">
     <MudForm Model="@newAlarm">
@@ -29,7 +27,7 @@
                             </MudButton>
                         </ButtonTemplate>
                     </MudFileUpload>
-                    <MudMenu Class="mt-1 ml-5" Variant="Variant.Filled" Label="@Localizer.Localize(RingtoneFileName ?? ringtoneFileNameEmpty)" Dense="true" Color="Color.Tertiary">
+                    <MudMenu Class="mt-1 ml-5" Variant="Variant.Filled" Label="@GetFilename()" Dense="true" Color="Color.Tertiary">
                         @if (alarmService.RingtonesList.Count == 1)
                         {
                             <MudMenuItem>No ringtones</MudMenuItem>
@@ -43,10 +41,6 @@
                             <MudMenuItem OnClick="@(()=>RingtoneSelected(ringtone))">@ringtone</MudMenuItem>
                         }
                     </MudMenu>
-                </div>
-                <div class="ml-5" style="width:120px">
-                    <MudNumericField T="int" @bind-Value=newAlarm.SnoozeTime Label="Snooze time" Min="1" Max="30" 
-                                Adornment="Adornment.End" AdornmentText="@Localizer.Localize(minutesMeasureUnits)" />
                 </div>
             </MudItem>
         </div>
