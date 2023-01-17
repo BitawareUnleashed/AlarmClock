@@ -99,4 +99,9 @@ public partial class NewAlarm
     {
         this.RingtoneFileName = ringtoneName.Trim();
     }
+
+    public string GetFilename()
+    {
+        return RingtoneFileName ?? ringtoneFileNameEmpty;
+    }
 }
