@@ -14,6 +14,8 @@ public partial class WeatherComponent
     private int secondsToWait = 3600; // one hour
     private int currentSecond = 0;
 
+    private int height;
+
     #region Properties    
     /// <summary>
     /// Gets or sets the open weather service.
@@ -67,6 +69,8 @@ public partial class WeatherComponent
 
     protected override async Task OnInitializedAsync()
     {
+        var dimension = await JsRuntime.InvokeAsync<WindowDimension>("getWindowDimensions", null);
+        height = dimension.Height;
         SystemWatch.SecondChangedEvent += SystemWatch_SecondChangedEvent;
         await GetMeteoInformation();
     }
@@ -99,6 +103,25 @@ public partial class WeatherComponent
         Console.WriteLine("Meteo request: " + DateTime.Now);
         StateHasChanged();
     }
+
+
+
+    private double GetTemperatureRounded()
+    {
+        if (MeteoPack is not null)
+        {
+            return 0;
+        }
+
+        return Math.Round(MeteoPack.main.temp, 1);
+    }
+
+
+    /// <summary>
+    /// Gets the height of the image as 50% of the height of the screen.
+    /// </summary>
+    /// <returns></returns>
+    private int GetImageHeight() => height / 3;
 
     /// <summary>
     /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources asynchronously.
@@ -143,4 +166,9 @@ public partial class WeatherComponent
 
         Console.WriteLine("DisposeAsync");
     }
+}
+public class WindowDimension
+{
+    public int Width { get; set; }
+    public int Height { get; set; }
 }

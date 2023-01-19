@@ -3,21 +3,27 @@
 @inject HttpClient Http
 @inject IHttpClientFactory httpClientFactory
 @inject SystemWatch SystemWatch
+@inject IJSRuntime JsRuntime
 
 @implements IAsyncDisposable
 
-@*<div @onclick="GetMeteoInformation" class="my-component">*@
 @if (@MeteoPack == null)
 {
     <h1>--</h1>
 }
 else
 {
-
-    <div class="text-secondary rounded-2 col position-absolute display-1 h-100"><strong>@MeteoPack.main.temp °C </strong> </div>
-    <img style="-webkit-user-select: none; margin: auto; height:500px" src="@WeatherIcon">
-    <div class="m-2 text-white display-1 position-absolute"><h3>@MeteoPack.name</h3></div>
-
+    <MudCard Style="background-color:transparent">
+        <MudCardMedia Image="@WeatherIcon" Height="@GetImageHeight()" />
+        <MudCardContent Class="d-flex justify-center flex-grow-1 gap-4">
+            <MudText Typo="Typo.h3" Style="font-weight:900">@GetTemperatureRounded() °C </MudText>
+        </MudCardContent>
+        <MudCardContent Class="d-flex justify-center flex-grow-1 gap-4">
+            <MudText Typo="Typo.body2">@MeteoPack.name</MudText>
+        </MudCardContent>
+        @*        <MudCardActions>
+    <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
+    <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
+    </MudCardActions>*@
+    </MudCard>
 }
-@*
-</div>*@

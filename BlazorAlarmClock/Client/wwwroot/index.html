@@ -69,6 +69,15 @@
             set: (value) => localStorage['BlazorLanguage'] = value
         };
     </script>
+
+    <script>
+        window.getWindowDimensions = function () {
+            return {
+                width: window.innerWidth,
+                height: window.innerHeight
+            };
+        };
+    </script>
 </body>
 
 </html>
