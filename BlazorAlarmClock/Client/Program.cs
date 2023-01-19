@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
 using MudBlazor.Services;
+using Weather.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -37,6 +38,8 @@ builder.Services.AddScoped<SystemWatch>(o =>
 });
 
 builder.Services.AddScoped<AlarmServices>();
+
+builder.Services.AddSingleton<OpenWeatherService, OpenWeatherService>();
 
 builder.Services.AddLocalization();
 

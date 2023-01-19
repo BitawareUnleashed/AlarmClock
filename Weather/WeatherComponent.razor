@@ -1,0 +1,23 @@
+﻿@using DateTimeComponent.Models;
+@using MudBlazor
+@inject HttpClient Http
+@inject IHttpClientFactory httpClientFactory
+@inject SystemWatch SystemWatch
+
+@implements IAsyncDisposable
+
+@*<div @onclick="GetMeteoInformation" class="my-component">*@
+@if (@MeteoPack == null)
+{
+    <h1>--</h1>
+}
+else
+{
+
+    <div class="text-secondary rounded-2 col position-absolute display-1 h-100"><strong>@MeteoPack.main.temp °C </strong> </div>
+    <img style="-webkit-user-select: none; margin: auto; height:500px" src="@WeatherIcon">
+    <div class="m-2 text-white display-1 position-absolute"><h3>@MeteoPack.name</h3></div>
+
+}
+@*
+</div>*@

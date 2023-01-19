@@ -3,6 +3,7 @@
 @using BlazorAlarmClock.Client.Services
 @using DateTimeComponent
 @using DateTimeComponent.Models
+@using Weather
 
 @inject IJSRuntime JsRuntime
 @inject AlarmServices alarmService
@@ -10,21 +11,24 @@
 @if (!alarmActivated)
 {
     <div class="overlay d-flex align-items-center">
-        <MudButton id="buttonId" Class="mx-auto w-75 btn-overlay" Variant="Variant.Filled" Color="Color.Tertiary" 
-                                OnClick="Full" Style="font-size: x-large">Activate the alarm</MudButton>
+        <MudButton id="buttonId" Class="mx-auto w-75 btn-overlay" Variant="Variant.Filled" Color="Color.Tertiary"
+               OnClick="Full" Style="font-size: x-large">Activate the alarm</MudButton>
     </div>
 }
 
-<div class="d-flex justify-content-center element-container" >
+<div class="d-flex justify-content-end element-container mr-12">
     <SystemWatchComponent ClockDisplay="WatchDisplayEnum.WithBlinking" Is24H=true EnableJsTime="false" />
 </div>
+
+    <WeatherComponent Latitude="45.284" Longitude="8.077" ApiKey="2b8623f4ec0a003d94ab9903c89c5125" />
+
 
 <div style="overflow-y:auto">
     @if (alarmService.AlarmList is not null)
     {
         @foreach (var alarm in alarmService.AlarmList)
         {
-            <div class="ml-12" > 
+            <div class="ml-12">
                 <AlarmComponent CurrentAlarm="@alarm" />
             </div>
         }
