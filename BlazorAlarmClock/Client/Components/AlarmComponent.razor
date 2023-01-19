@@ -22,7 +22,7 @@
 {
     <MudGrid Class="w-100 mt-5" Style="display: flex; justify-content: center; border-left: solid 1px white;">
         <MudItem xs="1" Style="min-width: 150px">
-            <MudTimePicker @ref="picker" Label="Set alarm" @bind-Time="time" PickerVariant="PickerVariant.Dialog" Style="font-size:2.5vh" >
+            <MudTimePicker @ref="picker" Label="Set alarm" @bind-Time="time" PickerVariant="PickerVariant.Dialog" Style="font-size:5vh" >
                 <PickerActions>
                     <MudButton Class="mr-auto align-self-start" OnClick="@(() => picker.Clear())">Clear</MudButton>
                     <MudButton OnClick="@(()=>AlarmTimeAccept(false))">Cancel</MudButton>
@@ -39,7 +39,7 @@
 
         @if (Status != AlarmStatus.SNOOZED)
         {
-            <MudItem xs="7">
+            <MudItem xs="6">
                 <div class="checkbox-group">
                     <MudGrid>
                         <MudItem>

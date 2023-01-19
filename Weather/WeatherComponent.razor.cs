@@ -121,7 +121,9 @@ public partial class WeatherComponent
     /// Gets the height of the image as 50% of the height of the screen.
     /// </summary>
     /// <returns></returns>
-    private int GetImageHeight() => height / 3;
+    private int GetImageHeight() => height / 2;
+
+    private string GetImageWidthStyle() => $"width: {GetImageHeight()}";
 
     /// <summary>
     /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources asynchronously.

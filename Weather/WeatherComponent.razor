@@ -14,13 +14,20 @@
 else
 {
     <MudCard Style="background-color:transparent">
-        <MudCardMedia Image="@WeatherIcon" Height="@GetImageHeight()" />
-        <MudCardContent Class="d-flex justify-center flex-grow-1 gap-4">
+@*        <MudCardContent Class="d-flex justify-center">
+            <MudText Typo="Typo.h5">@MeteoPack.name</MudText>
+        </MudCardContent>*@
+        <MudCardContent Class="d-flex justify-center">
+            <MudImage Src="@WeatherIcon" Height="@GetImageHeight()" Width="@GetImageHeight()" />
+        </MudCardContent>
+        
+        <MudCardContent Class="d-flex justify-center">
             <MudText Typo="Typo.h3" Style="font-weight:900">@GetTemperatureRounded() °C </MudText>
+            @*<MudSpacer/>*@
+            <MudText Typo="Typo.h5" Class="ml-12">@MeteoPack.name</MudText>
         </MudCardContent>
-        <MudCardContent Class="d-flex justify-center flex-grow-1 gap-4">
-            <MudText Typo="Typo.body2">@MeteoPack.name</MudText>
-        </MudCardContent>
+
+
         @*        <MudCardActions>
     <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
     <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
