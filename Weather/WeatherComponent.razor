@@ -1,4 +1,5 @@
 ﻿@using DateTimeComponent.Models;
+@using Microsoft.JSInterop;
 @using MudBlazor
 @inject HttpClient Http
 @inject IHttpClientFactory httpClientFactory
@@ -13,24 +14,32 @@
 }
 else
 {
-    <MudCard Style="background-color:transparent">
-@*        <MudCardContent Class="d-flex justify-center">
-            <MudText Typo="Typo.h5">@MeteoPack.name</MudText>
-        </MudCardContent>*@
+    <MudGrid>
+        <MudItem xs="12" Class="d-flex justify-content-center">
+            <MudImage Src="@WeatherIcon" Height="@GetImageHeight()" Width="@GetImageHeight()" />
+        </MudItem>
+        <MudItem xs="12" Class="d-flex justify-content-center">
+            <MudText Typo="Typo.h3" Style="font-weight:900">@GetTemperatureRounded() °C </MudText>
+            <MudText Typo="Typo.h5" Class="ml-12" >@MeteoPack.name</MudText>
+        </MudItem>
+    </MudGrid>
+
+    @*<MudCard Style="background-color:transparent">
         <MudCardContent Class="d-flex justify-center">
             <MudImage Src="@WeatherIcon" Height="@GetImageHeight()" Width="@GetImageHeight()" />
         </MudCardContent>
         
         <MudCardContent Class="d-flex justify-center">
             <MudText Typo="Typo.h3" Style="font-weight:900">@GetTemperatureRounded() °C </MudText>
-            @*<MudSpacer/>*@
             <MudText Typo="Typo.h5" Class="ml-12">@MeteoPack.name</MudText>
         </MudCardContent>
 
 
-        @*        <MudCardActions>
+    </MudCard>
+*@
+    @*        <MudCardActions>
     <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
     <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
     </MudCardActions>*@
-    </MudCard>
+
 }
