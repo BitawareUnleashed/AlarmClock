@@ -26,19 +26,23 @@
         </div>
     </MudItem>
     <MudItem>
-        @*<div style="overflow-y:auto; bottom:10px">*@
-            @if (alarmService.AlarmList is not null)
+        <div style="overflow-y:auto; bottom:10px">
+        @if (alarmService.AlarmList is not null)
+        {
+            @foreach (var alarm in alarmService.AlarmList)
             {
-                @foreach (var alarm in alarmService.AlarmList)
-                {
-                    <div class="ml-12">
-                        <AlarmComponent CurrentAlarm="@alarm" />
-                    </div>
-                }
+                <div class="ml-12">
+                    <AlarmComponent CurrentAlarm="@alarm" EditRequested="OnAlarmEditRequest" />
+                </div>
             }
-        @*</div>*@
+        }
+        </div>
     </MudItem>
 </MudGrid>
+
+
+
+
 
 @*<div class="d-flex justify-content-end element-container ml-12 position-absolute">
     <SystemWatchComponent ClockDisplay="WatchDisplayEnum.WithBlinking" Is24H=true EnableJsTime="false" />

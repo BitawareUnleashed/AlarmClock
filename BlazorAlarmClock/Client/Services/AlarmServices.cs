@@ -68,7 +68,22 @@ public class AlarmServices
         }
     }
 
-    public async void AddNewAlarm(AlarmDto alm)
+    //public async void AddNewAlarm(AlarmDto alm)
+    //{
+    //    using var response = await http.PostAsJsonAsync(@$"{AddNewAlarmEndpoint}", alm);
+    //    if (!response.IsSuccessStatusCode)
+    //    {
+    //        // set error message for display, log to console and return
+    //        var errorMessage = response.ReasonPhrase;
+    //        Console.WriteLine($"There was an error! {errorMessage}");
+    //        OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
+    //        return;
+    //    }
+    //    var a = await GetAlarmList();
+    //    OnAlarmUpdated?.Invoke(this, true);
+    //}
+
+    public async void AddOrUpdateAlarm(AlarmDto alm)
     {
         using var response = await http.PostAsJsonAsync(@$"{AddNewAlarmEndpoint}", alm);
         if (!response.IsSuccessStatusCode)

@@ -1,4 +1,6 @@
 ﻿using BlazorAlarmClock.Client.Services;
+using BlazorAlarmClock.Shared.Models;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
 
@@ -7,6 +9,10 @@ namespace BlazorAlarmClock.Client.Pages;
 public partial class Index
 {
     public List<string> Alarms { get; set; } = new List<string>();
+    
+    [CascadingParameter] public MainLayout MainLayout { get; set; }
+
+    [Parameter] public EventCallback<AlarmDto> EditRequested { get; set; }
 
     private bool alarmActivated = false;
 
@@ -50,8 +56,14 @@ public partial class Index
         {
             InSnooze = value;
         }
-        
+
         StateHasChanged();
+    }
+
+    public void OnAlarmEditRequest(AlarmDto alarm)
+    {
+        MainLayout.OpenRequest(alarm);
+
     }
 
 }

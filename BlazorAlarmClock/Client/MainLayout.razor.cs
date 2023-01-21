@@ -1,7 +1,5 @@
 ﻿using BlazorAlarmClock.Client.Components;
-using BlazorAlarmClock.Client.Services;
 using BlazorAlarmClock.Shared.Models;
-using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 
 namespace BlazorAlarmClock.Client;
@@ -11,6 +9,8 @@ public partial class MainLayout
     private MudTheme theme = new();
     private bool isDarkMode = true;
     bool isOpen;
+    
+    AlarmDto alarmDto;
 
     private string? visibility => vis ? "sidebar-hide" : "sidebar";
     bool vis = true;
@@ -29,5 +29,12 @@ public partial class MainLayout
     private void PopoverChanged(bool popoverOpened)
     {
         isOpen = popoverOpened;
+    }
+
+    public void OpenRequest(AlarmDto alarm)
+    {
+        alarmDto= alarm;
+        isOpen = true;
+        StateHasChanged();
     }
 }

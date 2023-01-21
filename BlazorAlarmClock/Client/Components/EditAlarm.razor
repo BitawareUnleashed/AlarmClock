@@ -5,13 +5,13 @@
 @inject ISnackbar Snackbar
 
 <div class="d-flex flex-column ml-12">
-    <MudForm Model="@newAlarm">
+    <MudForm Model="@Alarm">
         <div class="p-2" style="background-color:grey; margin-left: -48px">
             <MudText style="display: flex; justify-content: center; font-size: x-large">Create a new alarm.</MudText>
         </div>
         <div class="mt-12">
             <MudItem Class=" col-sm-12 justify-content-center">
-                <AlarmComponent CurrentAlarm="@newAlarm" IsNewAlarm="true" />
+                <AlarmComponent CurrentAlarm="@Alarm" IsNewAlarm="true" />
             </MudItem>
             <MudItem Class="col-sm-12  d-flex align-items-center justify-content-center">
                 <div class="d-flex align-items-center justify-content-center">

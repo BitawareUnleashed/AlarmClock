@@ -11,7 +11,7 @@ namespace Weather;
 
 public partial class WeatherComponent
 {
-    private int secondsToWait =900;//15 minutes // 3600; // one hour
+    private int secondsToWait = 900;//15 minutes // 3600; // one hour
     private int currentSecond = 0;
 
     private int height;

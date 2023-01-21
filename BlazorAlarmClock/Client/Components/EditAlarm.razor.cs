@@ -11,56 +11,64 @@ using System.Threading.Tasks;
 
 namespace BlazorAlarmClock.Client.Components;
 
-public partial class NewAlarm
+public partial class EditAlarm
 {
     private const string ringtoneFileNameEmpty = "Select a ringtone";
     private const string minutesMeasureUnits = "Minutes";
-    private AlarmDto newAlarm = new();
 
-    public string RingtoneFileName { get; set; }
+    //private AlarmDto newAlarm = new();
+
+    public string? RingtoneFileName { get; set; }
+
     [Parameter] public string RingtoneFileNameEmpty { get; set; }
 
-    [Parameter] public EventCallback<bool>  IsPopoverOpenChanged { get; set; }
+    [Parameter] public EventCallback<bool> IsPopoverOpenChanged { get; set; }
+
+    [Parameter] public AlarmDto? Alarm { get; set; }
 
     private void CancelPopover()
     {
-        newAlarm = new()
-        {
-            SnoozeTime = 5
-        };
+        //newAlarm = new()
+        //{
+        //    SnoozeTime = 5
+        //};
         RingtoneFileName = null;
         IsPopoverOpenChanged.InvokeAsync(false);
     }
 
     private void AddAlarmClosePopover()
     {
+        Alarm ??= new()
+        {
+            SnoozeTime = 5
+        };
+
         if (!string.IsNullOrEmpty(RingtoneFileName))
         {
-            newAlarm.RingtoneName = RingtoneFileName;
+            Alarm.RingtoneName = RingtoneFileName;
         }
         else
         {
-            newAlarm.RingtoneName = null;
+            Alarm.RingtoneName = null;
         }
-        alarmService.AddNewAlarm(newAlarm);
+        alarmService.AddOrUpdateAlarm(Alarm);
         IsPopoverOpenChanged.InvokeAsync(false);
         StateHasChanged();
     }
 
     protected override Task OnInitializedAsync()
     {
-        newAlarm = new()
+        Alarm ??= new()
         {
             SnoozeTime = 5
         };
+
         alarmService.OnRingtoneUploaded += AlarmService_OnRingtoneUploaded;
         alarmService.OnErrorRaised += AlarmService_OnErrorRaised;
         _ = alarmService.GetAlarmList();
         _ = alarmService.GetRingroneList();
         return base.OnInitializedAsync();
     }
-
-
 
     private void AlarmService_OnRingtoneUploaded(object? sender, string e)
     {
@@ -90,18 +98,11 @@ public partial class NewAlarm
         );
     }
 
-    private async void UploadFiles(IBrowserFile file)
-    {
-        alarmService.UploadFiles(file);
-    }
+    private void UploadFiles(IBrowserFile file) => alarmService.UploadFiles(file);
 
-    private void RingtoneSelected(string ringtoneName)
-    {
-        this.RingtoneFileName = ringtoneName.Trim();
-    }
 
-    public string GetFilename()
-    {
-        return RingtoneFileName ?? ringtoneFileNameEmpty;
-    }
+    private void RingtoneSelected(string ringtoneName) => RingtoneFileName = ringtoneName.Trim();
+
+    public string GetFilename() => RingtoneFileName ?? ringtoneFileNameEmpty;
+    
 }
