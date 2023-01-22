@@ -51,7 +51,7 @@ public partial class AlarmComponent
     private int today = -1;
 
 
-    TimeSpan? time = new TimeSpan(00, 45, 00);
+    TimeSpan? time = new TimeSpan(00, 00, 00);
 
     private void ModifyDayList(int day, bool active)
     {

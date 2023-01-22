@@ -98,7 +98,7 @@
                 <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Large" OnClick="DeleteAlarm"/>
             </MudItem>
             <MudItem xs="3" Class="ml-12">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="()=>EditAlarm(CurrentAlarm.Id)">Edit alarm</MudButton>
+                <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Large" OnClick="()=>EditAlarm(CurrentAlarm.Id)">Edit alarm</MudFab>
             </MudItem>
         }
     </MudGrid>

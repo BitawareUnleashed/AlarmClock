@@ -13,30 +13,57 @@ namespace BlazorAlarmClock.Client.Components;
 
 public partial class EditAlarm
 {
-    private const string ringtoneFileNameEmpty = "Select a ringtone";
-    private const string minutesMeasureUnits = "Minutes";
+    private const string? ringtoneFileNameEmpty = "Select a ringtone";
+    private const string? minutesMeasureUnits = "Minutes";
 
-    //private AlarmDto newAlarm = new();
-
+    /// <summary>
+    /// Gets or sets the name of the ringtone file.
+    /// </summary>
+    /// <value>
+    /// The name of the ringtone file.
+    /// </value>
     public string? RingtoneFileName { get; set; }
 
-    [Parameter] public string RingtoneFileNameEmpty { get; set; }
 
+    [Parameter] public string? Title { get; set; } = "Create a new alarm.";
+    /// <summary>
+    /// Gets or sets the ringtone file name when is empty.
+    /// </summary>
+    /// <value>
+    /// The empty ringtone file name.
+    /// </value>
+    [Parameter] public string? RingtoneFileNameEmpty { get; set; }
+
+    /// <summary>
+    /// Gets or sets the is popover open changed callback to the parent.
+    /// </summary>
+    /// <value>
+    /// The is popover open changed.
+    /// </value>
     [Parameter] public EventCallback<bool> IsPopoverOpenChanged { get; set; }
 
+    /// <summary>
+    /// Gets or sets the current in edit or new alarm.
+    /// </summary>
+    /// <value>
+    /// The alarm.
+    /// </value>
     [Parameter] public AlarmDto? Alarm { get; set; }
 
-    private void CancelPopover()
+    /// <summary>
+    /// Cancels the popover.
+    /// </summary>
+    public void CancelPopover()
     {
-        //newAlarm = new()
-        //{
-        //    SnoozeTime = 5
-        //};
         RingtoneFileName = null;
         IsPopoverOpenChanged.InvokeAsync(false);
+        Alarm = new();
     }
 
-    private void AddAlarmClosePopover()
+    /// <summary>
+    /// Closes the and save the current alarm.
+    /// </summary>
+    public void CloseAndSavePopover()
     {
         Alarm ??= new()
         {
@@ -70,7 +97,12 @@ public partial class EditAlarm
         return base.OnInitializedAsync();
     }
 
-    private void AlarmService_OnRingtoneUploaded(object? sender, string e)
+    /// <summary>
+    /// From Alarms service, on ringtone file uploaded snackbar.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The e.</param>
+    public void AlarmService_OnRingtoneUploaded(object? sender, string e)
     {
         Snackbar.Add
         (
@@ -84,6 +116,11 @@ public partial class EditAlarm
         );
     }
 
+    /// <summary>
+    /// From Alarms service, when an error raised.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The e.</param>
     private void AlarmService_OnErrorRaised(object? sender, string e)
     {
         Snackbar.Add
@@ -98,11 +135,18 @@ public partial class EditAlarm
         );
     }
 
-    private void UploadFiles(IBrowserFile file) => alarmService.UploadFiles(file);
+    /// <summary>
+    /// Uploads the files for ringtones.
+    /// </summary>
+    /// <param name="file">The file.</param>
+    public void UploadFiles(IBrowserFile file) => alarmService.UploadFiles(file);
 
-
-    private void RingtoneSelected(string ringtoneName) => RingtoneFileName = ringtoneName.Trim();
+    /// <summary>
+    /// Ringtones selected.
+    /// </summary>
+    /// <param name="ringtoneName">Name of the ringtone.</param>
+    public void RingtoneSelected(string ringtoneName) => RingtoneFileName = ringtoneName.Trim();
 
     public string GetFilename() => RingtoneFileName ?? ringtoneFileNameEmpty;
-    
+
 }

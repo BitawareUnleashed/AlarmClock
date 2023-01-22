@@ -6,6 +6,8 @@ namespace BlazorAlarmClock.Client;
 
 public partial class MainLayout
 {
+    private string createNewAlarmText= "Create a new alarm";
+    private string editAlarmText= "Edit alarm with id:";
     private MudTheme theme = new();
     private bool isDarkMode = true;
     bool isOpen;
@@ -21,9 +23,13 @@ public partial class MainLayout
 
     private void ToggleNavPopover()
     {
-        //ringtoneName = "Select a ringtone";
-        //newAlarm = new();
         isOpen = !isOpen;
+        // Open as new Alarm
+        if (isOpen)
+        {
+            alarmDto = new();
+            EditAlarmTitle = createNewAlarmText;
+        }
     }
 
     private void PopoverChanged(bool popoverOpened)
@@ -33,8 +39,11 @@ public partial class MainLayout
 
     public void OpenRequest(AlarmDto alarm)
     {
-        alarmDto= alarm;
+        EditAlarmTitle = $"{editAlarmText} {alarm.Id}";
+        alarmDto = alarm;
         isOpen = true;
         StateHasChanged();
     }
+
+    private string EditAlarmTitle = string.Empty;
 }

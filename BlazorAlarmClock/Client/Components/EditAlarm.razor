@@ -7,7 +7,7 @@
 <div class="d-flex flex-column ml-12">
     <MudForm Model="@Alarm">
         <div class="p-2" style="background-color:grey; margin-left: -48px">
-            <MudText style="display: flex; justify-content: center; font-size: x-large">Create a new alarm.</MudText>
+            <MudText style="display: flex; justify-content: center; font-size: x-large">@Title</MudText>
         </div>
         <div class="mt-12">
             <MudItem Class=" col-sm-12 justify-content-center">
@@ -46,7 +46,7 @@
         </div>
         <MudDivider class="mt-6 " Style="color:white; margin-left:-50px" />
         <div class="mr-12 mt-6 mb-6" style="display: flex; justify-content: center;">
-            <MudButton Variant="Variant.Filled" Style="width:150px" OnClick="@AddAlarmClosePopover" Class="mb-1 mr-6" Color="Color.Primary">Ok</MudButton>
+            <MudButton Variant="Variant.Filled" Style="width:150px" OnClick="@CloseAndSavePopover" Class="mb-1 mr-6" Color="Color.Primary">Ok</MudButton>
             <MudButton Variant="Variant.Filled" Style="width:150px" OnClick="@CancelPopover" Class="mb-1" Color="Color.Error">Cancel</MudButton>
         </div>
     </MudForm>

@@ -23,7 +23,7 @@
         <MudMainContent>
             <MudPopover Open="@isOpen" Fixed="true" AnchorOrigin="Origin.CenterCenter" TransformOrigin="Origin.CenterCenter"
                         Class="col-sm-8 mt-10 h-20 w-100 mr-6 border-solid border-2 mud-border-ternary">
-                <EditAlarm IsPopoverOpenChanged="PopoverChanged" RingtoneFileNameEmpty="Select a ringtone"  Alarm="alarmDto" />
+                <EditAlarm IsPopoverOpenChanged="PopoverChanged" RingtoneFileNameEmpty="Select a ringtone" Alarm="alarmDto" Title="@EditAlarmTitle" />
             </MudPopover>
             <CascadingValue Value="this">
                 @Body
