@@ -16,6 +16,8 @@ public class AlarmServices
     private readonly string GetRingtoneListEndpoint = "/api/v1/GetRingtonesList";
     private readonly string DeleteAlarmRingtoneEndpoint = "/api/v1/DeleteAlarmRingtone";
 
+    private const string WeatherApiKeyEndpoint = "/api/v1/GetApiKey";
+
     private readonly HttpClient http;
 
     public event EventHandler<bool>? OnAlarmDeleted;
@@ -32,6 +34,7 @@ public class AlarmServices
     public AlarmServices(HttpClient http)
     {
         this.http = http;
+        GetApiKey();
     }
 
     public async Task<bool> GetAlarmList()
@@ -192,5 +195,20 @@ public class AlarmServices
         OnRingtoneListUpdated?.Invoke(this, true);
     }
 
+    public async Task<string> GetApiKey()
+    {
+        var ret = string.Empty;
 
+        var response = await http.GetAsync(@$"{WeatherApiKeyEndpoint}");
+        if (!response.IsSuccessStatusCode)
+        {
+            // set error message for display, log to console and return
+            var errorMessage = response.ReasonPhrase;
+            Console.WriteLine($"There was an error in GetAlarmList! {errorMessage}");
+            OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
+            return ret;
+        }
+        ret = await response.Content.ReadFromJsonAsync<string>();
+        return ret ?? string.Empty;
+    }
 }

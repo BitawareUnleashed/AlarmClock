@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-
+builder.Services.Configure<OpenWeatherMapKey>(options => builder.Configuration.GetSection("OpenWeatherMapKey").Bind(options));
 
 builder.Services.AddDbContext<AlarmDbContext>(opt =>
     opt.UseSqlite(@$"Data Source = Alarms.sqlite"));
@@ -44,6 +44,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.AddAlarmsApiEndpoints();
+app.AddWeatherApiEndpoints();
 
 app.MapRazorPages();
 app.MapControllers();
