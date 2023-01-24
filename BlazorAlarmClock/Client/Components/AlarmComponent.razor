@@ -65,13 +65,17 @@
                             </MudGrid>
                         </div>
                     </MudItem>
+
+
+                    <div class="ml-5" style="width: 120px">
+                        <MudNumericField T="int" Label="Snooze time" Min="1" Max="30" ValueChanged="SnoozeChanged" Value=CurrentAlarm.SnoozeTime
+                                         Adornment="Adornment.End" AdornmentText="@minutesMeasureUnits"/>
+                    </div>
                 }
             }
-            
-            <div class="ml-5" style="width: 120px">
-                <MudNumericField T="int" Label="Snooze time" Min="1" Max="30" ValueChanged="SnoozeChanged" Value=CurrentAlarm.SnoozeTime
-                                 Adornment="Adornment.End" AdornmentText="@minutesMeasureUnits"/>
-            </div>
+
+
+
         }
         else
         {

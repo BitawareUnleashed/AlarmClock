@@ -1,5 +1,4 @@
-﻿using BlazorAlarmClock.Client.Components;
-using BlazorAlarmClock.Shared.Models;
+﻿using BlazorAlarmClock.Shared.Models;
 using MudBlazor;
 
 namespace BlazorAlarmClock.Client;

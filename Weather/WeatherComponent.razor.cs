@@ -47,7 +47,7 @@ public partial class WeatherComponent
     /// <value>
     /// The API key.
     /// </value>
-    [Parameter] public string ApiKey { get; set; }
+    public string ApiKey { get; set; }
 
     /// <summary>
     /// Gets the meteo pack.
@@ -82,7 +82,7 @@ public partial class WeatherComponent
     /// <param name="e">The DateTime.</param>
     private async void SystemWatch_SecondChangedEvent(object? sender, DateTime e)
     {
-        if (++currentSecond == secondsToWait)
+        if (++currentSecond >= secondsToWait)
         {
             currentSecond = 0;
             await GetMeteoInformation();
@@ -95,7 +95,11 @@ public partial class WeatherComponent
     /// </summary>
     private async Task GetMeteoInformation()
     {
-        MeteoPack = await OpenWeatherService!.Update(Latitude, Longitude, ApiKey); ;
+        if (OpenWeatherService.OpenWeatherMapApiKey is null)
+        {
+            await OpenWeatherService.GetApiKey();
+        }
+        MeteoPack = await OpenWeatherService!.Update(Latitude, Longitude, OpenWeatherService.OpenWeatherMapApiKey); ;
 
         // Get Icon
         WeatherIcon = OpenWeatherService.GetIcon(MeteoPack);

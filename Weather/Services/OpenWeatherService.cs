@@ -2,19 +2,34 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using Weather.Models;
+using static System.Net.WebRequestMethods;
 
 namespace Weather.Services;
 public class OpenWeatherService
 {
     private readonly IHttpClientFactory httpClientFactory;
+    private readonly HttpClient http;
     string api_url = string.Empty;
     private string baseAddress = "https://openweathermap.org";
     private string baseApiAddress = "https://api.openweathermap.org";
     private string iconAddress = "/img/wn/";
     private string weatherAddress = "/data/2.5/weather";
+
+    private const string WeatherApiKeyEndpoint = "/api/v1/GetApiKey";
+
+    public event EventHandler<string>? OnErrorRaised;
+
+    /// <summary>
+    /// Gets or sets the open weather map API key.
+    /// </summary>
+    /// <value>
+    /// The open weather map API key.
+    /// </value>
+    public string? OpenWeatherMapApiKey { get; private set; }
 
     /// <summary>
     /// Gets the meteo pack.
@@ -25,12 +40,19 @@ public class OpenWeatherService
     public MeteoPack? MeteoPack { get; private set; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="OpenWeatherService"/> class.
+    /// Initializes a new instance of the <see cref="OpenWeatherService" /> class.
     /// </summary>
     /// <param name="httpClientFactory">The HTTP client factory.</param>
-    public OpenWeatherService(IHttpClientFactory httpClientFactory)
+    /// <param name="http">The HTTP.</param>
+    public OpenWeatherService(IHttpClientFactory httpClientFactory, HttpClient http)
     {
         this.httpClientFactory = httpClientFactory;
+        this.http = http;
+        Task.Run(async() =>
+        {
+            OpenWeatherMapApiKey = await GetApiKey();
+        });
+        
     }
 
     /// <summary>
@@ -131,4 +153,25 @@ public class OpenWeatherService
         }
         return resultString;
     }
+
+    
+
+    public async Task<string> GetApiKey()
+    {
+        var ret = string.Empty;
+
+        var response = await http.GetAsync(@$"{WeatherApiKeyEndpoint}");
+        if (!response.IsSuccessStatusCode)
+        {
+            // set error message for display, log to console and return
+            var errorMessage = response.ReasonPhrase;
+            Console.WriteLine($"There was an error in GetAlarmList! {errorMessage}");
+            OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
+            return ret;
+        }
+        ret = await response.Content.ReadFromJsonAsync<string>();
+        OpenWeatherMapApiKey = ret ?? string.Empty;
+        return OpenWeatherMapApiKey;
+    }
+
 }
