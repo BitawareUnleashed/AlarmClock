@@ -20,6 +20,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\DateTimeComponet\DateTimeComponent.csproj" />
+		<ProjectReference Include="..\..\Weather\Weather.csproj" />
 		<ProjectReference Include="..\Shared\BlazorAlarmClock.Shared.csproj" />
 	</ItemGroup>
 

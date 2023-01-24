@@ -16,6 +16,7 @@ public class AlarmServices
     private readonly string GetRingtoneListEndpoint = "/api/v1/GetRingtonesList";
     private readonly string DeleteAlarmRingtoneEndpoint = "/api/v1/DeleteAlarmRingtone";
 
+
     private readonly HttpClient http;
 
     public event EventHandler<bool>? OnAlarmDeleted;
@@ -32,6 +33,7 @@ public class AlarmServices
     public AlarmServices(HttpClient http)
     {
         this.http = http;
+        
     }
 
     public async Task<bool> GetAlarmList()
@@ -68,7 +70,22 @@ public class AlarmServices
         }
     }
 
-    public async void AddNewAlarm(AlarmDto alm)
+    //public async void AddNewAlarm(AlarmDto alm)
+    //{
+    //    using var response = await http.PostAsJsonAsync(@$"{AddNewAlarmEndpoint}", alm);
+    //    if (!response.IsSuccessStatusCode)
+    //    {
+    //        // set error message for display, log to console and return
+    //        var errorMessage = response.ReasonPhrase;
+    //        Console.WriteLine($"There was an error! {errorMessage}");
+    //        OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
+    //        return;
+    //    }
+    //    var a = await GetAlarmList();
+    //    OnAlarmUpdated?.Invoke(this, true);
+    //}
+
+    public async void AddOrUpdateAlarm(AlarmDto alm)
     {
         using var response = await http.PostAsJsonAsync(@$"{AddNewAlarmEndpoint}", alm);
         if (!response.IsSuccessStatusCode)

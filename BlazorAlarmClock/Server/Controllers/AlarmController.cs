@@ -75,8 +75,14 @@ public static class AlarmController
     private static async Task<IResult> PostNewAlarmApi([FromBody] AlarmDto alarm, HttpContext context, AlarmDataRepository repo)
     {
         Alarm newAlarm = ConvertToAlarm(alarm);
-
-        await repo.CreateAsync(newAlarm);
+        if (newAlarm.Id > 0)
+        {
+            await repo.UpdateAsync(newAlarm);
+        }
+        else
+        {
+            await repo.CreateAsync(newAlarm);
+        }
         return Results.Ok();
     }
 

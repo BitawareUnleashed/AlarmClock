@@ -24,10 +24,10 @@
         </svg>
         <div class="loading-progress-text"></div>
     </div>
-    
-<div class="loading-progress-text"></div>
-<div class="linear-progress"></div>
-    <!--NEW-->
+
+    <!--<div class="loading-progress-text"></div>
+    <div class="linear-progress"></div>
+        NEW-->
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.
@@ -67,6 +67,15 @@
         window.blazorLanguage = {
             get: () => localStorage['BlazorLanguage'],
             set: (value) => localStorage['BlazorLanguage'] = value
+        };
+    </script>
+
+    <script>
+        window.getWindowDimensions = function () {
+            return {
+                width: window.innerWidth,
+                height: window.innerHeight
+            };
         };
     </script>
 </body>

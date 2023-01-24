@@ -11,9 +11,13 @@ public partial class AlarmComponent
 {
     private const string minutesMeasureUnits = "Minutes";
 
+    private bool isPopoverEditAlarmVisible;
+
     [Parameter] public AlarmDto? CurrentAlarm { get; set; }
 
     [Parameter] public bool? IsNewAlarm { get; set; }
+
+    [Parameter] public EventCallback<AlarmDto> EditRequested { get; set; }
 
     public bool AlarmSunday { get; set; }
     public bool AlarmMonday { get; set; }
@@ -24,7 +28,7 @@ public partial class AlarmComponent
     public bool AlarmSaturday { get; set; }
 
     private void OnSundayClick() => ModifyDayList(0, !AlarmSunday);
-    private void OnMondayClick() => ModifyDayList(1, !AlarmSaturday);
+    private void OnMondayClick() => ModifyDayList(1, !AlarmMonday);
     private void OnTuesdayClick() => ModifyDayList(2, !AlarmTuesday);
     private void OnWednesdayClick() => ModifyDayList(3, !AlarmWednesday);
     private void OnThursdayClick() => ModifyDayList(4, !AlarmThursday);
@@ -47,9 +51,9 @@ public partial class AlarmComponent
     private int today = -1;
 
 
-    TimeSpan? time = new TimeSpan(00, 45, 00);
+    TimeSpan? time = new TimeSpan(00, 00, 00);
 
-    private async void ModifyDayList(int day, bool active)
+    private void ModifyDayList(int day, bool active)
     {
         if (CurrentAlarm is null)
         {
@@ -80,16 +84,6 @@ public partial class AlarmComponent
             {
                 CurrentAlarm.AlarmDays.Remove(isInDay);
             }
-        }
-        if (IsNewAlarm is null)
-        {
-            alarmService.UpdateItem(CurrentAlarm);
-        }
-
-        var returnedAlarm = await alarmService.GetAlarmFromId(CurrentAlarm.Id);
-        if (returnedAlarm is not null)
-        {
-            CurrentAlarm = returnedAlarm;
         }
     }
 
@@ -287,4 +281,24 @@ public partial class AlarmComponent
 
 
     }
+
+
+
+    private AlarmDto? selectedAlarm;
+
+    public void EditAlarm(int id)
+    {
+        selectedAlarm = alarmService.AlarmList.FirstOrDefault(x => x.Id == id);
+        if (selectedAlarm is not null)
+        {
+            EditRequested.InvokeAsync(selectedAlarm);
+        }
+    }
+
+    //public async void CloseEditAlarm()
+    //{
+    //    selectedAlarm = null;
+    //    isPopoverEditAlarmVisible = false;
+    //    StateHasChanged();
+    //}
 }
