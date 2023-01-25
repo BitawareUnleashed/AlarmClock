@@ -8,7 +8,7 @@ public class AlarmDbContext : DbContext
     public DbSet<Alarm> Alarms { get; set; }
 
     public AlarmDbContext(DbContextOptions opt)
-        : base(opt) { }
+        : builder.base(opt) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
