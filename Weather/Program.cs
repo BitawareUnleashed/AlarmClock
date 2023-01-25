@@ -12,7 +12,7 @@ public static class Program
 {
     public static IServiceCollection AddWeather(this IServiceCollection services)
     {
-        services.AddScoped<OpenWeatherService, OpenWeatherService>();
+        services.AddScoped<OpenWeatherService>();
         return services;
     }
 }

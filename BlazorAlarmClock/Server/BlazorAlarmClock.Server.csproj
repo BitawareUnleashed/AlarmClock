@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Weather.Business\Weather.Business.csproj" />
     <ProjectReference Include="..\Client\BlazorAlarmClock.Client.csproj" />
     <ProjectReference Include="..\Shared\BlazorAlarmClock.Shared.csproj" />
   </ItemGroup>

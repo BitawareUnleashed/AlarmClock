@@ -4,6 +4,9 @@ using BlazorAlarmClock.Server.Models;
 using BlazorAlarmClock.Shared.Models;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using Weather;
+using Weather.Business;
+using Weather.Business.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,11 +18,15 @@ builder.Services.Configure<OpenWeatherMapKey>(options => builder.Configuration.G
 builder.Services.AddDbContext<AlarmDbContext>(opt =>
     opt.UseSqlite(@$"Data Source = Alarms.sqlite"));
 
+builder.Services.AddDbContext<WeatherDbContext>(opt =>
+    opt.UseSqlite(@$"Data Source = Data/owm_cities.sqlite"));
 
 builder.Services.AddScoped<DbContext, AlarmDbContext>();
 builder.Services.AddScoped<Alarms>();
 
 builder.Services.AddScoped<AlarmDataRepository>();
+
+//builder.Services.AddWeatherBusiness();
 
 var app = builder.Build();
 

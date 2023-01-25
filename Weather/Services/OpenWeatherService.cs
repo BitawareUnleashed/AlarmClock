@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
-using Weather.Models;
+using Weather.Entities.Models;
 using static System.Net.WebRequestMethods;
 
 namespace Weather.Services;
