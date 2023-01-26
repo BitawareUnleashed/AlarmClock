@@ -18,15 +18,14 @@ builder.Services.Configure<OpenWeatherMapKey>(options => builder.Configuration.G
 builder.Services.AddDbContext<AlarmDbContext>(opt =>
     opt.UseSqlite(@$"Data Source = Alarms.sqlite"));
 
-builder.Services.AddDbContext<WeatherDbContext>(opt =>
-    opt.UseSqlite(@$"Data Source = Data/owm_cities.sqlite"));
+
 
 builder.Services.AddScoped<DbContext, AlarmDbContext>();
 builder.Services.AddScoped<Alarms>();
 
 builder.Services.AddScoped<AlarmDataRepository>();
 
-//builder.Services.AddWeatherBusiness();
+builder.Services.AddWeatherBusiness();
 
 var app = builder.Build();
 
@@ -51,7 +50,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.AddAlarmsApiEndpoints();
-app.AddWeatherApiEndpoints();
+
+app.UseWeather();
 
 app.MapRazorPages();
 app.MapControllers();

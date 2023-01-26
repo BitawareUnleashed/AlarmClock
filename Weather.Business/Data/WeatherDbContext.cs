@@ -4,7 +4,7 @@ using Weather.Entities.Models;
 namespace Weather.Business.Data;
 public class WeatherDbContext : DbContext
 {
-    public WeatherDbContext(DbContextOptions opt)
+    public WeatherDbContext(DbContextOptions<WeatherDbContext> opt)
         : base(opt) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

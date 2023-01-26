@@ -1,9 +1,11 @@
-﻿using BlazorAlarmClock.Server.Models;
-using BlazorAlarmClock.Shared.Models;
+﻿using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using BlazorAlarmClock.Server.Models;
 
-namespace BlazorAlarmClock.Server.Controllers;
-
+namespace Weather.Business.Controllers;
 public static class WeatherController
 {
     private const string WeatherApiKeyEndpoint = "/api/v1/GetApiKey";

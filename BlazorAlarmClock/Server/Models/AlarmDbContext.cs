@@ -7,10 +7,10 @@ public class AlarmDbContext : DbContext
 {
     public DbSet<Alarm> Alarms { get; set; }
 
-    public AlarmDbContext(DbContextOptions opt)
-        : builder.base(opt) { }
+    public AlarmDbContext(DbContextOptions<AlarmDbContext> opt)
+        : base(opt) { }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Alarm>()
                     .HasMany(a => a.AlarmDays)
