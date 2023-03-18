@@ -1,0 +1,5 @@
+
+
+GET http://localhost:5288/api/v1/GetRingtonesList
+
+###
