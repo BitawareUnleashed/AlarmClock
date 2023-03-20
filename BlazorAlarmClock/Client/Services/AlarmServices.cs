@@ -16,8 +16,9 @@ public class AlarmServices
     private readonly string GetRingtoneListEndpoint = "/api/v1/GetRingtonesList";
     private readonly string DeleteAlarmRingtoneEndpoint = "/api/v1/DeleteAlarmRingtone";
 
-
     private readonly HttpClient http;
+
+    #region Properties
 
     public event EventHandler<bool>? OnAlarmDeleted;
     public event EventHandler<bool>? OnAlarmUpdated;
@@ -29,12 +30,19 @@ public class AlarmServices
     public List<AlarmDto> AlarmList { get; set; } = new();
     public List<string> RingtonesList { get; set; } = new();
 
+    
+
+    #endregion
+
+
+    #region Constructors
 
     public AlarmServices(HttpClient http)
     {
         this.http = http;
-        
     }
+
+    #endregion
 
     public async Task<bool> GetAlarmList()
     {
@@ -47,6 +55,7 @@ public class AlarmServices
             OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
             return false;
         }
+
         AlarmList = await response.Content.ReadFromJsonAsync<List<AlarmDto>>() ?? new List<AlarmDto>();
         return true;
     }
@@ -63,12 +72,14 @@ public class AlarmServices
             OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
             return;
         }
+
         var a = await GetAlarmList();
         if (a)
         {
             OnAlarmDeleted?.Invoke(this, true);
         }
     }
+
 
     //public async void AddNewAlarm(AlarmDto alm)
     //{
@@ -96,6 +107,7 @@ public class AlarmServices
             OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
             return;
         }
+
         var a = await GetAlarmList();
         OnAlarmUpdated?.Invoke(this, true);
     }
@@ -111,6 +123,7 @@ public class AlarmServices
             OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
             return;
         }
+
         var a = await GetAlarmList();
         OnAlarmUpdated?.Invoke(this, true);
     }
@@ -122,6 +135,7 @@ public class AlarmServices
         {
             ret = AlarmList.Where(x => x.Id == id).FirstOrDefault();
         }
+
         return ret;
     }
 
@@ -190,9 +204,9 @@ public class AlarmServices
         {
             OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
         }
+
         await GetRingroneList();
         OnRingtoneListUpdated?.Invoke(this, true);
     }
-
-
+    
 }

@@ -1,4 +1,6 @@
-﻿namespace Weather.Entities.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Weather.Entities.Models;
 
 public class City
 {
@@ -10,7 +12,7 @@ public class City
 
 public class Coordinate
 {
-    //[Key]
+    [Key]
     public int coord_id { get; set; }
     public double Lat { get; set; }
     public double Long { get; set; }

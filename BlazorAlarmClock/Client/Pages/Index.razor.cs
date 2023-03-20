@@ -8,7 +8,8 @@ namespace BlazorAlarmClock.Client.Pages;
 
 public partial class Index
 {
-    public List<string> Alarms { get; set; } = new List<string>();
+    public List<string> Alarms { get; set; } = new();
+
     
     [CascadingParameter] public MainLayout MainLayout { get; set; }
 
@@ -28,6 +29,8 @@ public partial class Index
         alarmService.OnAlarmDeleted += AlarmService_OnAlarmDeleted;
         base.OnInitialized();
     }
+
+
 
     private void AlarmService_OnAlarmDeleted(object? sender, bool e) => StateHasChanged();
 
@@ -63,7 +66,5 @@ public partial class Index
     public void OnAlarmEditRequest(AlarmDto alarm)
     {
         MainLayout.OpenRequest(alarm);
-
     }
-
 }

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Weather;
 using Weather.Business;
 using Weather.Business.Data;
+using Weather.Business.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,14 +19,16 @@ builder.Services.Configure<OpenWeatherMapKey>(options => builder.Configuration.G
 builder.Services.AddDbContext<AlarmDbContext>(opt =>
     opt.UseSqlite(@$"Data Source = Alarms.sqlite"));
 
-
-
 builder.Services.AddScoped<DbContext, AlarmDbContext>();
-builder.Services.AddScoped<Alarms>();
-
-builder.Services.AddScoped<AlarmDataRepository>();
 
 builder.Services.AddWeatherBusiness();
+
+
+builder.Services.AddScoped<Alarms>();
+
+// Add repository for Alarms
+builder.Services.AddScoped<AlarmDataRepository>();
+
 
 var app = builder.Build();
 

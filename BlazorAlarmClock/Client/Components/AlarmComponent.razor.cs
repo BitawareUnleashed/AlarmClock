@@ -191,7 +191,8 @@ public partial class AlarmComponent
                     break;
                 }
                 if (e.Hour == time.Value.Hours &&
-                    e.Minute >= (time.Value.Minutes))
+                    e.Minute >= time.Value.Minutes && 
+                    e.Second >= time.Value.Seconds)
                 {
                     PlaySound();
                     IsSnoozeVisible = true;
@@ -267,7 +268,7 @@ public partial class AlarmComponent
         Status = AlarmStatus.SNOOZED;
         IsSnoozeVisible = false;
         snoozing++;
-        time = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute + CurrentAlarm.SnoozeDelay, 0);
+        time = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute + CurrentAlarm.SnoozeDelay, DateTime.Now.Second);
         await JsRuntime.InvokeVoidAsync("StopSound");
     }
 

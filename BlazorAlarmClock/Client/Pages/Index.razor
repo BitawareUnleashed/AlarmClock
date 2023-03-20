@@ -4,9 +4,11 @@
 @using DateTimeComponent
 @using DateTimeComponent.Models
 @using Weather
+@using Weather.Services
 
 @inject IJSRuntime JsRuntime
 @inject AlarmServices alarmService
+
 
 @if (!alarmActivated)
 {
@@ -27,15 +29,15 @@
     </MudItem>
     <MudItem>
         <div style="overflow-y:auto; bottom:10px">
-        @if (alarmService.AlarmList is not null)
-        {
-            @foreach (var alarm in alarmService.AlarmList)
+            @if (alarmService.AlarmList is not null)
             {
-                <div class="ml-12">
-                    <AlarmComponent CurrentAlarm="@alarm" EditRequested="OnAlarmEditRequest" />
-                </div>
+                @foreach (var alarm in alarmService.AlarmList)
+                {
+                    <div class="ml-12">
+                        <AlarmComponent CurrentAlarm="@alarm" EditRequested="OnAlarmEditRequest" />
+                    </div>
+                }
             }
-        }
         </div>
     </MudItem>
 </MudGrid>

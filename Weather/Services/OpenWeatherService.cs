@@ -20,7 +20,12 @@ public class OpenWeatherService
     private string weatherAddress = "/data/2.5/weather";
 
     private const string WeatherApiKeyEndpoint = "/api/v1/GetApiKey";
+    
+    // Weather locations
+    private const string WeatherLocationsEndpoint = "/api/v1/GetWeatherLocations";
 
+    public List<string> WeatherLocations { get; set; } = new();
+    
     public event EventHandler<string>? OnErrorRaised;
 
     /// <summary>
@@ -75,8 +80,7 @@ public class OpenWeatherService
             {
                 throw new ArgumentOutOfRangeException("Invalid ApiKey Key");
             }
-
-            //api_url = $@"https://api.openweathermap.org/data/2.5/weather?lat={latitude.ToString().Replace(",", ".")}&lon={longitude.ToString().Replace(",", ".")}&units=metric&appid={apiKey}";
+            // Call to API
             api_url = baseApiAddress + weatherAddress + $@"?lat={latitude.ToString().Replace(",", ".")}&lon={longitude.ToString().Replace(",", ".")}&units=metric&appid={apiKey}";
 
             // Open connection
@@ -154,7 +158,19 @@ public class OpenWeatherService
         return resultString;
     }
 
-    
+    public async Task<List<string>> GetLocationsList()
+    {
+        var response = await http.GetAsync(@$"{WeatherLocationsEndpoint}");
+        if (!response.IsSuccessStatusCode)
+        {
+            // set error message for display, log to console and return
+            var errorMessage = response.ReasonPhrase;
+            Console.WriteLine($"There was an error in GetAlarmList! {errorMessage}");
+            OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
+            return new List<string>();
+        }
+        return await response.Content.ReadFromJsonAsync<List<string>>() ?? new List<string>();
+    }
 
     public async Task<string> GetApiKey()
     {
@@ -173,5 +189,4 @@ public class OpenWeatherService
         OpenWeatherMapApiKey = ret ?? string.Empty;
         return OpenWeatherMapApiKey;
     }
-
 }
