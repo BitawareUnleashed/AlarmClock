@@ -1,8 +1,0 @@
-﻿@using Weather.Services
-@inject OpenWeatherService openWeatherService
-@inject ISnackbar Snackbar
-
-
-<MudAutocomplete T="string" Label="Location" @bind-Value="value1" SearchFunc="@Search1"
-                 ResetValueOnEmptyText="@resetValueOnEmptyText"
-                 CoerceText="@coerceText" CoerceValue="@coerceValue" />
