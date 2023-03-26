@@ -1,17 +1,48 @@
-﻿namespace Weather.Business.Models;
+﻿using AutoMapper;
+using Mapster;
+using Weather.Entities.Models;
+
+namespace Weather.Business.Models;
 
 public class WeatherLocationsBridge
 {
-    public List<string> WeatherLocations { get; set; }
-    
+    //public List<UiLocation> WeatherLocations { get; set; }
+
+    private WeatherLocationsContext weatherLocationsContext;
+
+
     public WeatherLocationsBridge(WeatherLocationsContext weatherLocationsContext)
     {
-        // Call database to retrieve the location list
-        WeatherLocations = new List<string>();
-        var c = weatherLocationsContext.Cities;
-        foreach (var location in c)
+        this.weatherLocationsContext = weatherLocationsContext;
+    }
+
+    public List<UiLocation> GetLocationList(string seatchLocation)
+    {
+        List<UiLocation> WeatherLocations = new List<UiLocation>();
+        try
         {
-            WeatherLocations.Add(location.Name);    
+            // Call database to retrieve the location list
+            WeatherLocations = new List<UiLocation>();
+            var c = weatherLocationsContext.Cities.Where(x => x.Name.Contains(seatchLocation));
+            foreach (var location in c)
+            {
+                var newLocation = location.Adapt<UiLocation>();
+                //newLocation.Lat = location.Coord.Lat;
+                //newLocation.Long = location.Coord.Long;
+
+                newLocation.Lat = weatherLocationsContext.Coordinates.Where(x => x.coord_id == location.coord_id).FirstOrDefault().Lat;
+                newLocation.Long = weatherLocationsContext.Coordinates.Where(x => x.coord_id == location.coord_id).FirstOrDefault().Long;
+
+
+                WeatherLocations.Add(newLocation);
+            }
+
+
         }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        return WeatherLocations;
     }
 }

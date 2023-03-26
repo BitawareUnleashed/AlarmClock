@@ -12,16 +12,20 @@ public static class WeatherController
 {
     private const string WeatherApiKeyEndpoint = "/api/v1/GetApiKey";
     private const string WeatherLocationsEndpoint = "/api/v1/GetWeatherLocations";
+    private const string WeatherLocationsEndpointFilter = "/api/v1/GetWeatherLocations/{location}";
+    private const string WeatherSingleLocationsEndpoint = "/api/v1/GetSingle/{location}";
+
+
     private static string? ApiKey = string.Empty;
     private static List<string> WeatherLocations = new List<string>();
 
     public static IEndpointRouteBuilder AddWeatherApiEndpoints(this IEndpointRouteBuilder app)
     {
         ApiKey = app?.ServiceProvider?.GetService<IOptions<OpenWeatherMapKey>>()?.Value?.ApiKey;
-        if (ApiKey == null) { }
+
         _ = app.MapGet(WeatherApiKeyEndpoint, GetWeatherApiKeyApi);
         _ = app.MapGet(WeatherLocationsEndpoint, GetLocationList);
-
+        _ = app.MapGet(WeatherSingleLocationsEndpoint, GetLocationFilterList);
         return app;
     }
 
@@ -33,7 +37,13 @@ public static class WeatherController
 
     public static IResult GetLocationList([FromServices] WeatherLocationsBridge weatherLocationsBridge)
     {
-        var a = weatherLocationsBridge.WeatherLocations;
+        //var a = weatherLocationsBridge.WeatherLocations;
+        return Results.Ok();
+    }
+    
+    public static IResult GetLocationFilterList(string location, [FromServices] WeatherLocationsBridge weatherLocationsBridge)
+    {
+        var a = weatherLocationsBridge.GetLocationList(location);
         return Results.Ok(a);
     }
 }

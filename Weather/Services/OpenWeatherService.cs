@@ -24,6 +24,8 @@ public class OpenWeatherService
     // Weather locations
     private const string WeatherLocationsEndpoint = "/api/v1/GetWeatherLocations";
 
+    private const string WeatherSingleLocationsEndpoint = "/api/v1/GetSingle";
+
     public List<string> WeatherLocations { get; set; } = new();
     
     public event EventHandler<string>? OnErrorRaised;
@@ -188,5 +190,29 @@ public class OpenWeatherService
         ret = await response.Content.ReadFromJsonAsync<string>();
         OpenWeatherMapApiKey = ret ?? string.Empty;
         return OpenWeatherMapApiKey;
+    }
+    
+    
+    public async Task<List<UiLocation>> GetLocationsList(string location)
+    {
+        try
+        {
+            var response = await http.GetAsync(@$"{WeatherSingleLocationsEndpoint}/{location}");
+            if (!response.IsSuccessStatusCode)
+            {
+                // set error message for display, log to console and return
+                var errorMessage = response.ReasonPhrase;
+                Console.WriteLine($"There was an error in GetAlarmList! {errorMessage}");
+                OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
+                return new List<UiLocation>();
+            }
+            return await response.Content.ReadFromJsonAsync<List<UiLocation>>() ?? new List<UiLocation>();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return new List<UiLocation>();
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Weather.Business.Models;
+﻿namespace Weather.Entities.Models;
 
 public class UiLocation
 {
