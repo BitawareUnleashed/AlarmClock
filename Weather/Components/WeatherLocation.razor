@@ -1,4 +1,5 @@
 ﻿@using Weather.Services
+@using Weather.Entities.Models
 @inject OpenWeatherService openWeatherService
 @inject ISnackbar Snackbar
 
@@ -16,7 +17,8 @@
 @* </MudGrid> *@
 
 
-<MudTable Items="@Locations" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loading" LoadingProgressColor="Color.Info">
+<MudTable Items="@Locations" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loading" LoadingProgressColor="Color.Info" 
+          OnRowClick="RowClickEvent" T="UiLocation">
     <HeaderContent>
         <MudTh>ID</MudTh>
         <MudTh>Location</MudTh>
