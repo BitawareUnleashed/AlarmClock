@@ -5,7 +5,7 @@ namespace Weather.Components;
 
 public partial class WeatherLocation
 {
-    private bool _loading;
+    private bool loading;
  
     private string insertLocation = string.Empty;
     public List<UiLocation> Locations { get; set; } = new();
@@ -27,5 +27,6 @@ public partial class WeatherLocation
     {
         // TODO: Save location
         var a = tableRowClickEventArgs.Item;
+        Console.WriteLine(tableRowClickEventArgs.Item.Name);
     }
 }

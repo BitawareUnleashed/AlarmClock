@@ -26,4 +26,8 @@
     <ProjectReference Include="..\Shared\BlazorAlarmClock.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+
 </Project>

@@ -3,32 +3,29 @@
 @inject OpenWeatherService openWeatherService
 @inject ISnackbar Snackbar
 
-<MudTextField T="string" @bind-Text="insertLocation" Label="Search location" ></MudTextField>
+<MudGrid>
+    <MudItem sm="10">
+        <MudTextField T="string" @bind-Text="insertLocation" Label="Search location"></MudTextField>
+    </MudItem>
+    <MudItem sm="2">
+        <MudButton Variant="Variant.Filled" OnClick="SearchLocation">Search location</MudButton>
+    </MudItem>
 
-<MudButton Variant="Variant.Filled" OnClick="SearchLocation">Search location</MudButton>
-
-@* <MudGrid> *@
-@*     @foreach (var location in Locations) *@
-@*     { *@
-@*         <MudItem xs="12"> *@
-@*             <MudText @onclick="()=>LocationClick(location.Name)" >@location</MudText> *@
-@*         </MudItem> *@
-@*     } *@
-@* </MudGrid> *@
-
-
-<MudTable Items="@Locations" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loading" LoadingProgressColor="Color.Info" 
-          OnRowClick="RowClickEvent" T="UiLocation">
-    <HeaderContent>
-        <MudTh>ID</MudTh>
-        <MudTh>Location</MudTh>
-        <MudTh>Lat</MudTh>
-        <MudTh>Long</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="ID">@context.ID</MudTd>
-        <MudTd DataLabel="Sign">@context.Name</MudTd>
-        <MudTd DataLabel="Name">@context.Lat</MudTd>
-        <MudTd DataLabel="Name">@context.Long</MudTd>
-    </RowTemplate>
-</MudTable>
+    <MudItem sm="12" >
+        <MudTable Items="@Locations" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@loading" LoadingProgressColor="Color.Info"
+                  OnRowClick="RowClickEvent" T="UiLocation">
+            <HeaderContent>
+                <MudTh>Id</MudTh>
+                <MudTh>Location</MudTh>
+                <MudTh>Lat</MudTh>
+                <MudTh>Long</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Id">@context.ID</MudTd>
+                <MudTd DataLabel="Sign">@context.Name</MudTd>
+                <MudTd DataLabel="Name">@context.Lat</MudTd>
+                <MudTd DataLabel="Name">@context.Long</MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudItem>
+</MudGrid>

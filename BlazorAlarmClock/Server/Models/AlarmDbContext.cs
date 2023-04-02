@@ -10,6 +10,7 @@ public class AlarmDbContext : DbContext, IAlarmContext
     public AlarmDbContext(DbContextOptions<AlarmDbContext> opt)
         : base(opt)
     {
+        Database.EnsureCreated();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,13 +1,10 @@
 using BlazorAlarmClock.Server.Controllers;
 using BlazorAlarmClock.Server.Extensions;
 using BlazorAlarmClock.Server.Models;
-using BlazorAlarmClock.Shared.Models;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Weather;
 using Weather.Business;
-using Weather.Business.Data;
-using Weather.Business.Models;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
