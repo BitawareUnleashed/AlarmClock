@@ -25,6 +25,8 @@ public class OpenWeatherService
     private const string WeatherLocationsEndpoint = "/api/v1/GetWeatherLocations";
 
     private const string WeatherSingleLocationsEndpoint = "/api/v1/GetSingle";
+    
+    
 
     public List<string> WeatherLocations { get; set; } = new();
     
@@ -214,5 +216,21 @@ public class OpenWeatherService
         }
 
         return new List<UiLocation>();
+    }
+
+    private const string WeatherSaveLocationEndpoint = "/api/v1/PostSaveLocation/";
+    
+    public async Task SaveLocation(string itemName, double itemLat, double itemLong, int id)
+    {
+        var data = (itemName, itemLat, itemLong, id);
+
+        var response = await http.PostAsJsonAsync(@$"{WeatherSaveLocationEndpoint}/{itemName}/{itemLat}/{itemLong}/{id}", data);
+        if (!response.IsSuccessStatusCode)
+        {
+            // set error message for display, log to console and return
+            var errorMessage = response.ReasonPhrase;
+            Console.WriteLine($"There was an error in GetAlarmList! {errorMessage}");
+            OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
+        }
     }
 }

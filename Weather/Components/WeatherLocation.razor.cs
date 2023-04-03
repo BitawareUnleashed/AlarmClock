@@ -28,5 +28,10 @@ public partial class WeatherLocation
         // TODO: Save location
         var a = tableRowClickEventArgs.Item;
         Console.WriteLine(tableRowClickEventArgs.Item.Name);
+        Console.WriteLine(tableRowClickEventArgs.Item.Lat);
+        Console.WriteLine(tableRowClickEventArgs.Item.Long);
+
+        openWeatherService.SaveLocation(tableRowClickEventArgs.Item.Name,tableRowClickEventArgs.Item.Lat,tableRowClickEventArgs.Item.Long,tableRowClickEventArgs.Item.ID);
+
     }
 }
