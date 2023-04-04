@@ -8,6 +8,7 @@ public class WeatherLocationsContext : DbContext
     public DbSet<City>? Cities { get; set; }
     public DbSet<Coordinate>? Coordinates { get; set; }
     public DbSet<Condition>? Conditions { get; set; }
+    public DbSet<Settings>? Settings { get; set; }
 
     public WeatherLocationsContext(DbContextOptions<WeatherLocationsContext> opt)
         : base(opt)
@@ -24,7 +25,7 @@ public class WeatherLocationsContext : DbContext
     {
         modelBuilder
             .Entity<City>()
-            .HasOne(c=>c.Coord)
+            .HasOne(c => c.Coord)
             .WithOne(co => co.City)
             .HasForeignKey<Coordinate>(co => co.coord_id);
 
@@ -47,9 +48,36 @@ public class WeatherLocationsContext : DbContext
 
     }
 
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlite(@$"Data Source = Data\owm_cities.sqlite");
     }
+
+    public void SaveSettings(int id, string location, string lat, string lon)
+    {
+        Database.BeginTransaction();
+
+        if (!Settings.Any())
+        {
+            Settings.FirstOrDefault().IDLocation = id;
+            Settings.FirstOrDefault().Location = location;
+            Settings.FirstOrDefault().Lat = lat;
+            Settings.FirstOrDefault().Long = lon;
+        }
+        else
+        {
+            Settings.Add(new Settings()
+            {
+                IDLocation = id,
+                Location = location,
+                Lat = lat,
+                Long = lon
+            });
+        }
+
+        Database.CommitTransaction();
+    }
+
+
+
 }

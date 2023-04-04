@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using BlazorAlarmClock.Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using Weather.Business.Models;
+using Weather.Entities.Models;
 
 namespace Weather.Business.Controllers;
 public static class WeatherController
@@ -14,7 +15,8 @@ public static class WeatherController
     private const string WeatherLocationsEndpoint = "/api/v1/GetWeatherLocations";
     private const string WeatherLocationsEndpointFilter = "/api/v1/GetWeatherLocations/{location}";
     private const string WeatherSingleLocationsEndpoint = "/api/v1/GetSingle/{location}";
-    private const string WeatherSaveLocationEndpoint = "/api/v1/PostSaveLocation/{name}/{lat}/{long}/{id}";
+    private const string WeatherSaveLocationEndpoint = "/api/v2/PostSaveLocation/{name}/{lat}/{lon}/{id}";
+    //private const string WeatherSaveLocationEndpoint = "/api/v1/PostSaveLocation";
     
 
 
@@ -28,7 +30,7 @@ public static class WeatherController
         _ = app.MapGet(WeatherApiKeyEndpoint, GetWeatherApiKeyApi);
         _ = app.MapGet(WeatherLocationsEndpoint, GetLocationList);
         _ = app.MapGet(WeatherSingleLocationsEndpoint, GetLocationFilterList);
-        _ = app.MapPost(WeatherSaveLocationEndpoint, PostSaveLocationList);
+        _ = app.MapGet(WeatherSaveLocationEndpoint, PostSaveLocationList);
         return app;
     }
 
@@ -51,8 +53,14 @@ public static class WeatherController
     }
 
     
-    public static IResult PostSaveLocationList(string name, double lat, double lon, int id, [FromBody] object obj)
+    public static IResult PostSaveLocationList([FromServices] WeatherLocationsBridge weatherLocationsBridge, string name, string lat, string lon, string id)
     {
+        var itemName = name;
+        var latitude = SharedMethods.Base64Decode(lat);
+        var longitude = SharedMethods.Base64Decode(lon);
+        var identifier = id;
+
+        weatherLocationsBridge.SaveLocation(name, lat, lon, id);
 
 
         return Results.Ok();

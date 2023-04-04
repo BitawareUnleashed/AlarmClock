@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
@@ -20,16 +21,16 @@ public class OpenWeatherService
     private string weatherAddress = "/data/2.5/weather";
 
     private const string WeatherApiKeyEndpoint = "/api/v1/GetApiKey";
-    
+
     // Weather locations
     private const string WeatherLocationsEndpoint = "/api/v1/GetWeatherLocations";
 
     private const string WeatherSingleLocationsEndpoint = "/api/v1/GetSingle";
-    
-    
+
+
 
     public List<string> WeatherLocations { get; set; } = new();
-    
+
     public event EventHandler<string>? OnErrorRaised;
 
     /// <summary>
@@ -57,11 +58,11 @@ public class OpenWeatherService
     {
         this.httpClientFactory = httpClientFactory;
         this.http = http;
-        Task.Run(async() =>
+        Task.Run(async () =>
         {
             OpenWeatherMapApiKey = await GetApiKey();
         });
-        
+
     }
 
     /// <summary>
@@ -193,8 +194,8 @@ public class OpenWeatherService
         OpenWeatherMapApiKey = ret ?? string.Empty;
         return OpenWeatherMapApiKey;
     }
-    
-    
+
+
     public async Task<List<UiLocation>> GetLocationsList(string location)
     {
         try
@@ -218,13 +219,16 @@ public class OpenWeatherService
         return new List<UiLocation>();
     }
 
-    private const string WeatherSaveLocationEndpoint = "/api/v1/PostSaveLocation/";
-    
+    private const string WeatherSaveLocationEndpoint = "/api/v2/PostSaveLocation";
+
     public async Task SaveLocation(string itemName, double itemLat, double itemLong, int id)
     {
-        var data = (itemName, itemLat, itemLong, id);
+        var data = (itemName, itemLat.ToString(CultureInfo.InvariantCulture), itemLong.ToString(CultureInfo.InvariantCulture), id);
 
-        var response = await http.PostAsJsonAsync(@$"{WeatherSaveLocationEndpoint}/{itemName}/{itemLat}/{itemLong}/{id}", data);
+        //var response = await http.PostAsJsonAsync(@$"{WeatherSaveLocationEndpoint}/{itemName}/{SharedMethods.Base64Encode(itemLat.ToString(CultureInfo.InvariantCulture))}/{SharedMethods.Base64Encode(itemLong.ToString(CultureInfo.InvariantCulture))}/{id}", data);
+        var response = await http.GetAsync(@$"{WeatherSaveLocationEndpoint}/{itemName}/{SharedMethods.Base64Encode(itemLat.ToString(CultureInfo.InvariantCulture))}/{SharedMethods.Base64Encode(itemLong.ToString(CultureInfo.InvariantCulture))}/{id}");
+        //var response = await http.GetAsync(@$"{WeatherSaveLocationEndpoint}/itemName/itemLat/itemLong/id");
+        //var response = await http.PostAsJsonAsync(@$"{WeatherSaveLocationEndpoint}", data);
         if (!response.IsSuccessStatusCode)
         {
             // set error message for display, log to console and return

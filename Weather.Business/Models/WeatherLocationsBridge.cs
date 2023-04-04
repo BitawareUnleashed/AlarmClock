@@ -9,7 +9,6 @@ public class WeatherLocationsBridge
 {
     private WeatherLocationsContext weatherLocationsContext;
 
-
     public WeatherLocationsBridge(WeatherLocationsContext weatherLocationsContext)
     {
         this.weatherLocationsContext = weatherLocationsContext;
@@ -41,6 +40,11 @@ public class WeatherLocationsBridge
         {
             Console.WriteLine(ex.Message);
         }
+
         return WeatherLocations;
     }
+
+    public void SaveLocation(string name, string lat, string lon, string id) => weatherLocationsContext.SaveSettings(int.Parse(id), name, lat, lon);
+    
+    public int GetSavedLocation() => weatherLocationsContext.Settings.FirstOrDefault().IDLocation;
 }
