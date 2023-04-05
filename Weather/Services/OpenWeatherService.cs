@@ -27,6 +27,7 @@ public class OpenWeatherService
 
     private const string WeatherSingleLocationsEndpoint = "/api/v1/GetSingle";
 
+    private const string WeatherGetLocationEndpoint = "/api/v1/GetSavedLocation";
 
 
     public List<string> WeatherLocations { get; set; } = new();
@@ -223,12 +224,7 @@ public class OpenWeatherService
 
     public async Task SaveLocation(string itemName, double itemLat, double itemLong, int id)
     {
-        var data = (itemName, itemLat.ToString(CultureInfo.InvariantCulture), itemLong.ToString(CultureInfo.InvariantCulture), id);
-
-        //var response = await http.PostAsJsonAsync(@$"{WeatherSaveLocationEndpoint}/{itemName}/{SharedMethods.Base64Encode(itemLat.ToString(CultureInfo.InvariantCulture))}/{SharedMethods.Base64Encode(itemLong.ToString(CultureInfo.InvariantCulture))}/{id}", data);
         var response = await http.GetAsync(@$"{WeatherSaveLocationEndpoint}/{itemName}/{SharedMethods.Base64Encode(itemLat.ToString(CultureInfo.InvariantCulture))}/{SharedMethods.Base64Encode(itemLong.ToString(CultureInfo.InvariantCulture))}/{id}");
-        //var response = await http.GetAsync(@$"{WeatherSaveLocationEndpoint}/itemName/itemLat/itemLong/id");
-        //var response = await http.PostAsJsonAsync(@$"{WeatherSaveLocationEndpoint}", data);
         if (!response.IsSuccessStatusCode)
         {
             // set error message for display, log to console and return
@@ -236,5 +232,18 @@ public class OpenWeatherService
             Console.WriteLine($"There was an error in GetAlarmList! {errorMessage}");
             OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
         }
+    }
+
+    public async Task<(string name,double lat,double lon)> GetSavedLocation()
+    {
+        var response = await http.GetAsync(@$"{WeatherGetLocationEndpoint}");
+        if (!response.IsSuccessStatusCode)
+        {
+            // set error message for display, log to console and return
+            var errorMessage = response.ReasonPhrase;
+            Console.WriteLine($"There was an error in GetAlarmList! {errorMessage}");
+            OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
+        }
+        return await response.Content.ReadFromJsonAsync<(string name,double lat,double lon)>();       
     }
 }

@@ -55,9 +55,9 @@ public class WeatherLocationsContext : DbContext
 
     public void SaveSettings(int id, string location, string lat, string lon)
     {
-        Database.BeginTransaction();
+        //Database.BeginTransaction();
 
-        if (!Settings.Any())
+        if (Settings.Any())
         {
             Settings.FirstOrDefault().IDLocation = id;
             Settings.FirstOrDefault().Location = location;
@@ -74,8 +74,9 @@ public class WeatherLocationsContext : DbContext
                 Long = lon
             });
         }
-
-        Database.CommitTransaction();
+        //Database.CommitTransaction();
+        SaveChanges();
+        Settings.LoadAsync();
     }
 
 

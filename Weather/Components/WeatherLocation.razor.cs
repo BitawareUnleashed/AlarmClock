@@ -23,7 +23,7 @@ public partial class WeatherLocation
         }
     }
 
-    private void RowClickEvent(TableRowClickEventArgs<UiLocation> tableRowClickEventArgs)
+    private async void RowClickEvent(TableRowClickEventArgs<UiLocation> tableRowClickEventArgs)
     {
         // TODO: Save location
         var a = tableRowClickEventArgs.Item;
@@ -32,7 +32,12 @@ public partial class WeatherLocation
         Console.WriteLine(tableRowClickEventArgs.Item.Long);
 
         openWeatherService.SaveLocation(tableRowClickEventArgs.Item.Name,tableRowClickEventArgs.Item.Lat,tableRowClickEventArgs.Item.Long,tableRowClickEventArgs.Item.ID);
-        
 
+        await Task.Delay(3000);
+        var b= openWeatherService.GetSavedLocation();
+        if (b is not null)
+        {
+            
+        }
     }
 }

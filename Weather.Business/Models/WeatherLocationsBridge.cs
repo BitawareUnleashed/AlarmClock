@@ -44,7 +44,20 @@ public class WeatherLocationsBridge
         return WeatherLocations;
     }
 
-    public void SaveLocation(string name, string lat, string lon, string id) => weatherLocationsContext.SaveSettings(int.Parse(id), name, lat, lon);
-    
-    public int GetSavedLocation() => weatherLocationsContext.Settings.FirstOrDefault().IDLocation;
+    public void SaveLocation(string name, string lat, string lon, string id)
+    {
+        weatherLocationsContext.SaveSettings(int.Parse(id), name, lat, lon);
+    }
+
+    public string GetSavedLocation() => weatherLocationsContext.Settings.FirstOrDefault().IDLocation.ToString();
+
+    public (string name, double lat, double lon) GetLocationFromId(string locationId)
+    {
+        var locationDbId = int.Parse(locationId);
+        var location= weatherLocationsContext.Cities
+            .Include(x => x.Coord)
+            .Where(x => x.Id == locationDbId).FirstOrDefault();
+        
+        return (location.Name, location.Coord.Lat, location.Coord.Long);
+    }
 }
