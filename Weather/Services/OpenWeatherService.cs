@@ -10,6 +10,7 @@ using Weather.Entities.Models;
 using static System.Net.WebRequestMethods;
 
 namespace Weather.Services;
+
 public class OpenWeatherService
 {
     private readonly IHttpClientFactory httpClientFactory;
@@ -17,6 +18,8 @@ public class OpenWeatherService
     string api_url = string.Empty;
     private string baseAddress = "https://openweathermap.org";
     private string baseApiAddress = "https://api.openweathermap.org";
+    private const string WeatherSaveLocationEndpoint = "/api/v2/PostSaveLocation";
+    private const string WeatherSaveLocEndpoint = "/api/v1/PostSaveLocation";
     private string iconAddress = "/img/wn/";
     private string weatherAddress = "/data/2.5/weather";
 
@@ -33,6 +36,7 @@ public class OpenWeatherService
     public List<string> WeatherLocations { get; set; } = new();
 
     public event EventHandler<string>? OnErrorRaised;
+    
 
     /// <summary>
     /// Gets or sets the open weather map API key.
@@ -59,13 +63,15 @@ public class OpenWeatherService
     {
         this.httpClientFactory = httpClientFactory;
         this.http = http;
-        Task.Run(async () =>
-        {
-            OpenWeatherMapApiKey = await GetApiKey();
-        });
-
+        //Task.Run(async () => { OpenWeatherMapApiKey = await GetApiKey(); });
+        Initialize();
     }
-
+    
+    private async void Initialize()
+    {
+        OpenWeatherMapApiKey = await GetApiKey();
+    }
+    
     /// <summary>
     /// Updates the specified latitude.
     /// </summary>
@@ -86,8 +92,10 @@ public class OpenWeatherService
             {
                 throw new ArgumentOutOfRangeException("Invalid ApiKey Key");
             }
+
             // Call to API
-            api_url = baseApiAddress + weatherAddress + $@"?lat={latitude.ToString().Replace(",", ".")}&lon={longitude.ToString().Replace(",", ".")}&units=metric&appid={apiKey}";
+            api_url = baseApiAddress + weatherAddress +
+                      $@"?lat={latitude.ToString().Replace(",", ".")}&lon={longitude.ToString().Replace(",", ".")}&units=metric&appid={apiKey}";
 
             // Open connection
             var client = httpClientFactory.CreateClient("openweathermap");
@@ -131,6 +139,7 @@ public class OpenWeatherService
             {
                 throw new ArgumentNullException("Meteo pack is null");
             }
+
             if (meteo.weather is null)
             {
                 throw new ArgumentNullException("Meteo pack - weather is null");
@@ -140,6 +149,7 @@ public class OpenWeatherService
             {
                 throw new ArgumentNullException("Meteo pack - weather has no items");
             }
+
             if (meteo.weather.FirstOrDefault() is null)
             {
                 throw new ArgumentNullException("Meteo pack: weather definition is null");
@@ -149,6 +159,7 @@ public class OpenWeatherService
             {
                 throw new ArgumentNullException("Meteo pack: icon name is null");
             }
+
             if (meteo.weather.FirstOrDefault()!.icon.Length == 0)
             {
                 throw new ArgumentNullException("Meteo pack: icon name is empty");
@@ -161,6 +172,7 @@ public class OpenWeatherService
         {
             Console.WriteLine(ex.Message);
         }
+
         return resultString;
     }
 
@@ -175,6 +187,7 @@ public class OpenWeatherService
             OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
             return new List<string>();
         }
+
         return await response.Content.ReadFromJsonAsync<List<string>>() ?? new List<string>();
     }
 
@@ -191,11 +204,11 @@ public class OpenWeatherService
             OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
             return ret;
         }
+
         ret = await response.Content.ReadFromJsonAsync<string>();
         OpenWeatherMapApiKey = ret ?? string.Empty;
         return OpenWeatherMapApiKey;
     }
-
 
     public async Task<List<UiLocation>> GetLocationsList(string location)
     {
@@ -210,6 +223,7 @@ public class OpenWeatherService
                 OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
                 return new List<UiLocation>();
             }
+
             return await response.Content.ReadFromJsonAsync<List<UiLocation>>() ?? new List<UiLocation>();
         }
         catch (Exception e)
@@ -220,11 +234,15 @@ public class OpenWeatherService
         return new List<UiLocation>();
     }
 
-    private const string WeatherSaveLocationEndpoint = "/api/v2/PostSaveLocation";
-
-    public async Task SaveLocation(string itemName, double itemLat, double itemLong, int id)
+    public async Task SaveLocation(UiLocation location)
     {
+        string itemName = location.Name;
+        double itemLat = location.Lat;
+        double itemLong = location.Long;
+        int id = location.ID;
+        
         var response = await http.GetAsync(@$"{WeatherSaveLocationEndpoint}/{itemName}/{SharedMethods.Base64Encode(itemLat.ToString(CultureInfo.InvariantCulture))}/{SharedMethods.Base64Encode(itemLong.ToString(CultureInfo.InvariantCulture))}/{id}");
+        //var response = await http.GetAsync(@$"{WeatherSaveLocEndpoint}/{location}");
         if (!response.IsSuccessStatusCode)
         {
             // set error message for display, log to console and return
@@ -234,7 +252,7 @@ public class OpenWeatherService
         }
     }
 
-    public async Task<(string name,double lat,double lon)> GetSavedLocation()
+    public async Task<UiLocation> GetSavedLocation()
     {
         var response = await http.GetAsync(@$"{WeatherGetLocationEndpoint}");
         if (!response.IsSuccessStatusCode)
@@ -244,6 +262,9 @@ public class OpenWeatherService
             Console.WriteLine($"There was an error in GetAlarmList! {errorMessage}");
             OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
         }
-        return await response.Content.ReadFromJsonAsync<(string name,double lat,double lon)>();       
+
+        
+        var savedLocation = await response.Content.ReadFromJsonAsync<UiLocation>();
+        return savedLocation;
     }
 }

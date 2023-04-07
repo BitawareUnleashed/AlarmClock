@@ -4,11 +4,10 @@
 @using DateTimeComponent
 @using DateTimeComponent.Models
 @using Weather
-@using Weather.Services
 
 @inject IJSRuntime JsRuntime
 @inject AlarmServices alarmService
-
+@inject NavigationManager navigationManager
 
 @if (!alarmActivated)
 {
@@ -20,7 +19,7 @@
 
 <MudGrid>
     <MudItem xs="6">
-        <WeatherComponent Latitude="45.284" Longitude="8.077" />
+        <WeatherComponent />
     </MudItem>
     <MudItem xs="6">
         <div class="d-flex justify-content-end element-container mr-12 position-absolute">

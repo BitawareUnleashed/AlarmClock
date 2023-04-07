@@ -53,7 +53,7 @@ public class WeatherLocationsContext : DbContext
         optionsBuilder.UseSqlite(@$"Data Source = Data\owm_cities.sqlite");
     }
 
-    public void SaveSettings(int id, string location, string lat, string lon)
+    public void SaveSettings(int id, string location, double lat, double lon)
     {
         //Database.BeginTransaction();
 
@@ -61,8 +61,8 @@ public class WeatherLocationsContext : DbContext
         {
             Settings.FirstOrDefault().IDLocation = id;
             Settings.FirstOrDefault().Location = location;
-            Settings.FirstOrDefault().Lat = lat;
-            Settings.FirstOrDefault().Long = lon;
+            Settings.FirstOrDefault().Lat = lat.ToString();
+            Settings.FirstOrDefault().Long = lon.ToString();
         }
         else
         {
@@ -70,8 +70,8 @@ public class WeatherLocationsContext : DbContext
             {
                 IDLocation = id,
                 Location = location,
-                Lat = lat,
-                Long = lon
+                Lat = lat.ToString(),
+                Long = lon.ToString()
             });
         }
         //Database.CommitTransaction();

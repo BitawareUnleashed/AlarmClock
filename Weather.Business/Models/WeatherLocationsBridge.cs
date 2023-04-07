@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Reflection.Metadata.Ecma335;
+using AutoMapper;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Weather.Entities.Models;
@@ -44,9 +45,9 @@ public class WeatherLocationsBridge
         return WeatherLocations;
     }
 
-    public void SaveLocation(string name, string lat, string lon, string id)
+    public void SaveLocation(string name, double lat, double lon, int id)
     {
-        weatherLocationsContext.SaveSettings(int.Parse(id), name, lat, lon);
+        weatherLocationsContext.SaveSettings(id, name, lat, lon);
     }
 
     public string GetSavedLocation() => weatherLocationsContext.Settings.FirstOrDefault().IDLocation.ToString();
@@ -54,10 +55,14 @@ public class WeatherLocationsBridge
     public (string name, double lat, double lon) GetLocationFromId(string locationId)
     {
         var locationDbId = int.Parse(locationId);
-        var location= weatherLocationsContext.Cities
-            .Include(x => x.Coord)
-            .Where(x => x.Id == locationDbId).FirstOrDefault();
+        if (weatherLocationsContext.Cities != null)
+        {
+            var location= weatherLocationsContext.Cities
+                .Include(x => x.Coord).FirstOrDefault(x => x.Id == locationDbId);
         
-        return (location.Name, location.Coord.Lat, location.Coord.Long);
+            return (location.Name, location.Coord.Lat, location.Coord.Long);
+        }
+
+        return ("", 0, 0);
     }
 }

@@ -1,10 +1,12 @@
 ﻿@using DateTimeComponent.Models;
 @using Microsoft.JSInterop;
 @using MudBlazor
+@using Weather.Services
 @inject HttpClient Http
 @inject IHttpClientFactory httpClientFactory
 @inject SystemWatch SystemWatch
 @inject IJSRuntime JsRuntime
+@inject OpenWeatherService openWeatherService
 
 @implements IAsyncDisposable
 

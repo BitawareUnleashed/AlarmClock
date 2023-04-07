@@ -31,13 +31,7 @@ public partial class WeatherLocation
         Console.WriteLine(tableRowClickEventArgs.Item.Lat);
         Console.WriteLine(tableRowClickEventArgs.Item.Long);
 
-        openWeatherService.SaveLocation(tableRowClickEventArgs.Item.Name,tableRowClickEventArgs.Item.Lat,tableRowClickEventArgs.Item.Long,tableRowClickEventArgs.Item.ID);
-
-        await Task.Delay(3000);
-        var b= openWeatherService.GetSavedLocation();
-        if (b is not null)
-        {
-            
-        }
+        openWeatherService.SaveLocation(tableRowClickEventArgs.Item);
+        navigationManager.NavigateTo("/", true);
     }
 }

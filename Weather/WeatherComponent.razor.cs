@@ -11,19 +11,24 @@ namespace Weather;
 
 public partial class WeatherComponent
 {
-    private int secondsToWait = 900;//15 minutes // 3600; // one hour
-    private int currentSecond = 0;
+    #region Fields
 
+    private int secondsToWait = 900; //15 minutes
+    private int currentSecond = 0;
     private int height;
 
-    #region Properties    
+    #endregion
+
+    #region Properties
+
     /// <summary>
     /// Gets or sets the open weather service.
     /// </summary>
     /// <value>
     /// The open weather service.
     /// </value>
-    [Inject] public OpenWeatherService? OpenWeatherService { get; set; }
+    [Inject]
+    public OpenWeatherService? OpenWeatherService { get; set; }
 
     /// <summary>
     /// Gets or sets the latitude.
@@ -31,7 +36,8 @@ public partial class WeatherComponent
     /// <value>
     /// The latitude.
     /// </value>
-    [Parameter] public double Latitude { get; set; }
+    [Parameter]
+    public double Latitude { get; set; }
 
     /// <summary>
     /// Gets or sets the longitude.
@@ -39,7 +45,8 @@ public partial class WeatherComponent
     /// <value>
     /// The longitude.
     /// </value>
-    [Parameter] public double Longitude { get; set; }
+    [Parameter]
+    public double Longitude { get; set; }
 
     /// <summary>
     /// Gets or sets the API key.
@@ -56,6 +63,7 @@ public partial class WeatherComponent
     /// The meteo pack.
     /// </value>
     public MeteoPack? MeteoPack { get; private set; }
+
     /// <summary>
     /// Gets or sets the weather icon.
     /// </summary>
@@ -64,15 +72,23 @@ public partial class WeatherComponent
     /// </value>
     public string WeatherIcon { get; set; }
 
-
     #endregion
 
+    #region Methods
+
+    /// <inheritdoc />
     protected override async Task OnInitializedAsync()
     {
+        var locationTask = openWeatherService.GetSavedLocation();
+        await Task.WhenAll(locationTask);
+        var location = locationTask.Result;
+        Latitude = location.Lat == 0 ? 45.284 : location.Lat;
+        Longitude = location.Long == 0 ? 8.077 : location.Long;
+        await GetMeteoInformation();
+
         var dimension = await JsRuntime.InvokeAsync<WindowDimension>("getWindowDimensions", null);
         height = dimension.Height;
         SystemWatch.SecondChangedEvent += SystemWatch_SecondChangedEvent;
-        await GetMeteoInformation();
     }
 
     /// <summary>
@@ -99,7 +115,9 @@ public partial class WeatherComponent
         {
             await OpenWeatherService.GetApiKey();
         }
-        MeteoPack = await OpenWeatherService!.Update(Latitude, Longitude, OpenWeatherService.OpenWeatherMapApiKey); ;
+
+        // Get meteo informations from webservice
+        MeteoPack = await OpenWeatherService!.Update(Latitude, Longitude, OpenWeatherService.OpenWeatherMapApiKey);
 
         // Get Icon
         WeatherIcon = OpenWeatherService.GetIcon(MeteoPack);
@@ -107,8 +125,6 @@ public partial class WeatherComponent
         Console.WriteLine("Meteo request: " + DateTime.Now);
         StateHasChanged();
     }
-
-
 
     private double GetTemperatureRounded()
     {
@@ -155,6 +171,7 @@ public partial class WeatherComponent
             {
                 SystemWatch.SecondChangedEvent -= SystemWatch_SecondChangedEvent;
             }
+
             Console.WriteLine("Dispose");
         }
     }
@@ -172,7 +189,10 @@ public partial class WeatherComponent
 
         Console.WriteLine("DisposeAsync");
     }
+
+    #endregion
 }
+
 public class WindowDimension
 {
     public int Width { get; set; }

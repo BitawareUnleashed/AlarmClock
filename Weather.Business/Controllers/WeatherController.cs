@@ -63,7 +63,7 @@ public static class WeatherController
         var longitude = SharedMethods.Base64Decode(lon);
         var identifier = id;
 
-        weatherLocationsBridge.SaveLocation(name, latitude, longitude, id);
+        weatherLocationsBridge.SaveLocation(name, double.Parse(latitude), double.Parse(longitude), int.Parse(id));
 
         return Results.Ok();
     }
@@ -73,6 +73,13 @@ public static class WeatherController
     {
         var locationId = weatherLocationsBridge.GetSavedLocation();
         (string name, double lat, double lon) = weatherLocationsBridge.GetLocationFromId(locationId);
-        return Results.Ok((name, lat, lon));
+        var returnLocation = new UiLocation()
+        {
+            Lat = lat,
+            Long = lon,
+            Name = name,
+            ID = int.Parse(locationId)
+        };
+        return Results.Ok(returnLocation);
     }
 }
