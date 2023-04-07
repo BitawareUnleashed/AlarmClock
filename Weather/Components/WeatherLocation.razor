@@ -1,0 +1,32 @@
+﻿@using Weather.Services
+@using Weather.Entities.Models
+@inject NavigationManager navigationManager
+@inject OpenWeatherService openWeatherService
+@inject ISnackbar Snackbar
+
+<MudGrid>
+    <MudItem sm="10">
+        <MudTextField T="string" @bind-Text="insertLocation" Label="Search location"></MudTextField>
+    </MudItem>
+    <MudItem sm="2">
+        <MudButton Variant="Variant.Filled" OnClick="SearchLocation">Search location</MudButton>
+    </MudItem>
+
+    <MudItem sm="12" >
+        <MudTable Items="@Locations" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@loading" LoadingProgressColor="Color.Info"
+                  OnRowClick="RowClickEvent" T="UiLocation">
+            <HeaderContent>
+                <MudTh>Id</MudTh>
+                <MudTh>Location</MudTh>
+                <MudTh>Lat</MudTh>
+                <MudTh>Long</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Id">@context.ID</MudTd>
+                <MudTd DataLabel="Sign">@context.Name</MudTd>
+                <MudTd DataLabel="Name">@context.Lat</MudTd>
+                <MudTd DataLabel="Name">@context.Long</MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudItem>
+</MudGrid>

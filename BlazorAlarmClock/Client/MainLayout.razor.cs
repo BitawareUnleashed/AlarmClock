@@ -15,10 +15,9 @@ public partial class MainLayout
 
     private string? visibility => vis ? "sidebar-hide" : "sidebar";
     bool vis = true;
-    private void ToggleNavMenu()
-    {
-        vis = !vis;
-    }
+    private void ToggleNavMenu() => vis = !vis;
+    
+    public void CloseNavigationMenu() => vis = false;
 
     private void ToggleNavPopover()
     {

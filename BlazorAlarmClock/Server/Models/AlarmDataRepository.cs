@@ -5,10 +5,10 @@ namespace BlazorAlarmClock.Server.Models;
 
 public class AlarmDataRepository : IRepository<Alarm, int>
 {
-    private readonly DbContext dbContext;
+    private readonly AlarmDbContext dbContext;
     private readonly DbSet<Alarm> set;
 
-    public AlarmDataRepository(DbContext dbContext)
+    public AlarmDataRepository(AlarmDbContext dbContext)
     {
         this.dbContext = dbContext;
         set = this.dbContext.Set<Alarm>();
@@ -18,7 +18,6 @@ public class AlarmDataRepository : IRepository<Alarm, int>
     public IQueryable<Alarm> GetAll()
     {
         return set.Include(e => e.AlarmDays).AsNoTracking();
-        //return set.AsNoTracking();
     }
 
     /// <inheritdoc/>

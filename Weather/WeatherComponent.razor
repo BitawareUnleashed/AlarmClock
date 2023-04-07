@@ -1,10 +1,12 @@
 ﻿@using DateTimeComponent.Models;
 @using Microsoft.JSInterop;
 @using MudBlazor
+@using Weather.Services
 @inject HttpClient Http
 @inject IHttpClientFactory httpClientFactory
 @inject SystemWatch SystemWatch
 @inject IJSRuntime JsRuntime
+@inject OpenWeatherService openWeatherService
 
 @implements IAsyncDisposable
 
@@ -23,23 +25,4 @@ else
             <MudText Typo="Typo.h5" Class="ml-12" >@MeteoPack.name</MudText>
         </MudItem>
     </MudGrid>
-
-    @*<MudCard Style="background-color:transparent">
-        <MudCardContent Class="d-flex justify-center">
-            <MudImage Src="@WeatherIcon" Height="@GetImageHeight()" Width="@GetImageHeight()" />
-        </MudCardContent>
-        
-        <MudCardContent Class="d-flex justify-center">
-            <MudText Typo="Typo.h3" Style="font-weight:900">@GetTemperatureRounded() °C </MudText>
-            <MudText Typo="Typo.h5" Class="ml-12">@MeteoPack.name</MudText>
-        </MudCardContent>
-
-
-    </MudCard>
-*@
-    @*        <MudCardActions>
-    <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
-    <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
-    </MudCardActions>*@
-
 }

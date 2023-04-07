@@ -11,7 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorAlarmClock.Shared", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DateTimeComponent", "DateTimeComponet\DateTimeComponent.csproj", "{BDEE103C-63FF-432F-8786-D92005FF13C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weather", "Weather\Weather.csproj", "{385B4322-0BE3-456C-959F-7962837A0A1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Weather", "Weather\Weather.csproj", "{385B4322-0BE3-456C-959F-7962837A0A1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weather.Business", "Weather.Business\Weather.Business.csproj", "{7F9A0E0A-F02E-4880-A315-BDC9A95B87D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weather.Entities", "Weather.Entities\Weather.Entities.csproj", "{2028B14B-BA4B-4F60-9148-1E4CFF58D266}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{385B4322-0BE3-456C-959F-7962837A0A1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{385B4322-0BE3-456C-959F-7962837A0A1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{385B4322-0BE3-456C-959F-7962837A0A1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F9A0E0A-F02E-4880-A315-BDC9A95B87D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F9A0E0A-F02E-4880-A315-BDC9A95B87D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F9A0E0A-F02E-4880-A315-BDC9A95B87D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F9A0E0A-F02E-4880-A315-BDC9A95B87D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2028B14B-BA4B-4F60-9148-1E4CFF58D266}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2028B14B-BA4B-4F60-9148-1E4CFF58D266}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2028B14B-BA4B-4F60-9148-1E4CFF58D266}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2028B14B-BA4B-4F60-9148-1E4CFF58D266}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

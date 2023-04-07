@@ -67,7 +67,7 @@ public partial class EditAlarm
     {
         Alarm ??= new()
         {
-            SnoozeTime = 5
+            SnoozeDelay = 5
         };
 
         if (!string.IsNullOrEmpty(RingtoneFileName))
@@ -87,7 +87,7 @@ public partial class EditAlarm
     {
         Alarm ??= new()
         {
-            SnoozeTime = 5
+            SnoozeDelay = 5
         };
 
         alarmService.OnRingtoneUploaded += AlarmService_OnRingtoneUploaded;

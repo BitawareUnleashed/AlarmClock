@@ -9,6 +9,20 @@ namespace BlazorAlarmClock.Client.Components;
 
 public partial class AlarmComponent
 {
+    #region Fields
+
+    MudTimePicker picker;
+
+    private int snoozing = 0;
+
+    private int today = -1;
+
+    TimeSpan? time = new TimeSpan(00, 00, 00);
+
+    #endregion
+
+    #region Properties
+
     private const string minutesMeasureUnits = "Minutes";
 
     private bool isPopoverEditAlarmVisible;
@@ -44,14 +58,7 @@ public partial class AlarmComponent
     public AlarmStatus Status { get; set; } = AlarmStatus.NONE;
     public bool IsInSnooze { get; set; } = false;
 
-    MudTimePicker picker;
-
-    private int snoozing = 0;
-
-    private int today = -1;
-
-
-    TimeSpan? time = new TimeSpan(00, 00, 00);
+    #endregion
 
     private void ModifyDayList(int day, bool active)
     {
@@ -59,6 +66,7 @@ public partial class AlarmComponent
         {
             return;
         }
+
         if (CurrentAlarm.AlarmDays is null)
         {
             CurrentAlarm.AlarmDays = new List<AlarmDayDto>();
@@ -101,7 +109,6 @@ public partial class AlarmComponent
         {
             foreach (var day in CurrentAlarm.AlarmDays)
             {
-                //AlarmDays?.Add(day.DayAsInt);
                 switch (day.DayAsInt)
                 {
                     case 0:
@@ -180,21 +187,26 @@ public partial class AlarmComponent
             case AlarmStatus.SNOOZED:
                 if (time is null)
                 {
+                    Status = AlarmStatus.STOPPED_TODAY;
                     break;
                 }
-                if (e.Hour == time.Value.Hours && e.Minute == (time.Value.Minutes + (CurrentAlarm.SnoozeTime * snoozing)))
+                if (e.Hour == time.Value.Hours &&
+                    e.Minute >= time.Value.Minutes && 
+                    e.Second >= time.Value.Seconds)
                 {
                     PlaySound();
                     IsSnoozeVisible = true;
                     Status = AlarmStatus.PLAYING;
                     StateHasChanged();
                 }
+
                 break;
             case AlarmStatus.STOPPED:
                 if (time is null)
                 {
                     break;
                 }
+
                 if (e.Hour == time.Value.Hours && e.Minute == time.Value.Minutes)
                 {
                     if (CurrentAlarm.AlarmDays is null || CurrentAlarm.AlarmDays.Count() == 0)
@@ -204,25 +216,30 @@ public partial class AlarmComponent
                     }
                     else
                     {
-                        if (CurrentAlarm.AlarmDays.Where(x => x.DayAsInt == (int)e.DayOfWeek).FirstOrDefault() is not null)
+                        if (CurrentAlarm.AlarmDays.Where(x => x.DayAsInt == (int)e.DayOfWeek)
+                                .FirstOrDefault() is not null)
                         {
                             IsSnoozeVisible = true;
                             PlaySound();
                         }
                     }
+
                     StateHasChanged();
                 }
+
                 break;
             case AlarmStatus.STOPPED_TODAY:
                 if (time is null)
                 {
                     break;
                 }
+
                 if (today != e.Day || (e.Hour == time.Value.Hours && e.Minute != time.Value.Minutes))
                 {
                     today = e.Day;
                     Status = AlarmStatus.STOPPED;
                 }
+
                 break;
             default:
                 break;
@@ -251,6 +268,7 @@ public partial class AlarmComponent
         Status = AlarmStatus.SNOOZED;
         IsSnoozeVisible = false;
         snoozing++;
+        time = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute + CurrentAlarm.SnoozeDelay, DateTime.Now.Second);
         await JsRuntime.InvokeVoidAsync("StopSound");
     }
 
@@ -271,17 +289,14 @@ public partial class AlarmComponent
 
     private async void SnoozeChanged(int val)
     {
-        CurrentAlarm.SnoozeTime = val;
+        CurrentAlarm.SnoozeDelay = val;
 
 
         if (IsNewAlarm is null)
         {
             alarmService.UpdateItem(CurrentAlarm);
         }
-
-
     }
-
 
 
     private AlarmDto? selectedAlarm;

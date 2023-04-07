@@ -7,6 +7,7 @@
 
 @inject IJSRuntime JsRuntime
 @inject AlarmServices alarmService
+@inject NavigationManager navigationManager
 
 @if (!alarmActivated)
 {
@@ -18,7 +19,7 @@
 
 <MudGrid>
     <MudItem xs="6">
-        <WeatherComponent Latitude="45.284" Longitude="8.077" />
+        <WeatherComponent />
     </MudItem>
     <MudItem xs="6">
         <div class="d-flex justify-content-end element-container mr-12 position-absolute">
@@ -27,15 +28,15 @@
     </MudItem>
     <MudItem>
         <div style="overflow-y:auto; bottom:10px">
-        @if (alarmService.AlarmList is not null)
-        {
-            @foreach (var alarm in alarmService.AlarmList)
+            @if (alarmService.AlarmList is not null)
             {
-                <div class="ml-12">
-                    <AlarmComponent CurrentAlarm="@alarm" EditRequested="OnAlarmEditRequest" />
-                </div>
+                @foreach (var alarm in alarmService.AlarmList)
+                {
+                    <div class="ml-12">
+                        <AlarmComponent CurrentAlarm="@alarm" EditRequested="OnAlarmEditRequest" />
+                    </div>
+                }
             }
-        }
         </div>
     </MudItem>
 </MudGrid>
