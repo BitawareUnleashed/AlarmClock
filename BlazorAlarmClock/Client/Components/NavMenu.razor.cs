@@ -8,8 +8,7 @@ public partial class NavMenu
 
     [Parameter] public EventCallback IsPopoverOpenChanged { get; set; }
 
-    [Parameter]
-    public bool CollapsedMenu
+    [Parameter] public bool CollapsedMenu
     {
         get => collapseNavMenu;
         set => collapseNavMenu = value;

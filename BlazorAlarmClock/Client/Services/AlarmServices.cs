@@ -18,6 +18,8 @@ public class AlarmServices
 
     private readonly HttpClient http;
 
+    #region Properties
+
     public event EventHandler<bool>? OnAlarmDeleted;
     public event EventHandler<bool>? OnAlarmUpdated;
     public event EventHandler<bool>? OnRingtoneListUpdated;
@@ -28,11 +30,19 @@ public class AlarmServices
     public List<AlarmDto> AlarmList { get; set; } = new();
     public List<string> RingtonesList { get; set; } = new();
 
+    
+
+    #endregion
+
+
+    #region Constructors
 
     public AlarmServices(HttpClient http)
     {
         this.http = http;
     }
+
+    #endregion
 
     public async Task<bool> GetAlarmList()
     {
@@ -45,6 +55,7 @@ public class AlarmServices
             OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
             return false;
         }
+
         AlarmList = await response.Content.ReadFromJsonAsync<List<AlarmDto>>() ?? new List<AlarmDto>();
         return true;
     }
@@ -61,6 +72,7 @@ public class AlarmServices
             OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
             return;
         }
+
         var a = await GetAlarmList();
         if (a)
         {
@@ -68,7 +80,23 @@ public class AlarmServices
         }
     }
 
-    public async void AddNewAlarm(AlarmDto alm)
+
+    //public async void AddNewAlarm(AlarmDto alm)
+    //{
+    //    using var response = await http.PostAsJsonAsync(@$"{AddNewAlarmEndpoint}", alm);
+    //    if (!response.IsSuccessStatusCode)
+    //    {
+    //        // set error message for display, log to console and return
+    //        var errorMessage = response.ReasonPhrase;
+    //        Console.WriteLine($"There was an error! {errorMessage}");
+    //        OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
+    //        return;
+    //    }
+    //    var a = await GetAlarmList();
+    //    OnAlarmUpdated?.Invoke(this, true);
+    //}
+
+    public async void AddOrUpdateAlarm(AlarmDto alm)
     {
         using var response = await http.PostAsJsonAsync(@$"{AddNewAlarmEndpoint}", alm);
         if (!response.IsSuccessStatusCode)
@@ -79,6 +107,7 @@ public class AlarmServices
             OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
             return;
         }
+
         var a = await GetAlarmList();
         OnAlarmUpdated?.Invoke(this, true);
     }
@@ -94,6 +123,7 @@ public class AlarmServices
             OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
             return;
         }
+
         var a = await GetAlarmList();
         OnAlarmUpdated?.Invoke(this, true);
     }
@@ -105,6 +135,7 @@ public class AlarmServices
         {
             ret = AlarmList.Where(x => x.Id == id).FirstOrDefault();
         }
+
         return ret;
     }
 
@@ -173,9 +204,9 @@ public class AlarmServices
         {
             OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
         }
+
         await GetRingroneList();
         OnRingtoneListUpdated?.Invoke(this, true);
     }
-
-
+    
 }

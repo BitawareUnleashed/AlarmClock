@@ -1,0 +1,28 @@
+﻿@using DateTimeComponent.Models;
+@using Microsoft.JSInterop;
+@using MudBlazor
+@using Weather.Services
+@inject HttpClient Http
+@inject IHttpClientFactory httpClientFactory
+@inject SystemWatch SystemWatch
+@inject IJSRuntime JsRuntime
+@inject OpenWeatherService openWeatherService
+
+@implements IAsyncDisposable
+
+@if (@MeteoPack == null)
+{
+    <h1>--</h1>
+}
+else
+{
+    <MudGrid>
+        <MudItem xs="12" Class="d-flex justify-content-center">
+            <MudImage Src="@WeatherIcon" Height="@GetImageHeight()" Width="@GetImageHeight()" />
+        </MudItem>
+        <MudItem xs="12" Class="d-flex justify-content-center">
+            <MudText Typo="Typo.h3" Style="font-weight:900">@GetTemperatureRounded() °C </MudText>
+            <MudText Typo="Typo.h5" Class="ml-12" >@MeteoPack.name</MudText>
+        </MudItem>
+    </MudGrid>
+}

@@ -1,12 +1,12 @@
 using BlazorAlarmClock.Client;
 using BlazorAlarmClock.Client.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
 using DateTimeComponent.Models;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
 using MudBlazor.Services;
+using Weather;
+using Weather.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -40,8 +40,6 @@ builder.Services.AddScoped<AlarmServices>();
 
 builder.Services.AddLocalization();
 
-//await builder.Build().RunAsync();
-var app = builder.Build();
+builder.Services.AddWeather();
 
-
-await app.RunAsync();
+await builder.Build().RunAsync();

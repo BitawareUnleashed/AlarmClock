@@ -55,7 +55,6 @@ namespace DateTimeComponent.Models
             {
                 StartingDateSeconds = e;
                 SecondChangedEvent?.Invoke(this, e);
-                Console.WriteLine(".NET Timer: "+e.Hour.ToString("00") + ":" + e.Minute.ToString("00") + ":" + e.Second.ToString("00"));
             }
         }
         #endregion

@@ -57,6 +57,6 @@ public class AlarmDto
     /// <value>
     /// The snooze time.
     /// </value>
-    public int SnoozeTime { get; set; }
+    public int SnoozeDelay { get; set; }
 }
 

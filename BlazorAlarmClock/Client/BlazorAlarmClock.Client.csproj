@@ -15,11 +15,12 @@
 		<PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.2" />
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="7.0.2" />
-		<PackageReference Include="MudBlazor" Version="6.1.7" />
+		<PackageReference Include="MudBlazor" Version="6.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\DateTimeComponet\DateTimeComponent.csproj" />
+		<ProjectReference Include="..\..\Weather\Weather.csproj" />
 		<ProjectReference Include="..\Shared\BlazorAlarmClock.Shared.csproj" />
 	</ItemGroup>
 

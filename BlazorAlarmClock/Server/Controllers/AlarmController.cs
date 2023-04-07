@@ -58,7 +58,7 @@ public static class AlarmController
                 Minute = item.Minute,
                 RingtoneName = item.RingtoneName,
                 AlarmDays = almDays,
-                SnoozeTime=item.SnoozeTime
+                SnoozeDelay=item.SnoozeTime
             });
         }
 
@@ -75,8 +75,14 @@ public static class AlarmController
     private static async Task<IResult> PostNewAlarmApi([FromBody] AlarmDto alarm, HttpContext context, AlarmDataRepository repo)
     {
         Alarm newAlarm = ConvertToAlarm(alarm);
-
-        await repo.CreateAsync(newAlarm);
+        if (newAlarm.Id > 0)
+        {
+            await repo.UpdateAsync(newAlarm);
+        }
+        else
+        {
+            await repo.CreateAsync(newAlarm);
+        }
         return Results.Ok();
     }
 
@@ -131,7 +137,7 @@ public static class AlarmController
             IsActive = alarm.IsActive,
             Minute = alarm.Minute,
             RingtoneName = alarm.RingtoneName,
-            SnoozeTime=alarm.SnoozeTime
+            SnoozeTime=alarm.SnoozeDelay
         };
         return newAlarm;
     }
