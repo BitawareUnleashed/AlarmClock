@@ -26,17 +26,17 @@
             <SystemWatchComponent ClockDisplay="WatchDisplayEnum.WithBlinking" Is24H=true EnableJsTime="false" />
         </div>
     </MudItem>
-    <MudItem>
-        <div style="overflow-y:auto; bottom:10px">
+    <MudItem xs="12">
+        @* <div style="overflow-y:auto; bottom:10px"></div> *@
             @if (alarmService.AlarmList is not null)
             {
                 @foreach (var alarm in alarmService.AlarmList)
                 {
-                    <div class="ml-12">
+                    @* <div class="ml-12"> </div> *@
                         <AlarmComponent CurrentAlarm="@alarm" EditRequested="OnAlarmEditRequest" />
-                    </div>
+                   
                 }
             }
-        </div>
+        
     </MudItem>
 </MudGrid>

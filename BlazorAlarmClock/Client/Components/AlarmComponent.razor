@@ -9,20 +9,29 @@
 {
     <div class="overlay d-flex align-items-center">
         <MudButton Variant="Variant.Filled" Color="Color.Primary"
-               Class="btn btn-primary btn-block btn-lg h-50 w-25"
-               OnClick="StopAlarm">Stop</MudButton>
+                   Class="btn btn-primary btn-block btn-lg h-50 w-25"
+                   OnClick="StopAlarm">
+            Stop
+        </MudButton>
 
         <MudButton id="buttonId" Class="d-block w-75 h-75" Variant="Variant.Filled" Color="Color.Tertiary"
-               OnClick="SnoozeSound">Snooze</MudButton>
-
+                   OnClick="SnoozeSound">
+            Snooze
+        </MudButton>
     </div>
 }
 
 @if (CurrentAlarm is not null)
 {
-    <MudGrid Class="w-100 mt-5" Style="display: flex; justify-content: center; border-left: solid 1px white;">
-        <MudItem xs="1" Style="min-width: 180px; margin-top:-29px" >
-            <MudTimePicker @ref="picker" Label="Set alarm" @bind-Time="time" PickerVariant="PickerVariant.Dialog" Style="font-size: 5vh;">
+    <MudGrid Class="w-100 h-100" Style="display: flex; justify-content: center; border-left: solid 1px white;">
+        <MudItem xs="1"></MudItem>
+        <MudItem xs="1" Class="d-flex align-content-center flex-grow-1 gap-4" Style="vertical-align: top">
+            <MudToggleIconButton @bind-Toggled="@CurrentAlarm.IsActive" Class="py-4 d-flex flex-1"
+                                 Icon="@Icons.Material.Filled.AlarmOff" Color="@Color.Error" Title="Off"
+                                 ToggledIcon="@Icons.Material.Filled.AlarmOn" ToggledColor="@Color.Success" ToggledTitle="On"/>
+        </MudItem>
+        <MudItem xs="2" Class="d-flex align-center flex-grow-1 gap-4">
+            <MudTimePicker Class="w-100" @ref="picker" @bind-Time="time" PickerVariant="PickerVariant.Dialog" Style="font-size: 5vh;">
                 <PickerActions>
                     <MudButton Class="mr-auto align-self-start" OnClick="@(() => picker.Clear())">Clear</MudButton>
                     <MudButton OnClick="@(() => AlarmTimeAccept(false))">Cancel</MudButton>
@@ -31,11 +40,7 @@
             </MudTimePicker>
         </MudItem>
 
-        <MudItem xs="1" Class="d-flex justify-content-center" Style="vertical-align: top">
-            <MudToggleIconButton @bind-Toggled="@CurrentAlarm.IsActive" Style="height: 50px; width: 50px"
-                                 Icon="@Icons.Material.Filled.AlarmOff" Color="@Color.Error" Title="Off"
-                                 ToggledIcon="@Icons.Material.Filled.AlarmOn" ToggledColor="@Color.Success" ToggledTitle="On"/>
-        </MudItem>
+
 
         @if (Status != AlarmStatus.SNOOZED)
         {
@@ -43,7 +48,7 @@
             {
                 if ((bool)IsNewAlarm)
                 {
-                    <MudItem xs="6">
+                    <MudItem xs="6" Class="d-flex align-center align-content-center flex-grow-1 gap-4">
                         <div class="checkbox-group">
                             <MudGrid>
                                 <MudItem>
@@ -64,24 +69,19 @@
                             </MudGrid>
                         </div>
                     </MudItem>
-
-
                     <div class="ml-5" style="width: 120px">
                         <MudNumericField T="int" Label="Snooze time" Min="1" Max="30" ValueChanged="SnoozeChanged" Value=CurrentAlarm.SnoozeDelay
                                          Adornment="Adornment.End" AdornmentText="@minutesMeasureUnits"/>
                     </div>
                 }
             }
-
-
-
         }
         else
         {
-            <MudItem xs="7">
+            <MudItem xs="2" Class="d-flex align-center align-content-center flex-grow-1 gap-4">
                 Snooze time @CurrentAlarm.SnoozeDelay
             </MudItem>
-            <MudItem xs="1">
+            <MudItem xs="1" Class="d-flex align-center align-content-center flex-grow-1 gap-4">
                 <MudButton Class="w-75 h-100" Variant="Variant.Filled" Color="Color.Primary" OnClick="StopAlarm">Stop</MudButton>
             </MudItem>
         }
@@ -90,31 +90,23 @@
         {
             if (!(bool)IsNewAlarm)
             {
-                <MudItem xs="1">
+                <MudItem xs="1" Class="d-flex align-center align-content-center flex-grow-1 gap-4">
                     <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Large" OnClick="DeleteAlarm"/>
                 </MudItem>
             }
         }
         else
         {
-            <MudItem xs="1" Class="ml-12">
+            <MudItem xs="1" Class="d-flex align-center align-content-center flex-grow-1 gap-4">
                 <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Large" OnClick="DeleteAlarm"/>
             </MudItem>
-            <MudItem xs="3" Class="ml-12">
-                <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Large" OnClick="()=>EditAlarm(CurrentAlarm.Id)">Edit alarm</MudFab>
+            <MudItem xs="1" Class="d-flex align-center align-content-center flex-grow-1 gap-4">
+                <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Large" OnClick="() => EditAlarm(CurrentAlarm.Id)">Edit alarm</MudFab>
             </MudItem>
         }
     </MudGrid>
 }
 
-
-@*POPOVER NEW ALARM/EDIT ALARM
-<MudPopover Open="@isPopoverEditAlarmVisible" Fixed="true" AnchorOrigin="Origin.CenterCenter" TransformOrigin="Origin.CenterCenter"
-            Class="h-20 w-75 border-solid border-2 mud-border-ternary">
-    <NewAlarm IsPopoverOpenChanged="CloseEditAlarm" RingtoneFileNameEmpty="Select a ringtone" Alarm="@selectedAlarm" />
-</MudPopover>*@
-
 <audio id="myAudio" style="visibility: hidden">
     <source src="@FileName" type="audio/mpeg">
 </audio>
-
