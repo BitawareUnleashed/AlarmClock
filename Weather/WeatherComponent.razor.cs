@@ -1,9 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Weather.Entities.Models;
 using Weather.Services;
 
@@ -126,6 +121,10 @@ public partial class WeatherComponent
         StateHasChanged();
     }
 
+    /// <summary>
+    /// Gets the temperature rounded.
+    /// </summary>
+    /// <returns></returns>
     private double GetTemperatureRounded()
     {
         if (MeteoPack is null)
@@ -189,12 +188,23 @@ public partial class WeatherComponent
 
         Console.WriteLine("DisposeAsync");
     }
-
     #endregion
 }
 
 public class WindowDimension
 {
+    /// <summary>
+    /// Gets or sets the width.
+    /// </summary>
+    /// <value>
+    /// The width.
+    /// </value>
     public int Width { get; set; }
+    /// <summary>
+    /// Gets or sets the height.
+    /// </summary>
+    /// <value>
+    /// The height.
+    /// </value>
     public int Height { get; set; }
 }

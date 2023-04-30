@@ -24,17 +24,21 @@ public class OpenWeatherService
     private string weatherAddress = "/data/2.5/weather";
 
     private const string WeatherApiKeyEndpoint = "/api/v1/GetApiKey";
-
-    // Weather locations
     private const string WeatherLocationsEndpoint = "/api/v1/GetWeatherLocations";
-
     private const string WeatherSingleLocationsEndpoint = "/api/v1/GetSingle";
-
     private const string WeatherGetLocationEndpoint = "/api/v1/GetSavedLocation";
 
-
+    /// <summary>
+    /// Gets or sets the weather locations.
+    /// </summary>
+    /// <value>
+    /// The weather locations.
+    /// </value>
     public List<string> WeatherLocations { get; set; } = new();
 
+    /// <summary>
+    /// Occurs when an error raises.
+    /// </summary>
     public event EventHandler<string>? OnErrorRaised;
     
 
@@ -66,7 +70,10 @@ public class OpenWeatherService
         //Task.Run(async () => { OpenWeatherMapApiKey = await GetApiKey(); });
         Initialize();
     }
-    
+
+    /// <summary>
+    /// Initializes this instance.
+    /// </summary>
     private async void Initialize()
     {
         OpenWeatherMapApiKey = await GetApiKey();
@@ -176,6 +183,10 @@ public class OpenWeatherService
         return resultString;
     }
 
+    /// <summary>
+    /// Gets the locations list.
+    /// </summary>
+    /// <returns></returns>
     public async Task<List<string>> GetLocationsList()
     {
         var response = await http.GetAsync(@$"{WeatherLocationsEndpoint}");
@@ -191,6 +202,10 @@ public class OpenWeatherService
         return await response.Content.ReadFromJsonAsync<List<string>>() ?? new List<string>();
     }
 
+    /// <summary>
+    /// Gets the API key.
+    /// </summary>
+    /// <returns></returns>
     public async Task<string> GetApiKey()
     {
         var ret = string.Empty;
@@ -210,6 +225,11 @@ public class OpenWeatherService
         return OpenWeatherMapApiKey;
     }
 
+    /// <summary>
+    /// Gets the locations list.
+    /// </summary>
+    /// <param name="location">The location.</param>
+    /// <returns></returns>
     public async Task<List<UiLocation>> GetLocationsList(string location)
     {
         try
@@ -234,6 +254,10 @@ public class OpenWeatherService
         return new List<UiLocation>();
     }
 
+    /// <summary>
+    /// Saves the location.
+    /// </summary>
+    /// <param name="location">The location.</param>
     public async Task SaveLocation(UiLocation location)
     {
         string itemName = location.Name;
@@ -252,6 +276,10 @@ public class OpenWeatherService
         }
     }
 
+    /// <summary>
+    /// Gets the saved location.
+    /// </summary>
+    /// <returns></returns>
     public async Task<UiLocation> GetSavedLocation()
     {
         var response = await http.GetAsync(@$"{WeatherGetLocationEndpoint}");
@@ -263,7 +291,6 @@ public class OpenWeatherService
             OnErrorRaised?.Invoke(this, $"{response.StatusCode} - {response.ReasonPhrase}");
         }
 
-        
         var savedLocation = await response.Content.ReadFromJsonAsync<UiLocation>();
         return savedLocation;
     }

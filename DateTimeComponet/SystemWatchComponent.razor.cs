@@ -8,6 +8,17 @@ namespace DateTimeComponent;
 
 public partial class SystemWatchComponent
 {
+    private string systemWatch = string.Empty;
+    private string systemDate = string.Empty;
+    private string separator = ":";
+    private bool separatorActive = false;
+    private string watchLeftPart = string.Empty;
+    private string watchRightPart = string.Empty;
+
+    private string blinkStyleSeparator = string.Empty;
+
+    private CancellationTokenSource ct = new CancellationTokenSource();
+
     /// <summary>
     /// Gets or sets the watch format.
     /// </summary>
@@ -48,18 +59,7 @@ public partial class SystemWatchComponent
     /// </value>
     [Parameter] public bool EnableJsTime { get; set; }
 
-    private string systemWatch = string.Empty;
-    private string systemDate = string.Empty;
-    private string separator = ":";
-    private bool separatorActive = false;
-    private string watchLeftPart = string.Empty;
-    private string watchRightPart = string.Empty;
-
-    private string blinkStyleSeparator = string.Empty;
-
-    private CancellationTokenSource ct = new CancellationTokenSource();
-
-
+    /// <inheritdoc />
     protected override void OnInitialized()
     {
         if (EnableJsTime)
@@ -70,13 +70,8 @@ public partial class SystemWatchComponent
         }
         else
         {
-            watch.SecondChangedEvent += Sw_SecondChangedEvent;// Watch_SecondChangedEvent;
+            watch.SecondChangedEvent += Sw_SecondChangedEvent;
         }
-    }
-
-    private void Watch_SecondChangedEvent(object? sender, string e)
-    {
-        UpdateWatch(e);
     }
 
     [JSInvokable("UpdateWatch")]
@@ -188,12 +183,19 @@ public partial class SystemWatchComponent
         blinkStyleSeparator = separatorActive ? "" : "clock-separator";
     }
 
+    /// <inheritdoc />
     protected override void OnParametersSet()
     {
         StateHasChanged();
         base.OnParametersSet();
     }
 
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources asynchronously.
+    /// </summary>
+    /// <returns>
+    /// A task that represents the asynchronous dispose operation.
+    /// </returns>
     public ValueTask DisposeAsync()
     {
         ct.Cancel();

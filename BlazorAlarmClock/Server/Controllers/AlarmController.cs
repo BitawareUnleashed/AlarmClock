@@ -29,9 +29,14 @@ public static class AlarmController
         return app;
     }
 
+    /// <summary>
+    /// Gets the alarm list API.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="repo">The repo.</param>
+    /// <returns></returns>
     private static IResult GetAlarmListApi(HttpContext context, AlarmDataRepository repo)
     {
-
         var a = repo.GetAll();
         var dto = new List<AlarmDto>();
         foreach (var item in a.ToList())
@@ -66,12 +71,26 @@ public static class AlarmController
         return Results.Ok(dto);
     }
 
+    /// <summary>
+    /// Posts the delete alarm API.
+    /// </summary>
+    /// <param name="alarmId">The alarm identifier.</param>
+    /// <param name="context">The context.</param>
+    /// <param name="repo">The repo.</param>
+    /// <returns></returns>
     private static async Task<IResult> PostDeleteAlarmApi([FromBody] int alarmId, HttpContext context, AlarmDataRepository repo)
     {
         await repo.DeleteAsync(alarmId);
         return Results.Ok();
     }
 
+    /// <summary>
+    /// Posts the new alarm API.
+    /// </summary>
+    /// <param name="alarm">The alarm.</param>
+    /// <param name="context">The context.</param>
+    /// <param name="repo">The repo.</param>
+    /// <returns></returns>
     private static async Task<IResult> PostNewAlarmApi([FromBody] AlarmDto alarm, HttpContext context, AlarmDataRepository repo)
     {
         Alarm newAlarm = ConvertToAlarm(alarm);
@@ -86,6 +105,13 @@ public static class AlarmController
         return Results.Ok();
     }
 
+    /// <summary>
+    /// Posts the update alarm API.
+    /// </summary>
+    /// <param name="alarm">The alarm.</param>
+    /// <param name="context">The context.</param>
+    /// <param name="repo">The repo.</param>
+    /// <returns></returns>
     private static async Task<IResult> PostUpdateAlarmApi([FromBody] AlarmDto alarm, HttpContext context, AlarmDataRepository repo)
     {
         Alarm newAlarm = ConvertToAlarm(alarm);
@@ -94,7 +120,13 @@ public static class AlarmController
         return Results.Ok();
     }
 
-    
+    /// <summary>
+    /// Posts the delete ringtone API.
+    /// </summary>
+    /// <param name="alarmRingtoneName">Name of the alarm ringtone.</param>
+    /// <param name="context">The context.</param>
+    /// <param name="repo">The repo.</param>
+    /// <returns></returns>
     private static async Task<IResult> PostDeleteRingtoneApi([FromBody] string alarmRingtoneName, HttpContext context, AlarmDataRepository repo)
     {
         string dir = string.Empty;
@@ -112,7 +144,11 @@ public static class AlarmController
         return Results.Ok();
     }
 
-
+    /// <summary>
+    /// Converts to alarm.
+    /// </summary>
+    /// <param name="alarm">The alarm.</param>
+    /// <returns></returns>
     private static Alarm ConvertToAlarm(AlarmDto alarm)
     {
         var alarmDays = new List<AlarmDay>();
@@ -142,6 +178,11 @@ public static class AlarmController
         return newAlarm;
     }
 
+    /// <summary>
+    /// Saves the ringtone.
+    /// </summary>
+    /// <param name="file">The file.</param>
+    /// <returns></returns>
     private static async Task<IResult> SaveRingtone([FromBody] FileData file)
     {
         try
@@ -166,6 +207,10 @@ public static class AlarmController
         }
     }
 
+    /// <summary>
+    /// Gets the ringtone list API.
+    /// </summary>
+    /// <returns></returns>
     private static async Task<IResult> GetRingtoneListApi()
     {
         string dir = string.Empty;

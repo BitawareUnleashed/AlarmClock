@@ -8,10 +8,39 @@ using System.Threading.Tasks;
 namespace Weather.Entities.Models;
 public class Settings
 {
-    [Key]
-    public int IDSettings { get; set; }
+    /// <summary>
+    /// Gets or sets the identifier settings.
+    /// </summary>
+    /// <value>
+    /// The identifier settings.
+    /// </value>
+    [Key] public int IDSettings { get; set; }
+    /// <summary>
+    /// Gets or sets the identifier location.
+    /// </summary>
+    /// <value>
+    /// The identifier location.
+    /// </value>
     public int IDLocation { get; set; }
-	public string Location { get; set; }
+    /// <summary>
+    /// Gets or sets the location.
+    /// </summary>
+    /// <value>
+    /// The location.
+    /// </value>
+    public string Location { get; set; }
+    /// <summary>
+    /// Gets or sets the longitude.
+    /// </summary>
+    /// <value>
+    /// The long.
+    /// </value>
     public string Long { get; set; }
-	public string Lat { get; set; }
+    /// <summary>
+    /// Gets or sets the latitude.
+    /// </summary>
+    /// <value>
+    /// The lat.
+    /// </value>
+    public string Lat { get; set; }
 }

@@ -5,6 +5,11 @@ namespace BlazorAlarmClock.Server.Extensions;
 
 public static class ProgramExtensions
 {
+    /// <summary>
+    /// Inizializes the databases.
+    /// </summary>
+    /// <param name="app">The application.</param>
+    /// <returns></returns>
     public static async Task<IApplicationBuilder> InizializeDatabases(this WebApplication app)
     {
         using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()!.CreateScope())
@@ -22,6 +27,12 @@ public static class ProgramExtensions
         return app;
     }
 
+    /// <summary>
+    /// Ensures the initial seeding.
+    /// </summary>
+    /// <param name="config">The configuration.</param>
+    /// <param name="dbContext">The database context.</param>
+    /// <returns></returns>
     private static Task EnsureInitialSeeding(IConfiguration config, AlarmDbContext dbContext)
     {
         if (!dbContext.Alarms.Any())

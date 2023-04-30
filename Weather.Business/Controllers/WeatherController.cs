@@ -14,14 +14,12 @@ public static class WeatherController
 {
     private const string WeatherApiKeyEndpoint = "/api/v1/GetApiKey";
     private const string WeatherLocationsEndpoint = "/api/v1/GetWeatherLocations";
-    private const string WeatherLocationsEndpointFilter = "/api/v1/GetWeatherLocations/{location}";
     private const string WeatherSingleLocationsEndpoint = "/api/v1/GetSingle/{location}";
     private const string WeatherSaveLocationEndpoint = "/api/v2/PostSaveLocation/{name}/{lat}/{lon}/{id}";
     private const string WeatherGetLocationEndpoint = "/api/v1/GetSavedLocation";
 
 
     private static string? ApiKey = string.Empty;
-    private static List<string> WeatherLocations = new List<string>();
 
     public static IEndpointRouteBuilder AddWeatherApiEndpoints(this IEndpointRouteBuilder app)
     {
@@ -35,18 +33,32 @@ public static class WeatherController
         return app;
     }
 
-
+    /// <summary>
+    /// Gets the weather API key API.
+    /// </summary>
+    /// <returns></returns>
     private static IResult GetWeatherApiKeyApi()
     {
         return Results.Ok(ApiKey);
     }
 
+    /// <summary>
+    /// Gets the location list.
+    /// </summary>
+    /// <param name="weatherLocationsBridge">The weather locations bridge.</param>
+    /// <returns></returns>
     public static IResult GetLocationList([FromServices] WeatherLocationsBridge weatherLocationsBridge)
     {
         //var a = weatherLocationsBridge.WeatherLocations;
         return Results.Ok();
     }
 
+    /// <summary>
+    /// Gets the location filter list.
+    /// </summary>
+    /// <param name="location">The location.</param>
+    /// <param name="weatherLocationsBridge">The weather locations bridge.</param>
+    /// <returns></returns>
     public static IResult GetLocationFilterList(string location,
         [FromServices] WeatherLocationsBridge weatherLocationsBridge)
     {
@@ -54,7 +66,15 @@ public static class WeatherController
         return Results.Ok(a);
     }
 
-
+    /// <summary>
+    /// Gets the save location list.
+    /// </summary>
+    /// <param name="weatherLocationsBridge">The weather locations bridge.</param>
+    /// <param name="name">The name.</param>
+    /// <param name="lat">The latitude.</param>
+    /// <param name="lon">The longitude.</param>
+    /// <param name="id">The identifier.</param>
+    /// <returns></returns>
     public static IResult GetSaveLocationList([FromServices] WeatherLocationsBridge weatherLocationsBridge, string name,
         string lat, string lon, string id)
     {
@@ -68,7 +88,11 @@ public static class WeatherController
         return Results.Ok();
     }
 
-
+    /// <summary>
+    /// Gets the saved location list.
+    /// </summary>
+    /// <param name="weatherLocationsBridge">The weather locations bridge.</param>
+    /// <returns></returns>
     public static IResult GetSavedLocationList([FromServices] WeatherLocationsBridge weatherLocationsBridge)
     {
         var locationId = weatherLocationsBridge.GetSavedLocation();

@@ -5,14 +5,28 @@ namespace DateTimeComponent.Models
 {
     public class SystemWatch : IDisposable
     {
+        /// <summary>
+        /// Event occurs every second changed.
+        /// </summary>
         public event EventHandler<DateTime>? SecondChangedEvent;
+        /// <summary>
+        /// Occurs for separator.
+        /// </summary>
         public event EventHandler<string>? Separator;
 
         #region FILEDS
+        /// <summary>
+        /// The main timer able to beat the time
+        /// </summary>
+        private System.Timers.Timer? aTimer;
+
+        /// <summary>
+        /// The starting date.
+        /// </summary>
         private DateTime StartingDateSeconds = DateTime.Now;
         #endregion
 
-        private System.Timers.Timer? aTimer;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SystemWatch"/> class.
@@ -38,6 +52,11 @@ namespace DateTimeComponent.Models
             }
         }
 
+        /// <summary>
+        /// Handles the Elapsed event of the ATimer control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="ElapsedEventArgs"/> instance containing the event data.</param>
         private void ATimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             TimeCheck(e.SignalTime);
@@ -45,11 +64,15 @@ namespace DateTimeComponent.Models
 
         #region Methods
 
+        /// <summary>
+        /// Times the check.
+        /// </summary>
+        /// <param name="e">The e.</param>
         private void TimeCheck(DateTime e)
         {
             // Useful for separator event
             Separator?.Invoke(this, e.Second % 2 == 0 ? " " : ":");
-            
+
             // Seconds
             if ((e - StartingDateSeconds).Seconds > 0)
             {
@@ -60,9 +83,15 @@ namespace DateTimeComponent.Models
         #endregion
 
         #region IDisposable
-        // To detect redundant calls
+        /// <summary>
+        /// To detect redundant calls
+        /// </summary>
         private bool _disposed = false;
 
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             // If already disposed then exit
@@ -72,6 +101,9 @@ namespace DateTimeComponent.Models
             _disposed = true;
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             // Dispose of unmanaged resources.
