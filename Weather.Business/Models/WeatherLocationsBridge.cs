@@ -57,9 +57,12 @@ public class WeatherLocationsBridge
         var locationDbId = int.Parse(locationId);
         if (weatherLocationsContext.Cities != null)
         {
-            var location= weatherLocationsContext.Cities
+            var location = weatherLocationsContext.Cities
                 .Include(x => x.Coord).FirstOrDefault(x => x.Id == locationDbId);
-        
+            if (location is null)
+            {
+                return ("", 0, 0);
+            }
             return (location.Name, location.Coord.Lat, location.Coord.Long);
         }
 

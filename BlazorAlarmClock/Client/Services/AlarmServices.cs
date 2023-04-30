@@ -34,7 +34,6 @@ public class AlarmServices
 
     #endregion
 
-
     #region Constructors
 
     public AlarmServices(HttpClient http)

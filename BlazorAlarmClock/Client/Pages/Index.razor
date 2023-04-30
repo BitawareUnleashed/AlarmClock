@@ -27,16 +27,12 @@
         </div>
     </MudItem>
     <MudItem xs="12">
-        @* <div style="overflow-y:auto; bottom:10px"></div> *@
-            @if (alarmService.AlarmList is not null)
+        @if (alarmService.AlarmList is not null)
+        {
+            @foreach (var alarm in alarmService.AlarmList)
             {
-                @foreach (var alarm in alarmService.AlarmList)
-                {
-                    @* <div class="ml-12"> </div> *@
-                        <AlarmComponent CurrentAlarm="@alarm" EditRequested="OnAlarmEditRequest" />
-                   
-                }
+                <AlarmComponent CurrentAlarm="@alarm" EditRequested="OnAlarmEditRequest" />
             }
-        
+        }
     </MudItem>
 </MudGrid>

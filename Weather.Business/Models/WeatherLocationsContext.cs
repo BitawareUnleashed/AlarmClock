@@ -13,7 +13,8 @@ public class WeatherLocationsContext : DbContext
     public WeatherLocationsContext(DbContextOptions<WeatherLocationsContext> opt)
         : base(opt)
     {
-        if (!File.Exists(@"Data\owm_cities.sqlite"))
+
+        if (!File.Exists(@"../../Weather.Business/Data/owm_cities.sqlite"))
         {
             InitializeDatabase();
         }
@@ -50,7 +51,7 @@ public class WeatherLocationsContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite(@$"Data Source = Data\owm_cities.sqlite");
+        optionsBuilder.UseSqlite(@$"Data Source =  ../../Weather.Business/Data/owm_cities.sqlite");
     }
 
     public void SaveSettings(int id, string location, double lat, double lon)

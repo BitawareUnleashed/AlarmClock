@@ -191,7 +191,7 @@ public partial class AlarmComponent
                     break;
                 }
                 if (e.Hour == time.Value.Hours &&
-                    e.Minute >= time.Value.Minutes && 
+                    e.Minute >= time.Value.Minutes &&
                     e.Second >= time.Value.Seconds)
                 {
                     PlaySound();
@@ -241,6 +241,8 @@ public partial class AlarmComponent
                 }
 
                 break;
+            case AlarmStatus.UNDEFINED:
+            case AlarmStatus.UNKNOWN:
             default:
                 break;
         }
@@ -309,11 +311,4 @@ public partial class AlarmComponent
             EditRequested.InvokeAsync(selectedAlarm);
         }
     }
-
-    //public async void CloseEditAlarm()
-    //{
-    //    selectedAlarm = null;
-    //    isPopoverEditAlarmVisible = false;
-    //    StateHasChanged();
-    //}
 }

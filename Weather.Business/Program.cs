@@ -12,7 +12,9 @@ public static class Program
     public static IServiceCollection AddWeatherBusiness(this IServiceCollection services)
     {
         services.AddDbContext<WeatherLocationsContext>(opt =>
-            opt.UseSqlite(@$"Data Source = Data\owm_cities.sqlite"));
+            opt.UseSqlite(@$"Data Source = ../../Weather.Business/Data/owm_cities.sqlite"));
+
+
         services.AddScoped<DbContext, WeatherLocationsContext>();
         services.AddScoped<WeatherLocationsBridge>();
         return services;
@@ -24,3 +26,4 @@ public static class Program
         return app;
     }
 }
+
