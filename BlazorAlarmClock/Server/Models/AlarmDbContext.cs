@@ -76,7 +76,7 @@ public class AlarmDbContext : DbContext, IAlarmContext
     /// <summary>
     /// Saves this instance.
     /// </summary>
-/    public void Save()
+    public void Save()
     {
         this.SaveChanges();
     }

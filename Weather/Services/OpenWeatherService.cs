@@ -101,8 +101,8 @@ public class OpenWeatherService
             }
 
             // Call to API
-            api_url = baseApiAddress + weatherAddress +
-                      $@"?lat={latitude.ToString().Replace(",", ".")}&lon={longitude.ToString().Replace(",", ".")}&units=metric&appid={apiKey}";
+            api_url = $@"{baseApiAddress}{weatherAddress}?lat={latitude.ToString().Replace(",", ".")}&lon={longitude.ToString().Replace(",", ".")}&units=metric&appid={apiKey}";
+
 
             // Open connection
             var client = httpClientFactory.CreateClient("openweathermap");
